@@ -232,7 +232,7 @@ const getSection = id => ALL.find(s=>s.id===id);
 const SAVE_KEY="essayMemoriser.v2";
 let state=load();
 function defaults(){ return { xp:0, best:{}, weak:{}, streak:{count:0,last:null}, last:null,
-  settings:{sound:true, hint:"first"} }; }
+  settings:{sound:true, hint:"first", fuzzy:true} }; }
 function load(){ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); if(s&&typeof s==="object"){ const d=defaults(); return Object.assign(d,s,{settings:Object.assign(d.settings,s.settings||{})}); } }catch(e){} return defaults(); }
 function save(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(state)); }catch(e){} }
 function bestOf(id){ return state.best[id]||(state.best[id]={cloze:0,type:0,first:0,order:0,exam:0}); }
@@ -285,14 +285,33 @@ const quoteHL=t=>esc(t).replace(/(‘[^’]*’)/g,'<span class="qte">$1</span>'
 function sentences(text){ text=stripBrackets(text).replace(/\s+/g," ").trim();
   return text.replace(/([.;!?]['’”"]?)\s+/g,"$1").split("").map(s=>s.trim()).filter(Boolean); }
 
+/* fuzzy spelling tolerance — Damerau–Levenshtein (handles missing/wrong/swapped letters).
+   same(typed,target) decides if a typed word counts as the target. Tolerance scales with
+   the TARGET word length so short function words still need to be exact. */
+function editDistance(a,b){ const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  const d=Array.from({length:m+1},(_,i)=>{const r=new Int32Array(n+1); r[0]=i; return r;});
+  for(let j=0;j<=n;j++) d[0][j]=j;
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
+    const cost=a[i-1]===b[j-1]?0:1;
+    d[i][j]=Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+cost);
+    if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1]) d[i][j]=Math.min(d[i][j], d[i-2][j-2]+1);
+  }
+  return d[m][n]; }
+function tolFor(L){ return L<=2?0 : L<=6?1 : 2; }
+function same(typed,target){ if(typed===target) return true;
+  if(!state.settings.fuzzy || !typed || !target) return false;
+  const tol=tolFor(target.length);
+  if(tol===0 || Math.abs(typed.length-target.length)>tol) return false;
+  return editDistance(typed,target)<=tol; }
+
 /* word-level LCS diff for Exam mode */
 function wordDiff(orig,typed){
   const n=orig.length,m=typed.length;
   const dp=Array.from({length:n+1},()=>new Int32Array(m+1));
   for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
-    dp[i][j]= orig[i]===typed[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+    dp[i][j]= same(typed[j],orig[i]) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
   const matched=new Uint8Array(n); let i=0,j=0;
-  while(i<n&&j<m){ if(orig[i]===typed[j]){ matched[i]=1; i++; j++; }
+  while(i<n&&j<m){ if(same(typed[j],orig[i])){ matched[i]=1; i++; j++; }
     else if(dp[i+1][j]>=dp[i][j+1]) i++; else j++; }
   return matched;
 }
@@ -442,7 +461,7 @@ function modeCloze(id,diff){ const s=getSection(id),toks=tokenize(s.text),ws=tok
   const inputs=[...$("modebody").querySelectorAll("input.blank")]; C.inputs=inputs; updateClozeStat();
   inputs.forEach((inp,idx)=>{ inp.addEventListener("input",()=>{ const wi=+inp.dataset.i,target=ws[wi];
       inp.classList.remove("bad","reveal");
-      if(loose(inp.value)===target.c && inp.value.trim()!==""){ if(!inp.classList.contains("ok")){inp.classList.add("ok");sfx.ok();}
+      if(same(loose(inp.value),target.c) && inp.value.trim()!==""){ if(!inp.classList.contains("ok")){inp.classList.add("ok");sfx.ok();}
         const nxt=inputs[idx+1]; if(nxt&&!nxt.classList.contains("ok")) nxt.focus(); } else inp.classList.remove("ok"); updateClozeStat(); });
     inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();(inputs[idx+1]||$("checkBtn")).focus();} }); });
   if(inputs[0]) inputs[0].focus();
@@ -453,7 +472,7 @@ function modeCloze(id,diff){ const s=getSection(id),toks=tokenize(s.text),ws=tok
 function updateClozeStat(){ const ok=C.inputs.filter(i=>i.classList.contains("ok")).length;
   $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${ok}<small>/${C.total} correct</small></span>`; }
 function clozeCheck(){ let ok=0; C.inputs.forEach(inp=>{ const wi=+inp.dataset.i;
-    if(loose(inp.value)===C.ws[wi].c && inp.value.trim()!==""){ inp.classList.add("ok"); inp.classList.remove("bad"); ok++; }
+    if(same(loose(inp.value),C.ws[wi].c) && inp.value.trim()!==""){ inp.classList.add("ok"); inp.classList.remove("bad"); ok++; }
     else { inp.classList.add("bad"); inp.classList.remove("ok"); weakAdd(C.id,wi); } });
   const pct=C.total?Math.round(ok/C.total*100):100, xp=Math.round(pct*0.5*(0.6+C.diff));
   addXP(xp); bumpStreak(); const best=recordBest(C.id,"cloze",pct);
@@ -518,7 +537,7 @@ function renderType(){ let wi=-1,html=""; T.toks.forEach(t=>{ if(t.t==="sep"){ht
     else html+=hintFor(t); });
   $("typepass").innerHTML=html; const c=$("curword"); if(c) c.scrollIntoView({block:"nearest"}); }
 function typeCommit(raw,forced){ raw=(raw||"").trim(); if(!forced&&raw==="") return; if(T.start===0)T.start=Date.now();
-  const tok=T.ws[T.cur]; if(!tok) return; const ok=!forced&&loose(raw)===tok.c;
+  const tok=T.ws[T.cur]; if(!tok) return; const ok=!forced&&same(loose(raw),tok.c);
   T.status[T.cur]=ok?"correct":"wrong";
   if(ok){ T.correct++; T.combo++; T.maxCombo=Math.max(T.maxCombo,T.combo); sfx.ok(); showCombo(T.combo); }
   else { T.combo=0; sfx.no(); showCombo(0); weakAdd(T.id,T.cur); flashWord(T.cur); }
@@ -661,7 +680,7 @@ function renderWeak(){ if(W.i>=W.list.length) return finishWeak();
   $("weakSkip").onclick=()=>{ W.i++; renderWeak(); };
 }
 function weakCheck(){ const inp=$("weakblank"), it=W.list[W.i];
-  if(loose(inp.value)===W.cur.c && inp.value.trim()!==""){ inp.classList.add("ok"); sfx.great(); W.correct++; weakClear(it.sid,it.wi); addXP(8);
+  if(same(loose(inp.value),W.cur.c) && inp.value.trim()!==""){ inp.classList.add("ok"); sfx.great(); W.correct++; weakClear(it.sid,it.wi); addXP(8);
     $("weakNote").innerHTML='<b style="color:var(--good)">Yes! ✓</b>'; setTimeout(()=>{W.i++;renderWeak();},550); }
   else { inp.classList.add("bad"); sfx.no(); weakAdd(it.sid,it.wi);
     $("weakNote").innerHTML=`<b style="color:var(--bad)">It's:</b> <span style="color:var(--warn);font-weight:700">${esc(W.cur.x)}</span> — try to lock it in, then Check or Skip.`; inp.value=""; inp.classList.remove("bad"); inp.placeholder=W.cur.x[0]+"…"; }
@@ -680,6 +699,7 @@ function finishWeak(){ const pct=Math.round(W.correct/W.total*100),xp=10+W.corre
 function openSettings(){ const m=document.createElement("div"); m.className="modal"; m.id="setModal";
   m.innerHTML=`<div class="box"><h3>⚙️ Settings</h3>
     <div class="setrow"><span>🔊 Sound effects</span><button class="btn sm" id="sSound">${state.settings.sound?"On":"Off"}</button></div>
+    <div class="setrow"><span>✍️ Forgive spelling<br><small style="color:var(--muted)">accept small typos when you type</small></span><button class="btn sm" id="sFuzzy">${state.settings.fuzzy?"On":"Off"}</button></div>
     <div class="setrow"><span>💡 Default typing hint</span><div class="seg"><button data-h="full">Full</button><button data-h="first">1st</button><button data-h="none">None</button></div></div>
     <div class="setrow"><span>📲 Add to home screen</span><span style="color:var(--muted);font-size:12px;max-width:160px;text-align:right">Use your browser's “Add to Home Screen” to install it as an app.</span></div>
     <div class="setrow"><span>♻️ Reset all progress</span><button class="btn sm" id="sReset" style="border-color:var(--bad);color:var(--bad)">Reset</button></div>
@@ -688,6 +708,7 @@ function openSettings(){ const m=document.createElement("div"); m.className="mod
   m.addEventListener("click",e=>{ if(e.target===m) m.remove(); });
   const mark=()=>m.querySelectorAll("[data-h]").forEach(b=>b.style.background=b.dataset.h===state.settings.hint?"var(--accent)":"transparent"); mark();
   $("sSound").onclick=()=>{ state.settings.sound=!state.settings.sound; save(); $("sSound").textContent=state.settings.sound?"On":"Off"; if(state.settings.sound) sfx.ok(); };
+  $("sFuzzy").onclick=()=>{ state.settings.fuzzy=!state.settings.fuzzy; save(); $("sFuzzy").textContent=state.settings.fuzzy?"On":"Off"; toast(state.settings.fuzzy?"Spelling: forgiving":"Spelling: strict"); };
   m.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{ state.settings.hint=b.dataset.h; save(); mark(); });
   $("sReset").onclick=()=>{ if(confirm("Reset all progress — XP, levels, streak, best scores and weak words?")){ state=defaults(); save(); refreshHeader(); m.remove(); goHome(); toast("Progress reset"); } };
   $("sClose").onclick=()=>m.remove();
