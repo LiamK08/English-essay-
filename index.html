@@ -2,92 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0f1020" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Essay Memoriser" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+<link rel="icon" href="./icon-192.png" />
 <title>Essay Memoriser — Curious Incident (Module B)</title>
 <style>
   :root{
     --bg:#0f1020; --bg2:#171830; --card:#1c1d3a; --card2:#23254a;
     --ink:#eef0ff; --muted:#9aa0c7; --line:#2c2e58;
     --accent:#7c5cff; --accent2:#22d3ee; --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
-    --ring-bg:#2a2c55;
-    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --ring-bg:#2a2c55; --shadow:0 10px 30px rgba(0,0,0,.35);
   }
-  *{box-sizing:border-box}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
     background:radial-gradient(1200px 700px at 80% -10%, #232450 0%, var(--bg) 55%) fixed;
-    color:var(--ink); min-height:100vh; -webkit-font-smoothing:antialiased;
-    line-height:1.6;
+    color:var(--ink); min-height:100vh; min-height:100dvh; -webkit-font-smoothing:antialiased; line-height:1.6;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:14px 16px 80px}
-  a{color:var(--accent2)}
-  button{font-family:inherit}
-  .btn{
-    appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--ink);
-    padding:10px 16px;border-radius:12px;font-size:15px;cursor:pointer;font-weight:600;
-    transition:transform .08s ease, background .15s, border-color .15s; user-select:none;
-  }
+  .wrap{max-width:980px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
+  button{font-family:inherit;touch-action:manipulation}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--ink);
+    padding:11px 16px;border-radius:12px;font-size:15px;cursor:pointer;font-weight:600;
+    transition:transform .08s, background .15s, border-color .15s;user-select:none}
   .btn:hover{background:#2c2e63;border-color:#3a3d7a}
   .btn:active{transform:translateY(1px)}
   .btn.primary{background:linear-gradient(135deg,var(--accent),#9a7bff);border-color:transparent;color:#fff}
   .btn.primary:hover{filter:brightness(1.07)}
   .btn.ghost{background:transparent}
-  .btn.sm{padding:6px 11px;font-size:13px;border-radius:9px}
+  .btn.sm{padding:7px 12px;font-size:13px;border-radius:10px}
   .btn.good{background:linear-gradient(135deg,#10b981,#34d399);border-color:transparent;color:#04231a}
   .pill{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600}
 
-  /* Header */
-  header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 18px}
-  .brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}
-  .logo{width:42px;height:42px;border-radius:12px;flex:0 0 auto;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
+  header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 18px}
+  .brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0;cursor:pointer}
+  .logo{width:42px;height:42px;border-radius:12px;flex:0 0 auto;overflow:hidden;box-shadow:var(--shadow)}
+  .logo img{width:100%;height:100%;display:block}
   .brand h1{font-size:16px;margin:0;line-height:1.15}
   .brand p{margin:0;font-size:12px;color:var(--muted)}
   .hstats{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .lvl{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px 5px 12px}
   .lvl .num{font-weight:800}
-  .xpbar{width:120px;height:9px;border-radius:999px;background:var(--ring-bg);overflow:hidden}
+  .xpbar{width:104px;height:9px;border-radius:999px;background:var(--ring-bg);overflow:hidden}
   .xpbar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
-  .icbtn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;padding:0}
+  .icbtn{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:17px;padding:0}
 
-  /* Hero */
-  .hero{background:linear-gradient(135deg,#20224a,#181a36);border:1px solid var(--line);border-radius:18px;padding:18px 18px;box-shadow:var(--shadow);margin-bottom:18px}
-  .hero h2{margin:0 0 4px;font-size:20px}
-  .hero p{margin:0 0 12px;color:var(--muted);font-size:14px}
-  .path{display:flex;gap:8px;flex-wrap:wrap}
-  .step{font-size:12.5px;color:var(--ink);background:#262853;border:1px solid var(--line);border-radius:999px;padding:6px 11px}
+  .hero{background:linear-gradient(135deg,#20224a,#181a36);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .bigring{--p:0;width:96px;height:96px;border-radius:50%;flex:0 0 auto;
+    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--ring-bg) 0);display:grid;place-items:center}
+  .bigring::after{content:attr(data-l);width:78px;height:78px;border-radius:50%;background:#191b38;display:grid;place-items:center;font-size:20px;font-weight:900}
+  .heroinfo{flex:1;min-width:200px}
+  .heroinfo h2{margin:0 0 3px;font-size:19px}
+  .heroinfo p{margin:0 0 11px;color:var(--muted);font-size:13.5px}
+  .herobtns{display:flex;gap:9px;flex-wrap:wrap}
+
+  .path{display:flex;gap:8px;flex-wrap:wrap;margin:0 2px 16px}
+  .step{font-size:12.5px;background:#262853;border:1px solid var(--line);border-radius:999px;padding:6px 11px}
   .step b{color:var(--accent2)}
 
-  /* Section grid */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}
-  .scard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;position:relative;transition:transform .1s, border-color .15s, background .15s;display:flex;flex-direction:column;gap:10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+  .scard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;position:relative;transition:transform .1s,border-color .15s,background .15s;display:flex;flex-direction:column;gap:9px}
   .scard:hover{transform:translateY(-2px);border-color:#41459a;background:var(--card2)}
   .scard.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,92,255,.35)}
-  .scard .ico{font-size:26px}
-  .scard h3{margin:0;font-size:15px}
+  .scard .ico{font-size:25px}
+  .scard h3{margin:0;font-size:14.5px}
   .scard .meta{font-size:11.5px;color:var(--muted)}
-  .ring{--p:0;width:46px;height:46px;border-radius:50%;flex:0 0 auto;
-    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--ring-bg) 0);
-    display:grid;place-items:center;position:absolute;top:12px;right:12px}
-  .ring::after{content:attr(data-label);width:36px;height:36px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:10.5px;font-weight:800;color:var(--ink)}
+  .ring{--p:0;width:44px;height:44px;border-radius:50%;flex:0 0 auto;
+    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--ring-bg) 0);display:grid;place-items:center;position:absolute;top:12px;right:12px}
+  .ring::after{content:attr(data-label);width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:10px;font-weight:800}
+  .scard.active .ring::after{background:var(--card2)}
 
-  /* Panel */
-  #panel{margin-top:18px}
+  #panel{margin-top:16px}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
   .panel h2{margin:0 0 2px;font-size:18px;display:flex;align-items:center;gap:9px}
   .panel .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-  .modes{display:flex;flex-direction:column;gap:12px}
+  .modes{display:flex;flex-direction:column;gap:11px}
   .moderow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:11px 12px}
-  .moderow .label{font-weight:700;min-width:128px;display:flex;align-items:center;gap:8px}
+  .moderow .label{font-weight:700;min-width:130px;display:flex;align-items:center;gap:8px}
   .moderow .desc{font-size:12px;color:var(--muted);flex-basis:100%;margin-top:-2px}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .seg button{background:transparent;border:0;color:var(--ink);padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px;border-right:1px solid var(--line)}
   .seg button:last-child{border-right:0}
   .seg button:hover{background:#2c2e63}
 
-  /* Play view */
   .play{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
   .playhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
   .playhead .title{font-weight:800;font-size:16px;margin-right:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
@@ -101,73 +103,73 @@
   .adapt{color:var(--accent2);border-bottom:2px dotted var(--accent2);padding:0 2px;font-style:italic}
   .qte{color:#ffd9a8}
 
-  /* Cloze */
-  input.blank{
-    background:#0e0f22;border:0;border-bottom:2px solid var(--accent);color:var(--ink);
-    font:inherit;font-weight:700;text-align:center;padding:2px 4px;margin:0 1px;border-radius:6px 6px 0 0;
-    outline:none;min-width:34px;transition:background .15s,border-color .15s;
-  }
+  input.blank{background:#0e0f22;border:0;border-bottom:2px solid var(--accent);color:var(--ink);
+    font:inherit;font-weight:700;text-align:center;padding:2px 4px;margin:0 1px;border-radius:6px 6px 0 0;outline:none;min-width:34px;transition:background .15s,border-color .15s}
   input.blank:focus{background:#181a3a}
   input.blank.ok{color:var(--good);border-color:var(--good);background:rgba(52,211,153,.08)}
   input.blank.bad{color:var(--bad);border-color:var(--bad);background:rgba(251,113,133,.08)}
   input.blank.reveal{color:var(--warn);border-color:var(--warn)}
 
-  /* word spans (type/first) */
   .w{padding:0 1px;border-radius:5px}
   .w.correct{color:var(--good)}
   .w.wrong{color:var(--bad);text-decoration:underline wavy var(--bad)}
   .w.hint{color:var(--muted);opacity:.55}
   .w.up{color:var(--muted);opacity:.4;letter-spacing:1px}
   .w.cur{background:rgba(124,92,255,.28);box-shadow:0 0 0 2px rgba(124,92,255,.5);border-radius:6px;color:#fff;font-weight:700}
+  .w.flash{background:rgba(251,113,133,.3);box-shadow:0 0 0 2px var(--bad);color:#fff;border-radius:6px}
   .caret{display:inline-block;width:2px;height:1.05em;background:var(--accent2);margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
 
-  /* First letters */
   .fl .w{cursor:pointer;color:var(--muted);transition:color .12s}
   .fl .w:hover{color:var(--ink)}
   .fl .w.shown{color:var(--good);font-weight:600;cursor:default}
 
-  /* Type input */
-  .typebar{position:sticky;bottom:0;margin-top:16px;display:flex;gap:10px;align-items:center;background:var(--card);padding-top:10px}
-  #typein{flex:1;background:#0e0f22;border:2px solid var(--accent);border-radius:13px;color:var(--ink);font-size:18px;font-weight:600;padding:13px 15px;outline:none}
+  .typebar{position:sticky;bottom:0;margin-top:16px;display:flex;gap:10px;align-items:center;background:var(--card);padding:10px 0 max(2px,env(safe-area-inset-bottom))}
+  #typein,#examarea{background:#0e0f22;border:2px solid var(--accent);border-radius:13px;color:var(--ink);font-size:18px;font-weight:600;padding:13px 15px;outline:none;width:100%}
+  #typein{flex:1}
   #typein::placeholder{color:#6b71a3;font-weight:500}
+  #examarea{min-height:200px;line-height:1.8;resize:vertical;font-weight:500}
 
-  /* Unscramble */
   .tiles{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
   .answerbox{min-height:54px;background:#0e0f22;border:1px dashed var(--line);border-radius:13px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .tile{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .07s}
+  .tile{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .07s}
   .tile:hover{background:#2c2e63}
   .tile:active{transform:scale(.96)}
   .tile.ok{background:rgba(52,211,153,.18);border-color:var(--good);color:var(--good)}
   .tile.bad{background:rgba(251,113,133,.16);border-color:var(--bad);color:var(--bad)}
   .tile.ph{visibility:hidden}
 
+  .diff .w.correct{color:var(--good)}
+  .diff .w.miss{color:var(--bad);background:rgba(251,113,133,.13);border-radius:4px;text-decoration:underline wavy var(--bad)}
+
   .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .note{font-size:13px;color:var(--muted);margin-top:10px}
   .hidden{display:none!important}
 
-  /* Result */
-  .result{text-align:center;padding:18px 6px}
+  .result{text-align:center;padding:16px 6px}
   .result .big{font-size:54px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
   .result .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
-  .result .kv{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:90px}
+  .result .kv{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:88px}
   .result .kv b{display:block;font-size:22px}
   .result .kv small{color:var(--muted)}
 
-  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
-    background:var(--card2);border:1px solid var(--line);padding:11px 18px;border-radius:13px;font-weight:700;
-    box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;z-index:50}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--line);padding:11px 18px;border-radius:13px;font-weight:700;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;z-index:50;max-width:90vw;text-align:center}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
-
-  .combo{position:fixed;right:18px;bottom:80px;font-weight:900;font-size:15px;color:var(--warn);opacity:0;transition:.2s;z-index:40}
+  .combo{position:fixed;right:18px;bottom:84px;font-weight:900;font-size:15px;color:var(--warn);opacity:0;transition:.2s;z-index:40}
   .combo.show{opacity:1}
 
-  footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+  .modal{position:fixed;inset:0;background:rgba(6,6,18,.7);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:70;padding:18px}
+  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;max-width:420px;width:100%;box-shadow:var(--shadow)}
+  .modal h3{margin:0 0 12px}
+  .setrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .setrow:last-of-type{border-bottom:0}
+
+  footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px;line-height:1.7}
   @media(max-width:560px){
     .passage{font-size:17px;line-height:1.95}
     .moderow .label{min-width:0}
-    .xpbar{width:84px}
+    .bigring{width:84px;height:84px}.bigring::after{width:68px;height:68px;font-size:18px}
   }
 </style>
 </head>
@@ -175,35 +177,38 @@
 <canvas id="confetti"></canvas>
 <div class="wrap">
   <header class="top">
-    <div class="brand">
-      <div class="logo">📖</div>
+    <div class="brand" onclick="goHome()">
+      <div class="logo" style="background:linear-gradient(135deg,#7c5cff,#22d3ee);display:grid;place-items:center;font-size:22px"><img src="./icon-192.png" alt="" style="width:100%;height:100%" onerror="this.style.display='none';this.parentNode.textContent='📖'"></div>
       <div>
         <h1>Essay Memoriser</h1>
-        <p>The Curious Incident of the Dog in the Night-Time · Module B</p>
+        <p>Curious Incident · Module B</p>
       </div>
     </div>
     <div class="hstats">
-      <div class="lvl" title="Your level &amp; XP">
-        <span>Lv <span class="num" id="lvlNum">1</span></span>
-        <div class="xpbar"><i id="xpFill"></i></div>
-      </div>
-      <span class="pill" id="streakPill" title="Daily streak">🔥 <span id="streakNum">0</span></span>
-      <button class="btn icbtn ghost" id="muteBtn" title="Sound on/off">🔊</button>
+      <button class="btn sm primary hidden" id="installBtn">⤓ Install</button>
+      <div class="lvl" title="Level &amp; XP"><span>Lv <span class="num" id="lvlNum">1</span></span><div class="xpbar"><i id="xpFill"></i></div></div>
+      <span class="pill" id="streakPill" title="Daily streak (double-tap to reset all)">🔥 <span id="streakNum">0</span></span>
+      <button class="btn icbtn ghost" id="setBtn" title="Settings">⚙️</button>
     </div>
   </header>
 
   <div id="home"></div>
   <div id="panel"></div>
   <div id="view"></div>
+
+  <footer class="foot">
+    Built to make memorising less boring · works offline · your progress is saved on this device.
+  </footer>
 </div>
 
 <div id="toast"></div>
 <div class="combo" id="comboTag"></div>
+<div id="modalHost"></div>
 
 <script>
 /* ============================================================
    ESSAY DATA  (Quote Bank intentionally excluded)
-   [square brackets] = the adaptable hook / concept phrase
+   [square brackets] = adaptable hook / concept phrase
    ============================================================ */
 const SECTIONS = [
   { id:"intro", name:"Introduction", short:"Intro", icon:"🎯",
@@ -217,248 +222,168 @@ const SECTIONS = [
   { id:"concl", name:"Conclusion", short:"Conclusion", icon:"🏁",
     text:`Across the novel, Haddon moves Christopher from a precise but isolating perception, through the rupture and repair of trust, to the agency of his journey and the future he claims beyond it. Because this growth is rendered through the form and language of Christopher’s own mind, the novel insists that his perception, his integrity and his capability are not achievements made despite his difference but expressions of it. In doing so, The Curious Incident of the Dog in the Night-Time asks its reader to abandon a narrow measure of [normality and ability], and to recognise that understanding, courage and selfhood can be reached by more paths than one.` },
 ];
-const WHOLE = { id:"whole", name:"Whole Essay", short:"Whole", icon:"👑",
-  text: SECTIONS.map(s=>s.text).join("\n\n") };
+const WHOLE = { id:"whole", name:"Whole Essay", short:"Whole", icon:"👑", text: SECTIONS.map(s=>s.text).join("\n\n") };
 const ALL = SECTIONS.concat([WHOLE]);
-function getSection(id){ return ALL.find(s=>s.id===id); }
+const getSection = id => ALL.find(s=>s.id===id);
 
 /* ============================================================
-   STATE  +  PERSISTENCE
+   STATE + PERSISTENCE
    ============================================================ */
-const SAVE_KEY = "essayMemoriser.v1";
-let state = load();
-function load(){
-  try{
-    const s = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if(s && typeof s==="object") return Object.assign(defaults(), s);
-  }catch(e){}
-  return defaults();
-}
-function defaults(){ return { xp:0, muted:false, best:{}, streak:{count:0,last:null} }; }
-function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }catch(e){} }
-function bestOf(id){ return state.best[id] || (state.best[id]={cloze:0,type:0,first:0,order:0}); }
+const SAVE_KEY="essayMemoriser.v2";
+let state=load();
+function defaults(){ return { xp:0, best:{}, weak:{}, streak:{count:0,last:null}, last:null,
+  settings:{sound:true, hint:"first"} }; }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); if(s&&typeof s==="object"){ const d=defaults(); return Object.assign(d,s,{settings:Object.assign(d.settings,s.settings||{})}); } }catch(e){} return defaults(); }
+function save(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(state)); }catch(e){} }
+function bestOf(id){ return state.best[id]||(state.best[id]={cloze:0,type:0,first:0,order:0,exam:0}); }
 function recordBest(id,mode,pct){ const b=bestOf(id); if(pct>(b[mode]||0)){ b[mode]=Math.round(pct); save(); return true;} return false; }
-function mastery(id){
-  const b = state.best[id]; if(!b) return 0;
-  return Math.round(Math.max(b.type||0, (b.cloze||0)*0.9, (b.first||0)*0.7, (b.order||0)*0.8));
-}
+function mastery(id){ const b=state.best[id]; if(!b) return 0;
+  return Math.round(Math.max(b.exam||0, b.type||0, (b.cloze||0)*0.9, (b.first||0)*0.7, (b.order||0)*0.8)); }
+function overallMastery(){ const m=SECTIONS.map(s=>mastery(s.id)); return Math.round(m.reduce((a,b)=>a+b,0)/m.length); }
 
-/* Level maths */
-function levelFor(xp){ return Math.floor(Math.sqrt(xp/25)); }
-function xpForLevel(L){ return 25*L*L; }
+/* weak words */
+function weakAdd(secId,wi){ if(secId==="whole") return; state.weak[secId]=state.weak[secId]||{}; state.weak[secId][wi]=Math.min(9,(state.weak[secId][wi]||0)+1); save(); }
+function weakClear(secId,wi){ if(state.weak[secId]&&state.weak[secId][wi]){ state.weak[secId][wi]--; if(state.weak[secId][wi]<=0) delete state.weak[secId][wi]; save(); } }
+function weakList(){ const out=[]; for(const sid in state.weak){ const sec=getSection(sid); if(!sec) continue; const ws=words(sec.text);
+  for(const wi in state.weak[sid]){ const c=state.weak[sid][wi]; if(c>0&&ws[+wi]) out.push({sid,wi:+wi,count:c,word:ws[+wi].x}); } }
+  out.sort((a,b)=>b.count-a.count); return out; }
+function weakCount(){ return weakList().length; }
+
+/* levels */
+const levelFor=xp=>Math.floor(Math.sqrt(xp/25));
+const xpForLevel=L=>25*L*L;
 function refreshHeader(){
-  const L = levelFor(state.xp);
-  const cur = xpForLevel(L), next = xpForLevel(L+1);
-  const pct = next>cur ? ((state.xp-cur)/(next-cur))*100 : 100;
-  document.getElementById("lvlNum").textContent = L+1;
-  document.getElementById("xpFill").style.width = pct+"%";
-  document.getElementById("streakNum").textContent = state.streak.count||0;
-  document.getElementById("muteBtn").textContent = state.muted ? "🔇" : "🔊";
+  const L=levelFor(state.xp), cur=xpForLevel(L), next=xpForLevel(L+1);
+  $("lvlNum").textContent=L+1;
+  $("xpFill").style.width=(next>cur?((state.xp-cur)/(next-cur))*100:100)+"%";
+  $("streakNum").textContent=state.streak.count||0;
 }
-function addXP(n){
-  const before = levelFor(state.xp);
-  state.xp += n; save();
-  const after = levelFor(state.xp);
-  refreshHeader();
-  if(after>before){ toast("⭐ Level up! You reached Level "+(after+1)); burst(); }
-}
-function bumpStreak(){
-  const t = todayStr();
-  const s = state.streak;
-  if(s.last===t) return;
-  const y = new Date(Date.now()-864e5); const ys = dstr(y);
-  s.count = (s.last===ys) ? (s.count||0)+1 : 1;
-  s.last = t; save(); refreshHeader();
-}
-function todayStr(){ return dstr(new Date()); }
-function dstr(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function addXP(n){ const b=levelFor(state.xp); state.xp+=n; save(); const a=levelFor(state.xp); refreshHeader();
+  if(a>b){ toast("⭐ Level up! You reached Level "+(a+1)); burst(); } }
+function bumpStreak(){ const t=todayStr(); const s=state.streak; if(s.last===t) return;
+  const ys=dstr(new Date(Date.now()-864e5)); s.count=(s.last===ys)?(s.count||0)+1:1; s.last=t; save(); refreshHeader(); }
+const todayStr=()=>dstr(new Date());
+const dstr=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
 
 /* ============================================================
-   TEXT TOOLS
+   TEXT TOOLS  (core — unit tested)
    ============================================================ */
-function stripBrackets(t){ return t.replace(/[\[\]]/g,""); }
-// loose comparison: ignore case, punctuation, smart quotes, commas in numbers
-function loose(w){ return (w||"").toLowerCase().replace(/[’‘`']/g,"").replace(/[^a-z0-9]/g,""); }
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const stripBrackets=t=>t.replace(/[\[\]]/g,"");
+const loose=w=>(w||"").toLowerCase().replace(/[’‘`']/g,"").replace(/[^a-z0-9]/g,"");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const WORD_RE=/[A-Za-z0-9]+(?:['’\-\/,][A-Za-z0-9]+)*/g;
+function tokenize(text){ text=stripBrackets(text); const toks=[]; let last=0,m; WORD_RE.lastIndex=0;
+  while((m=WORD_RE.exec(text))){ if(m.index>last) toks.push({t:"sep",x:text.slice(last,m.index)});
+    toks.push({t:"w",x:m[0],c:loose(m[0])}); last=m.index+m[0].length; }
+  if(last<text.length) toks.push({t:"sep",x:text.slice(last)}); return toks; }
+const words=text=>tokenize(text).filter(t=>t.t==="w");
+const wordCount=text=>words(text).length;
+function studyHTML(text){ let out="",last=0,m; const re=/\[([^\]]*)\]/g;
+  while((m=re.exec(text))){ out+=quoteHL(text.slice(last,m.index)); out+='<span class="adapt">'+quoteHL(m[1])+'</span>'; last=m.index+m[0].length; }
+  out+=quoteHL(text.slice(last)); return out; }
+const quoteHL=t=>esc(t).replace(/(‘[^’]*’)/g,'<span class="qte">$1</span>');
+function sentences(text){ text=stripBrackets(text).replace(/\s+/g," ").trim();
+  return text.replace(/([.;!?]['’”"]?)\s+/g,"$1").split("").map(s=>s.trim()).filter(Boolean); }
 
-// tokenize into words + separators (brackets removed)
-const WORD_RE = /[A-Za-z0-9]+(?:['’\-\/,][A-Za-z0-9]+)*/g;
-function tokenize(text){
-  text = stripBrackets(text);
-  const toks=[]; let last=0,m;
-  WORD_RE.lastIndex=0;
-  while((m=WORD_RE.exec(text))){
-    if(m.index>last) toks.push({t:"sep",x:text.slice(last,m.index)});
-    toks.push({t:"w",x:m[0],c:loose(m[0])});
-    last=m.index+m[0].length;
-  }
-  if(last<text.length) toks.push({t:"sep",x:text.slice(last)});
-  return toks;
-}
-function words(text){ return tokenize(text).filter(t=>t.t==="w"); }
-function wordCount(text){ return words(text).length; }
-
-// study HTML: highlight [adaptable] and 'quotes'
-function studyHTML(text){
-  let out=""; let i=0;
-  const re=/\[([^\]]*)\]/g; let m; let last=0;
-  while((m=re.exec(text))){
-    out += quoteHL(text.slice(last,m.index));
-    out += '<span class="adapt">'+quoteHL(m[1])+'</span>';
-    last = m.index+m[0].length;
-  }
-  out += quoteHL(text.slice(last));
-  return out;
-}
-function quoteHL(t){
-  t = esc(t);
-  return t.replace(/(‘[^’]*’)/g,'<span class="qte">$1</span>');
-}
-// sentences (brackets stripped) for unscramble
-function sentences(text){
-  text = stripBrackets(text).replace(/\s+/g," ").trim();
-  return text.replace(/([.;!?]['’”"]?)\s+/g,"$1").split("").map(s=>s.trim()).filter(Boolean);
+/* word-level LCS diff for Exam mode */
+function wordDiff(orig,typed){
+  const n=orig.length,m=typed.length;
+  const dp=Array.from({length:n+1},()=>new Int32Array(m+1));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
+    dp[i][j]= orig[i]===typed[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+  const matched=new Uint8Array(n); let i=0,j=0;
+  while(i<n&&j<m){ if(orig[i]===typed[j]){ matched[i]=1; i++; j++; }
+    else if(dp[i+1][j]>=dp[i][j+1]) i++; else j++; }
+  return matched;
 }
 
 /* ============================================================
-   SOUND  (tiny WebAudio blips)
+   SOUND
    ============================================================ */
 let actx=null;
-function beep(freq,dur,type,vol){
-  if(state.muted) return;
-  try{
-    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
-    const o=actx.createOscillator(), g=actx.createGain();
-    o.type=type||"sine"; o.frequency.value=freq;
-    g.gain.value=vol||0.05;
-    o.connect(g); g.connect(actx.destination);
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime+(dur||0.12));
-    o.stop(actx.currentTime+(dur||0.12));
-  }catch(e){}
-}
-const sfx={
-  ok(){ beep(660,0.09,"triangle",0.05); },
-  great(){ beep(880,0.08,"triangle",0.05); setTimeout(()=>beep(1320,0.1,"triangle",0.05),70); },
-  no(){ beep(150,0.16,"sawtooth",0.04); },
-  win(){ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,0.13,"triangle",0.06),i*110)); }
-};
+function beep(freq,dur,type,vol){ if(!state.settings.sound) return;
+  try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain(); o.type=type||"sine"; o.frequency.value=freq; g.gain.value=vol||0.05;
+    o.connect(g); g.connect(actx.destination); o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+(dur||0.12)); o.stop(actx.currentTime+(dur||0.12)); }catch(e){} }
+const sfx={ ok(){beep(660,.09,"triangle",.05);}, great(){beep(880,.08,"triangle",.05);setTimeout(()=>beep(1320,.1,"triangle",.05),70);},
+  no(){beep(150,.16,"sawtooth",.04);}, win(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.13,"triangle",.06),i*110));} };
 
 /* ============================================================
    UI HELPERS
    ============================================================ */
-const $ = id=>document.getElementById(id);
-function toast(msg){
-  const t=$("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),1900);
-}
-function showCombo(n){
-  const c=$("comboTag");
-  if(n>=3){ c.textContent="🔥 "+n+" combo"; c.classList.add("show"); clearTimeout(c._t); c._t=setTimeout(()=>c.classList.remove("show"),900); }
-  else c.classList.remove("show");
-}
-
-/* Confetti */
-function burst(){
-  const cv=$("confetti"); const ctx=cv.getContext("2d");
-  cv.width=innerWidth; cv.height=innerHeight;
-  const cols=["#7c5cff","#22d3ee","#34d399","#fbbf24","#fb7185","#fff"];
-  const P=[];
-  for(let i=0;i<140;i++) P.push({x:innerWidth/2+(Math.random()-.5)*120, y:innerHeight*0.35,
-    vx:(Math.random()-.5)*9, vy:Math.random()*-11-4, g:0.32+Math.random()*0.15,
-    s:6+Math.random()*7, c:cols[i%cols.length], r:Math.random()*6, vr:(Math.random()-.5)*0.4});
-  let frames=0;
-  (function run(){
-    ctx.clearRect(0,0,cv.width,cv.height); frames++;
-    P.forEach(p=>{ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c;
-      ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.55); ctx.restore(); });
-    if(frames<130) requestAnimationFrame(run); else ctx.clearRect(0,0,cv.width,cv.height);
-  })();
-}
+const $=id=>document.getElementById(id);
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2000); }
+function showCombo(n){ const c=$("comboTag"); if(n>=3){ c.textContent="🔥 "+n+" combo"; c.classList.add("show"); clearTimeout(c._t); c._t=setTimeout(()=>c.classList.remove("show"),900);} else c.classList.remove("show"); }
+function burst(){ const cv=$("confetti"),ctx=cv.getContext("2d"); cv.width=innerWidth; cv.height=innerHeight;
+  const cols=["#7c5cff","#22d3ee","#34d399","#fbbf24","#fb7185","#fff"],P=[];
+  for(let i=0;i<150;i++)P.push({x:innerWidth/2+(Math.random()-.5)*140,y:innerHeight*.35,vx:(Math.random()-.5)*9,vy:Math.random()*-11-4,g:.32+Math.random()*.15,s:6+Math.random()*7,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4});
+  let f=0;(function run(){ ctx.clearRect(0,0,cv.width,cv.height); f++;
+    P.forEach(p=>{ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.55); ctx.restore(); });
+    if(f<130) requestAnimationFrame(run); else ctx.clearRect(0,0,cv.width,cv.height); })(); }
 
 /* ============================================================
-   HOME  +  PANEL
+   HOME / DASHBOARD
    ============================================================ */
 let currentSectionId=null;
+function recommend(){
+  // lowest-mastery section + the next rung on its ladder
+  let lo=SECTIONS[0], lm=mastery(SECTIONS[0].id);
+  SECTIONS.forEach(s=>{ const m=mastery(s.id); if(m<lm){ lm=m; lo=s; } });
+  let mode = lm===0?"study": lm<40?"cloze": lm<70?"first": lm<90?"type":"exam";
+  return {sec:lo, mode, m:lm};
+}
 function renderHome(){
+  const om=overallMastery(), rec=recommend(), wk=weakCount();
+  const last=state.last && getSection(state.last.section);
   const h=$("home");
-  h.innerHTML = `
+  h.innerHTML=`
     <div class="hero">
-      <h2>🎮 Memorise it like a game</h2>
-      <p>Pick a paragraph, then climb the ladder of modes. Each one hides a little more, until you can write it from memory.</p>
-      <div class="path">
-        <span class="step"><b>1</b> Study</span>
-        <span class="step"><b>2</b> Fill the Gaps</span>
-        <span class="step"><b>3</b> First Letters</span>
-        <span class="step"><b>4</b> Type It Out</span>
-        <span class="step"><b>5</b> Unscramble</span>
+      <div class="bigring" style="--p:${om}" data-l="${om}%"></div>
+      <div class="heroinfo">
+        <h2>${om>=95?"You've basically got it. 🏆":om>=60?"Strong progress — keep going. 📈":om>0?"Good start. Let's build it up. 🌱":"Let's memorise this essay. 🎮"}</h2>
+        <p>${om}% memorised overall · ${SECTIONS.length} paragraphs · best way to lock it in is a little every day.</p>
+        <div class="herobtns">
+          <button class="btn primary" id="recBtn">▶ ${last?"Continue":"Start"}: ${(last?getSection(state.last.section):rec.sec).short} · ${modeName(last?state.last.mode:rec.mode)}</button>
+          ${wk?`<button class="btn" id="weakBtn">🎯 Drill ${wk} weak word${wk>1?"s":""}</button>`:""}
+          <button class="btn ghost" id="examBtn">📝 Exam mode</button>
+        </div>
       </div>
+    </div>
+    <div class="path">
+      <span class="step"><b>1</b> Study</span><span class="step"><b>2</b> Fill the Gaps</span>
+      <span class="step"><b>3</b> First Letters</span><span class="step"><b>4</b> Type It Out</span>
+      <span class="step"><b>5</b> Unscramble</span><span class="step"><b>★</b> Exam</span>
     </div>
     <div class="grid" id="grid"></div>`;
   const g=$("grid");
-  ALL.forEach(s=>{
-    const m=mastery(s.id);
-    const card=document.createElement("div");
+  ALL.forEach(s=>{ const m=mastery(s.id); const card=document.createElement("div");
     card.className="scard"+(s.id===currentSectionId?" active":"");
-    card.innerHTML=`
-      <div class="ring" style="--p:${m}" data-label="${m}%"></div>
-      <div class="ico">${s.icon}</div>
-      <h3>${s.name}</h3>
-      <div class="meta">${s.id==="whole"?"All 5 paragraphs · the boss":wordCount(s.text)+" words"}</div>`;
-    card.onclick=()=>{ currentSectionId=s.id; renderHome(); renderPanel(s.id);
-      $("panel").scrollIntoView({behavior:"smooth",block:"start"}); };
-    g.appendChild(card);
-  });
+    card.innerHTML=`<div class="ring" style="--p:${m}" data-label="${m}%"></div><div class="ico">${s.icon}</div>
+      <h3>${s.name}</h3><div class="meta">${s.id==="whole"?"All 5 · the boss":wordCount(s.text)+" words"}</div>`;
+    card.onclick=()=>{ currentSectionId=s.id; renderHome(); renderPanel(s.id); $("panel").scrollIntoView({behavior:"smooth",block:"start"}); };
+    g.appendChild(card); });
+  $("recBtn").onclick=()=>{ if(last) startMode(state.last.section,state.last.mode,state.last.diff||0); else startMode(rec.sec.id,rec.mode,rec.mode==="cloze"?0.2:0); };
+  if($("weakBtn")) $("weakBtn").onclick=()=>startMode(null,"weak");
+  $("examBtn").onclick=()=>{ currentSectionId="whole"; renderHome(); renderPanel("whole"); startMode("whole","exam"); };
 }
+const modeName=m=>({study:"Study",cloze:"Fill the Gaps",first:"First Letters",type:"Type It Out",order:"Unscramble",exam:"Exam",weak:"Weak Words"})[m]||m;
 
 function renderPanel(id){
-  const s=getSection(id); const b=bestOf(id);
-  const p=$("panel");
-  p.innerHTML=`
-    <div class="panel">
-      <h2>${s.icon} ${s.name}</h2>
-      <div class="sub">${s.id==="whole"?"The full essay — best for First Letters &amp; the Type-It-Out boss battle.":wordCount(s.text)+" words · best type-out "+(b.type||0)+"%"}</div>
-      <div class="modes">
-        <div class="moderow">
-          <span class="label">📖 Study</span>
-          <button class="btn sm primary" data-go="study">Open</button>
-          <span class="desc">Read it, hear it, see the adaptable parts. Start here.</span>
-        </div>
-        <div class="moderow">
-          <span class="label">🕳️ Fill the Gaps</span>
-          <div class="seg">
-            <button data-go="cloze" data-d="0.2">Easy</button>
-            <button data-go="cloze" data-d="0.4">Medium</button>
-            <button data-go="cloze" data-d="0.6">Hard</button>
-            <button data-go="cloze" data-d="1">Expert</button>
-          </div>
-          <span class="desc">Type the missing words. More blanks each level · best ${b.cloze||0}%.</span>
-        </div>
-        <div class="moderow">
-          <span class="label">🔤 First Letters</span>
-          <button class="btn sm primary" data-go="first">Open</button>
-          <span class="desc">Every word shrinks to its first letter. Recite, then tap to check · best ${b.first||0}%.</span>
-        </div>
-        <div class="moderow">
-          <span class="label">⌨️ Type It Out</span>
-          <button class="btn sm primary" data-go="type">Start</button>
-          <span class="desc">Write the whole thing from memory with shrinking hints · best ${b.type||0}%.</span>
-        </div>
-        <div class="moderow">
-          <span class="label">🧩 Unscramble</span>
-          <button class="btn sm primary" data-go="order">Start</button>
-          <span class="desc">Rebuild each sentence from shuffled word tiles · best ${b.order||0}%.</span>
-        </div>
-      </div>
-    </div>`;
-  p.querySelectorAll("[data-go]").forEach(btn=>{
-    btn.onclick=()=>{
-      const mode=btn.getAttribute("data-go");
-      const d=parseFloat(btn.getAttribute("data-d")||"0");
-      startMode(id,mode,d);
-    };
-  });
+  const s=getSection(id),b=bestOf(id),p=$("panel");
+  p.innerHTML=`<div class="panel"><h2>${s.icon} ${s.name}</h2>
+    <div class="sub">${s.id==="whole"?"The full essay — best for First Letters, Type-It-Out &amp; the Exam.":wordCount(s.text)+" words · best exam "+(b.exam||0)+"% · best type "+(b.type||0)+"%"}</div>
+    <div class="modes">
+      <div class="moderow"><span class="label">📖 Study</span><button class="btn sm primary" data-go="study">Open</button><span class="desc">Read it, hear it, see the adaptable parts. Start here.</span></div>
+      <div class="moderow"><span class="label">🕳️ Fill the Gaps</span>
+        <div class="seg"><button data-go="cloze" data-d="0.2">Easy</button><button data-go="cloze" data-d="0.4">Medium</button><button data-go="cloze" data-d="0.6">Hard</button><button data-go="cloze" data-d="1">Expert</button></div>
+        <span class="desc">Type the missing words; more blanks each level · best ${b.cloze||0}%.</span></div>
+      <div class="moderow"><span class="label">🔤 First Letters</span><button class="btn sm primary" data-go="first">Open</button><span class="desc">Every word shrinks to its first letter · best ${b.first||0}%.</span></div>
+      <div class="moderow"><span class="label">⌨️ Type It Out</span><button class="btn sm primary" data-go="type">Start</button><span class="desc">Whole thing from memory with shrinking hints · best ${b.type||0}%.</span></div>
+      <div class="moderow"><span class="label">🧩 Unscramble</span><button class="btn sm primary" data-go="order">Start</button><span class="desc">Rebuild each sentence from shuffled tiles · best ${b.order||0}%.</span></div>
+      <div class="moderow"><span class="label">📝 Exam</span><button class="btn sm good" data-go="exam">Sit exam</button><span class="desc">Write it under a timer, no hints. Get a word-accurate report · best ${b.exam||0}%.</span></div>
+    </div></div>`;
+  p.querySelectorAll("[data-go]").forEach(btn=>btn.onclick=()=>startMode(id,btn.getAttribute("data-go"),parseFloat(btn.getAttribute("data-d")||"0")));
 }
 
 /* ============================================================
@@ -466,142 +391,74 @@ function renderPanel(id){
    ============================================================ */
 function startMode(id,mode,d){
   if("speechSynthesis" in window) window.speechSynthesis.cancel();
-  $("home").classList.add("hidden");
-  $("panel").classList.add("hidden");
-  const v=$("view");
-  if(mode==="study") modeStudy(id);
-  else if(mode==="cloze") modeCloze(id,d);
-  else if(mode==="first") modeFirst(id);
-  else if(mode==="type") modeType(id);
-  else if(mode==="order") modeOrder(id);
-  v.scrollIntoView({behavior:"smooth",block:"start"});
+  if(mode!=="weak"){ state.last={section:id,mode,diff:d||0}; save(); }
+  $("home").classList.add("hidden"); $("panel").classList.add("hidden");
+  ({study:modeStudy,cloze:modeCloze,first:modeFirst,type:modeType,order:modeOrder,exam:modeExam,weak:modeWeak})[mode](id,d);
+  $("view").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function goHome(){
-  if("speechSynthesis" in window) window.speechSynthesis.cancel();
-  $("view").innerHTML="";
-  $("home").classList.remove("hidden");
-  $("panel").classList.remove("hidden");
-  renderHome();
-  if(currentSectionId) renderPanel(currentSectionId);
-}
-function playShell(s,modeName,tag,bodyHTML){
-  return `
-    <div class="play">
-      <div class="playhead">
-        <button class="btn sm ghost" onclick="goHome()">← Back</button>
-        <div class="title">${s.icon} ${s.name} <span class="tag">${tag}</span></div>
-        <div class="statline" id="statline"></div>
-      </div>
-      <div id="modebody">${bodyHTML}</div>
-    </div>`;
-}
+function goHome(){ if("speechSynthesis" in window) window.speechSynthesis.cancel();
+  $("view").innerHTML=""; $("home").classList.remove("hidden"); $("panel").classList.remove("hidden");
+  renderHome(); if(currentSectionId) renderPanel(currentSectionId); window.scrollTo({top:0,behavior:"smooth"}); }
+function playShell(s,modeName,tag,body){ return `<div class="play"><div class="playhead">
+    <button class="btn sm ghost" onclick="goHome()">← Back</button>
+    <div class="title">${s.icon} ${s.name} <span class="tag">${tag}</span></div>
+    <div class="statline" id="statline"></div></div><div id="modebody">${body}</div></div>`; }
 
 /* ============================================================
    MODE: STUDY
    ============================================================ */
 let speaking=false;
-function modeStudy(id){
-  const s=getSection(id);
-  const body=`
+function modeStudy(id){ const s=getSection(id);
+  $("view").innerHTML=playShell(s,"Study","read",`
     <div class="passage read">${studyHTML(s.text)}</div>
-    <div class="actions">
-      <button class="btn" id="speakBtn">🔊 Read aloud</button>
-      <button class="btn primary" onclick="startMode('${id}','cloze',0.2)">I've read it → Fill the Gaps →</button>
-    </div>
-    <div class="note">✏️ The <span class="adapt">dotted italic</span> parts are the hook &amp; concept phrase you swap to match the question. <span class="qte">Orange</span> = quotes.</div>`;
-  $("view").innerHTML = playShell(s,"Study","read",body);
-  $("statline").innerHTML = `<span class="stat">${wordCount(s.text)} <small>words</small></span><span class="stat">~${Math.max(1,Math.round(wordCount(s.text)/130))} <small>min read</small></span>`;
-  const sb=$("speakBtn");
-  sb.onclick=()=>{
-    if(!("speechSynthesis" in window)){ toast("Speech not supported on this browser"); return; }
+    <div class="actions"><button class="btn" id="speakBtn">🔊 Read aloud</button>
+      <button class="btn primary" onclick="startMode('${id}','cloze',0.2)">I've read it → Fill the Gaps →</button></div>
+    <div class="note">✏️ The <span class="adapt">dotted italic</span> parts are the hook &amp; concept phrase you swap per question. <span class="qte">Orange</span> = quotes.</div>`);
+  $("statline").innerHTML=`<span class="stat">${wordCount(s.text)} <small>words</small></span><span class="stat">~${Math.max(1,Math.round(wordCount(s.text)/130))} <small>min</small></span>`;
+  const sb=$("speakBtn"); sb.onclick=()=>{ if(!("speechSynthesis" in window)){ toast("Speech not supported here"); return; }
     if(speaking){ window.speechSynthesis.cancel(); speaking=false; sb.textContent="🔊 Read aloud"; return; }
-    const u=new SpeechSynthesisUtterance(stripBrackets(s.text));
-    u.rate=0.95; u.onend=()=>{ speaking=false; sb.textContent="🔊 Read aloud"; };
-    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
-    speaking=true; sb.textContent="⏹ Stop";
-  };
+    const u=new SpeechSynthesisUtterance(stripBrackets(s.text)); u.rate=.95; u.onend=()=>{speaking=false;sb.textContent="🔊 Read aloud";};
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); speaking=true; sb.textContent="⏹ Stop"; };
 }
 
 /* ============================================================
-   MODE: FILL THE GAPS (CLOZE)
+   MODE: FILL THE GAPS
    ============================================================ */
 let C=null;
-function pickBlanks(ws,diff){
-  const N=ws.length;
-  if(diff>=1) return new Set(ws.map((_,i)=>i));
+function pickBlanks(ws,diff){ const N=ws.length; if(diff>=1) return new Set(ws.map((_,i)=>i));
   const stop=new Set("the a an of to and in on that as is are was his her its it he we by but not this for with at from which who".split(" "));
-  const scored=ws.map((w,i)=>({i, s:(stop.has(w.c)?0:1.2)+Math.random()}));
-  scored.sort((a,b)=>b.s-a.s);
-  const k=Math.max(1,Math.round(diff*N));
-  return new Set(scored.slice(0,k).map(o=>o.i));
-}
-function modeCloze(id,diff){
-  const s=getSection(id);
-  const toks=tokenize(s.text);
-  const ws=toks.filter(t=>t.t==="w");
-  const blanks=pickBlanks(ws,diff);
-  C={toks,ws,blanks,diff,checked:false,total:blanks.size};
-  let wi=-1, html="";
-  toks.forEach(t=>{
-    if(t.t==="sep"){ html+=esc(t.x); return; }
-    wi++;
-    if(blanks.has(wi)){
-      const len=t.x.length;
-      html+=`<input class="blank" data-i="${wi}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(34,len*11+12)}px" aria-label="blank">`;
-    } else html+=`<span class="w">${esc(t.x)}</span>`;
-  });
+  const scored=ws.map((w,i)=>({i,s:(stop.has(w.c)?0:1.2)+Math.random()})); scored.sort((a,b)=>b.s-a.s);
+  return new Set(scored.slice(0,Math.max(1,Math.round(diff*N))).map(o=>o.i)); }
+function modeCloze(id,diff){ const s=getSection(id),toks=tokenize(s.text),ws=toks.filter(t=>t.t==="w");
+  const blanks=pickBlanks(ws,diff); C={id,toks,ws,blanks,diff,total:blanks.size,inputs:[]};
+  let wi=-1,html=""; toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
+    if(blanks.has(wi)) html+=`<input class="blank" data-i="${wi}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(34,t.x.length*11+12)}px">`;
+    else html+=`<span class="w">${esc(t.x)}</span>`; });
   const dn=({0.2:"Easy",0.4:"Medium",0.6:"Hard",1:"Expert"})[diff]||"";
-  const body=`
-    <div class="passage">${html}</div>
-    <div class="actions">
-      <button class="btn" id="hintBtn">💡 First letters</button>
-      <button class="btn primary" id="checkBtn">✓ Check answers</button>
-      <button class="btn" id="revealBtn">👁 Reveal</button>
-    </div>
-    <div class="note" id="clozeNote">Tip: correct words turn green and jump you to the next blank.</div>`;
-  $("view").innerHTML=playShell(s,"Fill the Gaps · "+dn,dn,body);
-  // attach
-  const inputs=[...$("modebody").querySelectorAll("input.blank")];
-  C.inputs=inputs;
-  updateClozeStat();
-  inputs.forEach((inp,idx)=>{
-    inp.addEventListener("input",()=>{
-      const wi=+inp.dataset.i; const target=ws[wi];
+  $("view").innerHTML=playShell(s,"Fill the Gaps · "+dn,dn,`<div class="passage">${html}</div>
+    <div class="actions"><button class="btn" id="hintBtn">💡 First letters</button>
+      <button class="btn primary" id="checkBtn">✓ Check</button><button class="btn" id="revealBtn">👁 Reveal</button></div>
+    <div class="note" id="clozeNote">Correct words turn green and jump you to the next blank.</div>`);
+  const inputs=[...$("modebody").querySelectorAll("input.blank")]; C.inputs=inputs; updateClozeStat();
+  inputs.forEach((inp,idx)=>{ inp.addEventListener("input",()=>{ const wi=+inp.dataset.i,target=ws[wi];
       inp.classList.remove("bad","reveal");
-      if(loose(inp.value)===target.c && inp.value.trim()!==""){
-        if(!inp.classList.contains("ok")){ inp.classList.add("ok"); sfx.ok(); }
-        const nxt=inputs[idx+1]; if(nxt && !nxt.classList.contains("ok")) nxt.focus();
-        updateClozeStat();
-      } else { inp.classList.remove("ok"); updateClozeStat(); }
-    });
-    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); (inputs[idx+1]||$("checkBtn")).focus(); }});
-  });
+      if(loose(inp.value)===target.c && inp.value.trim()!==""){ if(!inp.classList.contains("ok")){inp.classList.add("ok");sfx.ok();}
+        const nxt=inputs[idx+1]; if(nxt&&!nxt.classList.contains("ok")) nxt.focus(); } else inp.classList.remove("ok"); updateClozeStat(); });
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();(inputs[idx+1]||$("checkBtn")).focus();} }); });
   if(inputs[0]) inputs[0].focus();
-  $("hintBtn").onclick=()=>{ inputs.forEach(inp=>{ if(!inp.classList.contains("ok")){ const wi=+inp.dataset.i; inp.placeholder=ws[wi].x[0]+"…"; } }); toast("First letters added as hints"); };
-  $("revealBtn").onclick=()=>clozeReveal();
+  $("hintBtn").onclick=()=>{ inputs.forEach(inp=>{ if(!inp.classList.contains("ok")) inp.placeholder=ws[+inp.dataset.i].x[0]+"…"; }); toast("First-letter hints added"); };
+  $("revealBtn").onclick=()=>{ inputs.forEach(inp=>{ if(!inp.classList.contains("ok")){ inp.value=ws[+inp.dataset.i].x; inp.classList.add("reveal"); inp.classList.remove("bad"); } }); toast("Revealed — now redo from memory"); };
   $("checkBtn").onclick=()=>clozeCheck();
 }
-function updateClozeStat(){
-  const okN=C.inputs.filter(i=>i.classList.contains("ok")).length;
-  $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${okN}<small>/${C.total} correct</small></span>`;
-}
-function clozeReveal(){
-  C.inputs.forEach(inp=>{ const wi=+inp.dataset.i; if(!inp.classList.contains("ok")){ inp.value=C.ws[wi].x; inp.classList.add("reveal"); inp.classList.remove("bad"); } });
-  toast("Answers revealed — now try again from memory");
-}
-function clozeCheck(){
-  let ok=0;
-  C.inputs.forEach(inp=>{ const wi=+inp.dataset.i;
+function updateClozeStat(){ const ok=C.inputs.filter(i=>i.classList.contains("ok")).length;
+  $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${ok}<small>/${C.total} correct</small></span>`; }
+function clozeCheck(){ let ok=0; C.inputs.forEach(inp=>{ const wi=+inp.dataset.i;
     if(loose(inp.value)===C.ws[wi].c && inp.value.trim()!==""){ inp.classList.add("ok"); inp.classList.remove("bad"); ok++; }
-    else { inp.classList.add("bad"); inp.classList.remove("ok"); }
-  });
-  const pct=C.total? Math.round(ok/C.total*100):100;
-  const xp=Math.round(pct*0.5*(0.6+C.diff));
-  addXP(xp); bumpStreak();
-  const isBest=recordBest(C.section_id||currentSectionId,"cloze",pct);
-  if(pct>=90){ sfx.win(); burst(); } else if(pct>=60) sfx.ok(); else sfx.no();
-  const note=$("clozeNote");
-  note.innerHTML=`<b style="color:${pct>=80?'var(--good)':pct>=50?'var(--warn)':'var(--bad)'}">${ok}/${C.total} correct · ${pct}%</b> · +${xp} XP${isBest?" · 🏅 new best!":""} — red ones are wrong; fix them or hit Reveal.`;
+    else { inp.classList.add("bad"); inp.classList.remove("ok"); weakAdd(C.id,wi); } });
+  const pct=C.total?Math.round(ok/C.total*100):100, xp=Math.round(pct*0.5*(0.6+C.diff));
+  addXP(xp); bumpStreak(); const best=recordBest(C.id,"cloze",pct);
+  if(pct>=90){sfx.win();burst();} else if(pct>=60)sfx.ok(); else sfx.no();
+  $("clozeNote").innerHTML=`<b style="color:${pct>=80?'var(--good)':pct>=50?'var(--warn)':'var(--bad)'}">${ok}/${C.total} · ${pct}%</b> · +${xp} XP${best?" · 🏅 best!":""} — red = wrong (now in your weak-words drill).`;
   updateClozeStat();
 }
 
@@ -609,148 +466,85 @@ function clozeCheck(){
    MODE: FIRST LETTERS
    ============================================================ */
 let F=null;
-function maskWord(x){ if(x.length<=1) return esc(x); return esc(x[0])+'<span style="opacity:.32">'+'·'.repeat(x.length-1)+'</span>'; }
-function modeFirst(id){
-  const s=getSection(id);
-  const toks=tokenize(s.text);
-  F={toks,total:toks.filter(t=>t.t==="w").length,shownAll:false};
-  let wi=-1, html="";
-  toks.forEach(t=>{
-    if(t.t==="sep"){ html+=esc(t.x); return; }
-    wi++;
-    html+=`<span class="w" data-i="${wi}" data-full="${esc(t.x)}">${maskWord(t.x)}</span>`;
-  });
-  const body=`
-    <div class="passage fl" id="flpass">${html}</div>
-    <div class="actions">
-      <button class="btn" id="toggleAll">👁 Reveal all</button>
-      <button class="btn" id="resetFl">🙈 Hide all</button>
-      <button class="btn primary" id="doneFl">I recited it ✓</button>
-    </div>
-    <div class="note">Read it aloud from the first letters. Tap any word you blank on to check it. Aim to need fewer and fewer taps.</div>`;
-  $("view").innerHTML=playShell(s,"First Letters","recall",body);
+const maskWord=x=>x.length<=1?esc(x):esc(x[0])+'<span style="opacity:.32">'+'·'.repeat(x.length-1)+'</span>';
+function modeFirst(id){ const s=getSection(id),toks=tokenize(s.text); F={id,toks,total:toks.filter(t=>t.t==="w").length};
+  let wi=-1,html=""; toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
+    html+=`<span class="w" data-full="${esc(t.x)}">${maskWord(t.x)}</span>`; });
+  $("view").innerHTML=playShell(s,"First Letters","recall",`<div class="passage fl" id="flpass">${html}</div>
+    <div class="actions"><button class="btn" id="toggleAll">👁 Reveal all</button><button class="btn" id="resetFl">🙈 Hide all</button>
+      <button class="btn primary" id="doneFl">I recited it ✓</button></div>
+    <div class="note">Recite aloud from the first letters. Tap any word you blank on to check. Aim to need fewer taps each run.</div>`);
   updateFlStat();
-  $("flpass").addEventListener("click",e=>{
-    const w=e.target.closest(".w"); if(!w) return;
+  $("flpass").addEventListener("click",e=>{ const w=e.target.closest(".w"); if(!w) return;
     if(w.classList.contains("shown")){ w.classList.remove("shown"); w.innerHTML=maskWord(w.dataset.full); }
-    else { w.classList.add("shown"); w.textContent=w.dataset.full; }
-    updateFlStat();
-  });
+    else { w.classList.add("shown"); w.textContent=w.dataset.full; } updateFlStat(); });
   $("toggleAll").onclick=()=>{ $("flpass").querySelectorAll(".w").forEach(w=>{w.classList.add("shown");w.textContent=w.dataset.full;}); updateFlStat(); };
   $("resetFl").onclick=()=>{ $("flpass").querySelectorAll(".w").forEach(w=>{w.classList.remove("shown");w.innerHTML=maskWord(w.dataset.full);}); updateFlStat(); };
-  $("doneFl").onclick=()=>{
-    const peeked=$("flpass").querySelectorAll(".w.shown").length;
-    const pct=Math.max(0,Math.round((1-peeked/F.total)*100));
-    const xp=20+Math.round(pct*0.3);
-    addXP(xp); bumpStreak();
-    const best=recordBest(currentSectionId,"first",pct);
-    if(pct>=90){sfx.win();burst();} else sfx.ok();
-    toast(`Recalled ~${pct}% without peeking · +${xp} XP${best?" · 🏅 best!":""}`);
-  };
+  $("doneFl").onclick=()=>{ const peeked=$("flpass").querySelectorAll(".w.shown").length, pct=Math.max(0,Math.round((1-peeked/F.total)*100));
+    const xp=20+Math.round(pct*0.3); addXP(xp); bumpStreak(); const best=recordBest(F.id,"first",pct);
+    if(pct>=90){sfx.win();burst();} else sfx.ok(); toast(`Recalled ~${pct}% without peeking · +${xp} XP${best?" · 🏅 best!":""}`); };
 }
-function updateFlStat(){
-  const peeked=$("flpass").querySelectorAll(".w.shown").length;
-  $("statline").innerHTML=`<span class="stat">${peeked}<small> peeked</small></span><span class="stat">${F.total-peeked}<small>/${F.total} from memory</small></span>`;
-}
+function updateFlStat(){ const p=$("flpass").querySelectorAll(".w.shown").length;
+  $("statline").innerHTML=`<span class="stat">${p}<small> peeked</small></span><span class="stat">${F.total-p}<small>/${F.total} memory</small></span>`; }
 
 /* ============================================================
    MODE: TYPE IT OUT
    ============================================================ */
 let T=null;
-function modeType(id){
-  const s=getSection(id);
-  const toks=tokenize(s.text);
-  const ws=toks.filter(t=>t.t==="w");
-  T={toks,ws,cur:0,status:[],buffer:"",correct:0,combo:0,maxCombo:0,start:0,hint:"first"};
-  const body=`
-    <div class="passage" id="typepass"></div>
-    <div class="typebar">
-      <input id="typein" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type the highlighted word, then space…">
-      <button class="btn sm" id="hintCycle" title="Cycle hint level">Hint: first letters</button>
-      <button class="btn sm" id="skipWord" title="Reveal this word">💡</button>
-    </div>
-    <div class="note">Type each word then press <b>space</b>. Correct → green. Cycle the hint button down to <b>none</b> once you're confident.</div>`;
-  $("view").innerHTML=playShell(s,"Type It Out","boss",body);
-  renderType(); updateTypeStat();
+function modeType(id){ const s=getSection(id),toks=tokenize(s.text),ws=toks.filter(t=>t.t==="w");
+  T={id,toks,ws,cur:0,status:[],buffer:"",correct:0,combo:0,maxCombo:0,start:0,hint:state.settings.hint};
+  $("view").innerHTML=playShell(s,"Type It Out","boss",`<div class="passage" id="typepass"></div>
+    <div class="typebar"><input id="typein" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type the highlighted word, then space…">
+      <button class="btn sm" id="hintCycle"></button><button class="btn sm" id="skipWord" title="Reveal this word">💡</button></div>
+    <div class="note">Type each word then press <b>space</b>. Wrong words flash the answer. Cycle the hint down to <b>none</b> when confident.</div>`);
+  renderType(); updateTypeStat(); setHintLabel();
   const inp=$("typein");
   inp.addEventListener("keydown",e=>{
-    if(e.key===" " || e.key==="Enter"){ e.preventDefault(); typeCommit(inp.value); inp.value=""; T.buffer=""; }
+    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); typeCommit(inp.value); inp.value=""; T.buffer=""; }
+    else if(e.key==="Backspace" && inp.value==="" && T.cur>0){ e.preventDefault(); T.cur--; T.status.pop(); T.correct=T.status.filter(x=>x==="correct").length; renderType(); updateTypeStat(); }
   });
   inp.addEventListener("input",()=>{ T.buffer=inp.value; const c=$("curword"); if(c) c.innerHTML=esc(T.buffer)+'<span class="caret"></span>'; });
-  $("hintCycle").onclick=()=>{
-    T.hint = T.hint==="full"?"first": T.hint==="first"?"none":"full";
-    $("hintCycle").textContent="Hint: "+(T.hint==="full"?"full words":T.hint==="first"?"first letters":"none");
-    renderType();
-  };
-  $("skipWord").onclick=()=>{ typeCommit(T.ws[T.cur]?T.ws[T.cur].x:"", true); $("typein").value=""; T.buffer=""; };
+  $("hintCycle").onclick=()=>{ T.hint=T.hint==="full"?"first":T.hint==="first"?"none":"full"; setHintLabel(); renderType(); };
+  $("skipWord").onclick=()=>{ typeCommit(T.ws[T.cur]?T.ws[T.cur].x:"",true); $("typein").value=""; T.buffer=""; };
   setTimeout(()=>inp.focus(),60);
 }
-function hintFor(tok){
-  if(T.hint==="full") return '<span class="w hint">'+esc(tok.x)+'</span>';
+const setHintLabel=()=>$("hintCycle").textContent="Hint: "+(T.hint==="full"?"full words":T.hint==="first"?"first letters":"none");
+function hintFor(tok){ if(T.hint==="full") return '<span class="w hint">'+esc(tok.x)+'</span>';
   if(T.hint==="first") return '<span class="w up">'+esc(tok.x[0])+'·'.repeat(Math.max(0,tok.x.length-1))+'</span>';
-  return '<span class="w up">'+'·'.repeat(tok.x.length)+'</span>';
-}
-function renderType(){
-  let wi=-1, html="";
-  T.toks.forEach(t=>{
-    if(t.t==="sep"){ html+=esc(t.x); return; }
-    wi++;
-    if(wi<T.cur){ html+='<span class="w '+(T.status[wi]||"correct")+'">'+esc(t.x)+'</span>'; }
-    else if(wi===T.cur){ html+='<span class="w cur" id="curword">'+(T.buffer?esc(T.buffer):'')+'<span class="caret"></span></span>'; }
-    else html+=hintFor(t);
-  });
-  $("typepass").innerHTML=html;
-  const c=$("curword"); if(c) c.scrollIntoView({block:"nearest"});
-}
-function typeCommit(raw,forced){
-  raw=(raw||"").trim();
-  if(!forced && raw==="") return;
-  if(T.start===0) T.start=Date.now();
-  const tok=T.ws[T.cur]; if(!tok) return;
-  const ok = !forced && loose(raw)===tok.c;
-  T.status[T.cur]= forced?"wrong": (ok?"correct":"wrong");
+  return '<span class="w up">'+'·'.repeat(tok.x.length)+'</span>'; }
+function renderType(){ let wi=-1,html=""; T.toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
+    if(wi<T.cur) html+='<span class="w '+(T.status[wi]||"correct")+'">'+esc(t.x)+'</span>';
+    else if(wi===T.cur) html+='<span class="w cur" id="curword">'+(T.buffer?esc(T.buffer):'')+'<span class="caret"></span></span>';
+    else html+=hintFor(t); });
+  $("typepass").innerHTML=html; const c=$("curword"); if(c) c.scrollIntoView({block:"nearest"}); }
+function typeCommit(raw,forced){ raw=(raw||"").trim(); if(!forced&&raw==="") return; if(T.start===0)T.start=Date.now();
+  const tok=T.ws[T.cur]; if(!tok) return; const ok=!forced&&loose(raw)===tok.c;
+  T.status[T.cur]=ok?"correct":"wrong";
   if(ok){ T.correct++; T.combo++; T.maxCombo=Math.max(T.maxCombo,T.combo); sfx.ok(); showCombo(T.combo); }
-  else { T.combo=0; sfx.no(); showCombo(0); }
-  T.cur++;
-  updateTypeStat();
-  if(T.cur>=T.ws.length){ finishType(); return; }
-  renderType();
+  else { T.combo=0; sfx.no(); showCombo(0); weakAdd(T.id,T.cur); flashWord(T.cur); }
+  T.cur++; updateTypeStat(); if(T.cur>=T.ws.length){ finishType(); return; } renderType();
 }
-function updateTypeStat(){
-  const done=T.cur, total=T.ws.length;
-  const acc = done? Math.round(T.correct/done*100):100;
-  $("statline").innerHTML=`<span class="stat">${done}<small>/${total}</small></span>`+
-    `<span class="stat" style="color:var(--good)">${acc}%<small>acc</small></span>`+
-    `<span class="stat" style="color:var(--warn)">🔥${T.combo}<small>combo</small></span>`;
+function flashWord(){ /* reveal the just-missed word briefly in the rendered stream */
+  setTimeout(()=>{ const done=$("typepass").querySelectorAll(".w.wrong"); const last=done[done.length-1];
+    if(last){ last.classList.add("flash"); setTimeout(()=>last.classList.remove("flash"),650); } },10); }
+function updateTypeStat(){ const done=T.cur,total=T.ws.length,acc=done?Math.round(T.correct/done*100):100;
+  $("statline").innerHTML=`<span class="stat">${done}<small>/${total}</small></span><span class="stat" style="color:var(--good)">${acc}%<small>acc</small></span><span class="stat" style="color:var(--warn)">🔥${T.combo}<small>combo</small></span>`; }
+function finishType(){ renderType(); const total=T.ws.length,acc=Math.round(T.correct/total*100);
+  const secs=Math.max(1,(Date.now()-T.start)/1000),wpm=Math.round(total/secs*60);
+  const xp=Math.round(acc*0.9)+Math.round(total/4)+T.maxCombo; addXP(xp); bumpStreak(); const best=recordBest(T.id,"type",acc);
+  if(acc>=90){sfx.win();burst();} else if(acc>=60)sfx.ok(); else sfx.no();
+  resultScreen(acc,best,T.id,"type");
+  $("modebody").querySelector(".result .row").innerHTML=`<div class="kv"><b>${T.correct}/${total}</b><small>words</small></div><div class="kv"><b>🔥${T.maxCombo}</b><small>combo</small></div><div class="kv"><b>${wpm}</b><small>wpm</small></div><div class="kv"><b>+${xp}</b><small>XP</small></div>`;
 }
-function finishType(){
-  renderType();
-  const total=T.ws.length;
-  const acc=Math.round(T.correct/total*100);
-  const secs=Math.max(1,(Date.now()-T.start)/1000);
-  const wpm=Math.round((total/secs)*60);
-  const xp=Math.round(acc*0.9) + Math.round(total/4) + T.maxCombo;
-  addXP(xp); bumpStreak();
-  const best=recordBest(currentSectionId,"type",acc);
-  if(acc>=90){ sfx.win(); burst(); } else if(acc>=60) sfx.ok(); else sfx.no();
-  const s=getSection(currentSectionId);
-  $("modebody").innerHTML=`
-    <div class="result">
-      <div class="big">${acc}%</div>
-      <div style="color:var(--muted);margin-top:4px">${acc>=95?"Flawless. You know this. 🏆":acc>=80?"So close — clean up the red bits. 💪":acc>=50?"Good progress. Run it again. 📈":"Early days — back to Study &amp; Gaps. 🌱"}</div>
-      <div class="row">
-        <div class="kv"><b>${T.correct}/${total}</b><small>words</small></div>
-        <div class="kv"><b>🔥${T.maxCombo}</b><small>best combo</small></div>
-        <div class="kv"><b>${wpm}</b><small>wpm</small></div>
-        <div class="kv"><b>+${xp}</b><small>XP</small></div>
-      </div>
-      ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New personal best!</div>':''}
-      <div class="actions" style="justify-content:center">
-        <button class="btn primary" onclick="startMode('${currentSectionId}','type')">↻ Again</button>
-        <button class="btn" onclick="startMode('${currentSectionId}','first')">🔤 First Letters</button>
-        <button class="btn ghost" onclick="goHome()">← Menu</button>
-      </div>
-    </div>`;
+function resultScreen(acc,best,id,mode){
+  const verdict=acc>=95?"Flawless. You know this. 🏆":acc>=80?"So close — clean up the red bits. 💪":acc>=50?"Good progress. Run it again. 📈":"Early days — back to Study &amp; Gaps. 🌱";
+  const nextBtn = mode==="exam" ? `<button class="btn primary" onclick="startMode('${id}','exam')">↻ Resit</button>` :
+    `<button class="btn primary" onclick="startMode('${id}','${mode}')">↻ Again</button><button class="btn good" onclick="startMode('${id}','exam')">📝 Try the exam</button>`;
+  $("modebody").innerHTML=`<div class="result"><div class="big">${acc}%</div>
+    <div style="color:var(--muted);margin-top:4px">${verdict}</div>
+    <div class="row"></div>
+    ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New personal best!</div>':''}
+    <div class="actions" style="justify-content:center">${nextBtn}<button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
   $("statline").innerHTML="";
 }
 
@@ -758,117 +552,163 @@ function finishType(){
    MODE: UNSCRAMBLE
    ============================================================ */
 let O=null;
-function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function modeOrder(id){
-  const s=getSection(id);
-  const sents=sentences(s.text);
-  O={sents,idx:0,correct:0,section:id};
-  $("view").innerHTML=playShell(s,"Unscramble","tiles",`<div id="orderbody"></div>`);
-  renderOrder();
-}
-function renderOrder(){
-  if(O.idx>=O.sents.length){ return finishOrder(); }
-  const sent=O.sents[O.idx];
-  const ws=words(sent).map(w=>w.x);
-  // build scrambled (ensure not identical for >1 word)
-  let scr=shuffle(ws); let guard=0;
-  while(ws.length>1 && scr.join("|")===ws.join("|") && guard++<6) scr=shuffle(ws);
-  O.target=ws; O.placed=[];
-  O.pool=scr.map((w,i)=>({w,id:i,used:false}));
-  const body=`
-    <div class="statline" style="margin-bottom:10px">
-      <span class="stat">Sentence ${O.idx+1}<small>/${O.sents.length}</small></span>
-      <span class="stat">${ws.length}<small> words</small></span>
-    </div>
-    <div class="answerbox" id="answer"></div>
-    <div class="tiles" id="pool"></div>
-    <div class="actions">
-      <button class="btn" id="undoBtn">↩ Undo</button>
-      <button class="btn" id="hintOrder">💡 Next word</button>
-      <button class="btn primary" id="checkOrder">✓ Check</button>
-    </div>
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function modeOrder(id){ const s=getSection(id); O={id,sents:sentences(s.text),idx:0,correct:0};
+  $("view").innerHTML=playShell(s,"Unscramble","tiles",`<div id="orderbody"></div>`); renderOrder(); }
+function renderOrder(){ if(O.idx>=O.sents.length) return finishOrder();
+  const ws=words(O.sents[O.idx]).map(w=>w.x); let scr=shuffle(ws),guard=0;
+  while(ws.length>1&&scr.join("|")===ws.join("|")&&guard++<6) scr=shuffle(ws);
+  O.target=ws; O.placed=[]; O.pool=scr.map((w,i)=>({w,id:i,used:false}));
+  $("orderbody").innerHTML=`<div class="statline" style="margin-bottom:10px"><span class="stat">Sentence ${O.idx+1}<small>/${O.sents.length}</small></span><span class="stat">${ws.length}<small> words</small></span></div>
+    <div class="answerbox" id="answer"></div><div class="tiles" id="pool"></div>
+    <div class="actions"><button class="btn" id="undoBtn">↩ Undo</button><button class="btn" id="hintOrder">💡 Next word</button><button class="btn primary" id="checkOrder">✓ Check</button></div>
     <div class="note" id="orderNote">Tap the words in the right order to rebuild the sentence.</div>`;
-  $("orderbody").innerHTML=body;
   $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${O.correct}<small> solved</small></span>`;
   drawPool(); drawAnswer();
-  $("pool").onclick=e=>{ const t=e.target.closest(".tile"); if(!t||t.classList.contains("ph")) return; placeTile(+t.dataset.id); };
-  $("answer").onclick=e=>{ const t=e.target.closest(".tile"); if(!t) return; removeTile(+t.dataset.pos); };
+  $("pool").onclick=e=>{ const t=e.target.closest(".tile"); if(t&&!t.classList.contains("ph")) placeTile(+t.dataset.id); };
+  $("answer").onclick=e=>{ const t=e.target.closest(".tile"); if(t) removeTile(+t.dataset.pos); };
   $("undoBtn").onclick=()=>{ if(O.placed.length) removeTile(O.placed.length-1); };
-  $("hintOrder").onclick=()=>orderHint();
+  $("hintOrder").onclick=()=>{ const i=O.placed.length; if(i>=O.target.length) return; const need=loose(O.target[i]); const p=O.pool.find(x=>!x.used&&loose(x.w)===need); if(p) placeTile(p.id); };
   $("checkOrder").onclick=()=>orderCheck();
 }
-function drawPool(){
-  $("pool").innerHTML=O.pool.map(p=>`<div class="tile ${p.used?'ph':''}" data-id="${p.id}">${esc(p.w)}</div>`).join("");
-}
-function drawAnswer(){
-  const a=$("answer");
-  if(!O.placed.length){ a.innerHTML='<span style="color:var(--muted);align-self:center">tap words below…</span>'; return; }
-  a.innerHTML=O.placed.map((p,i)=>`<div class="tile" data-pos="${i}">${esc(p.w)}</div>`).join("");
-}
-function placeTile(poolId){
-  const p=O.pool.find(x=>x.id===poolId); if(!p||p.used) return;
-  p.used=true; O.placed.push(p); sfx.ok(); drawPool(); drawAnswer();
-}
-function removeTile(pos){
-  const p=O.placed.splice(pos,1)[0]; if(p){ p.used=false; } drawPool(); drawAnswer();
-}
-function orderHint(){
-  const i=O.placed.length; if(i>=O.target.length) return;
-  const need=loose(O.target[i]);
-  const p=O.pool.find(x=>!x.used && loose(x.w)===need);
-  if(p) placeTile(p.id);
-}
-function orderCheck(){
-  const got=O.placed.map(p=>loose(p.w)).join("|");
-  const want=O.target.map(loose).join("|");
-  const ansTiles=[...$("answer").querySelectorAll(".tile")];
-  if(got===want){
-    ansTiles.forEach(t=>t.classList.add("ok"));
-    O.correct++; sfx.great(); addXP(12);
+const drawPool=()=>$("pool").innerHTML=O.pool.map(p=>`<div class="tile ${p.used?'ph':''}" data-id="${p.id}">${esc(p.w)}</div>`).join("");
+function drawAnswer(){ const a=$("answer"); a.innerHTML=O.placed.length?O.placed.map((p,i)=>`<div class="tile" data-pos="${i}">${esc(p.w)}</div>`).join(""):'<span style="color:var(--muted);align-self:center">tap words below…</span>'; }
+function placeTile(pid){ const p=O.pool.find(x=>x.id===pid); if(!p||p.used) return; p.used=true; O.placed.push(p); sfx.ok(); drawPool(); drawAnswer(); }
+function removeTile(pos){ const p=O.placed.splice(pos,1)[0]; if(p) p.used=false; drawPool(); drawAnswer(); }
+function orderCheck(){ const got=O.placed.map(p=>loose(p.w)).join("|"),want=O.target.map(loose).join("|");
+  const tiles=[...$("answer").querySelectorAll(".tile")];
+  if(got===want){ tiles.forEach(t=>t.classList.add("ok")); O.correct++; sfx.great(); addXP(12);
     $("orderNote").innerHTML='<b style="color:var(--good)">Correct! ✓</b>';
-    $("checkOrder").textContent = (O.idx+1>=O.sents.length)?"See results →":"Next sentence →";
-    $("checkOrder").onclick=()=>{ O.idx++; renderOrder(); };
-  } else {
-    // mark first wrong
-    let firstWrong=-1;
-    O.placed.forEach((p,i)=>{ if(loose(p.w)!==loose(O.target[i]||"") && firstWrong<0) firstWrong=i; });
-    ansTiles.forEach((t,i)=>{ t.classList.toggle("bad", firstWrong>=0 && i>=firstWrong); });
-    sfx.no();
-    $("orderNote").innerHTML='<b style="color:var(--bad)">Not quite</b> — the red tiles are out of place. Tap them to send them back.';
-  }
+    $("checkOrder").textContent=(O.idx+1>=O.sents.length)?"See results →":"Next sentence →"; $("checkOrder").onclick=()=>{O.idx++;renderOrder();}; }
+  else { let fw=-1; O.placed.forEach((p,i)=>{ if(loose(p.w)!==loose(O.target[i]||"")&&fw<0) fw=i; });
+    tiles.forEach((t,i)=>t.classList.toggle("bad",fw>=0&&i>=fw)); sfx.no();
+    $("orderNote").innerHTML='<b style="color:var(--bad)">Not quite</b> — red tiles are out of place. Tap them to send them back.'; }
 }
-function finishOrder(){
-  const pct=Math.round(O.correct/O.sents.length*100);
-  const xp=Math.round(pct*0.5)+10;
-  addXP(xp); bumpStreak();
-  const best=recordBest(O.section,"order",pct);
-  if(pct>=90){sfx.win();burst();}
-  $("modebody").innerHTML=`
-    <div class="result">
-      <div class="big">${pct}%</div>
-      <div style="color:var(--muted)">${O.correct}/${O.sents.length} sentences rebuilt</div>
-      <div class="row"><div class="kv"><b>+${xp}</b><small>XP</small></div></div>
-      ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New best!</div>':''}
-      <div class="actions" style="justify-content:center">
-        <button class="btn primary" onclick="startMode('${O.section}','order')">↻ Again</button>
-        <button class="btn" onclick="startMode('${O.section}','type')">⌨️ Type It Out</button>
-        <button class="btn ghost" onclick="goHome()">← Menu</button>
-      </div>
-    </div>`;
+function finishOrder(){ const pct=Math.round(O.correct/O.sents.length*100),xp=Math.round(pct*0.5)+10;
+  addXP(xp); bumpStreak(); const best=recordBest(O.id,"order",pct); if(pct>=90){sfx.win();burst();}
+  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div><div style="color:var(--muted)">${O.correct}/${O.sents.length} sentences rebuilt</div>
+    <div class="row"><div class="kv"><b>+${xp}</b><small>XP</small></div></div>${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New best!</div>':''}
+    <div class="actions" style="justify-content:center"><button class="btn primary" onclick="startMode('${O.id}','order')">↻ Again</button><button class="btn" onclick="startMode('${O.id}','type')">⌨️ Type It Out</button><button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
   $("statline").innerHTML="";
 }
 
 /* ============================================================
-   BOOT
+   MODE: EXAM  (free write under timer → word-accurate diff)
    ============================================================ */
-$("muteBtn").onclick=()=>{ state.muted=!state.muted; save(); refreshHeader(); toast(state.muted?"🔇 Muted":"🔊 Sound on"); };
-// reset on long-press of streak (hidden power feature)
-$("streakPill").addEventListener("dblclick",()=>{
-  if(confirm("Reset all progress (XP, levels, best scores)?")){ state=defaults(); save(); refreshHeader(); goHome(); toast("Progress reset"); }
-});
-refreshHeader();
-renderHome();
+let E=null;
+function modeExam(id){ const s=getSection(id); E={id,start:Date.now(),timer:null};
+  $("view").innerHTML=playShell(s,"Exam","no hints",`
+    <div class="note" style="margin:0 0 10px">📝 Write ${s.id==="whole"?"the whole essay":"this paragraph"} from memory — no hints. Punctuation doesn't matter; the words do. Hit submit when done.</div>
+    <textarea id="examarea" placeholder="Start writing from memory…" autocapitalize="sentences" spellcheck="false"></textarea>
+    <div class="actions"><button class="btn primary" id="submitExam">✓ Submit for marking</button><button class="btn ghost" onclick="goHome()">Give up</button></div>`);
+  const ta=$("examarea"); E.target=words(s.text);
+  function tick(){ const sec=Math.floor((Date.now()-E.start)/1000); const got=words(ta.value).length;
+    $("statline").innerHTML=`<span class="stat">⏱ ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}</span><span class="stat">${got}<small>/${E.target.length} words</small></span>`; }
+  tick(); E.timer=setInterval(tick,1000); setTimeout(()=>ta.focus(),60);
+  $("submitExam").onclick=()=>examMark();
+}
+function examMark(){ clearInterval(E.timer); const s=getSection(E.id);
+  const origToks=tokenize(s.text), orig=origToks.filter(t=>t.t==="w");
+  const typed=words($("examarea").value);
+  const matched=wordDiff(orig.map(w=>w.c), typed.map(w=>w.c));
+  let ok=0; const total=orig.length; let wi=-1; let html="";
+  origToks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
+    if(matched[wi]){ ok++; html+='<span class="w correct">'+esc(t.x)+'</span>'; }
+    else { html+='<span class="w miss">'+esc(t.x)+'</span>'; weakAdd(E.id,wi); } });
+  const pct=Math.round(ok/total*100), secs=Math.max(1,(Date.now()-E.start)/1000);
+  const xp=Math.round(pct*1.1)+Math.round(total/4); addXP(xp); bumpStreak(); const best=recordBest(E.id,"exam",pct);
+  if(pct>=90){sfx.win();burst();} else if(pct>=60)sfx.ok(); else sfx.no();
+  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div>
+    <div style="color:var(--muted);margin-top:2px">${pct>=95?"Exam-ready. 🏆":pct>=80?"Nearly there — the red words are your gaps.":pct>=50?"Solid base. Drill the misses and resit.":"Keep building — Study &amp; Gaps first."}</div>
+    <div class="row"><div class="kv"><b>${ok}/${total}</b><small>words</small></div><div class="kv"><b>${Math.floor(secs/60)}:${String(Math.floor(secs%60)).padStart(2,"0")}</b><small>time</small></div><div class="kv"><b>+${xp}</b><small>XP</small></div></div>
+    ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New best!</div>':''}
+    <div class="actions" style="justify-content:center;margin-bottom:6px">
+      <button class="btn primary" onclick="startMode('${E.id}','exam')">↻ Resit</button>
+      ${weakCount()?`<button class="btn good" onclick="startMode(null,'weak')">🎯 Drill misses</button>`:""}
+      <button class="btn ghost" onclick="goHome()">← Menu</button></div></div>
+    <div style="margin-top:8px"><div class="note" style="margin-bottom:6px"><b>Your essay, marked</b> — <span style="color:var(--good)">green = correct</span>, <span style="color:var(--bad)">red = missed/out of place</span>:</div>
+      <div class="passage diff">${html}</div></div>`;
+  $("statline").innerHTML="";
+}
+
+/* ============================================================
+   MODE: WEAK WORDS  (mistake-driven spaced drill)
+   ============================================================ */
+let W=null;
+function modeWeak(){ const list=weakList().slice(0,18);
+  const shell={id:"weak",name:"Weak Words",short:"Weak",icon:"🎯"};
+  if(!list.length){ $("view").innerHTML=playShell(shell,"Weak Words","drill",`<div class="result"><div style="font-size:40px">✨</div><div style="margin:8px 0;color:var(--muted)">No weak words right now — they appear here whenever you slip up in Gaps, Type or Exam. Go make some mistakes!</div><div class="actions" style="justify-content:center"><button class="btn primary" onclick="goHome()">← Menu</button></div></div>`); $("statline").innerHTML=""; return; }
+  W={list,i:0,correct:0,total:list.length};
+  $("view").innerHTML=playShell(shell,"Weak Words","drill",`<div id="weakbody"></div>`); renderWeak();
+}
+function ctxBlank(secId,wi){ const toks=tokenize(getSection(secId).text); const pos=[]; toks.forEach((t,i)=>{ if(t.t==="w") pos.push(i); });
+  const a=Math.max(0,wi-7), b=Math.min(pos.length-1,wi+7), st=pos[a], en=pos[b]; let html="";
+  for(let i=st;i<=en;i++){ const t=toks[i]; if(t.t==="sep"){html+=esc(t.x);continue;}
+    if(i===pos[wi]) html+=`<input class="blank" id="weakblank" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(40,(t.x.length*11+14))}px">`;
+    else html+=`<span class="w">${esc(t.x)}</span>`; }
+  return (a>0?"… ":"")+html+(b<pos.length-1?" …":""); }
+function renderWeak(){ if(W.i>=W.list.length) return finishWeak();
+  const it=W.list[W.i], sec=getSection(it.sid); W.cur=words(sec.text)[it.wi];
+  $("statline").innerHTML=`<span class="stat">${W.i+1}<small>/${W.total}</small></span><span class="stat" style="color:var(--good)">${W.correct}<small> got</small></span>`;
+  $("weakbody").innerHTML=`<div class="note" style="margin:0 0 10px">From <b>${sec.short}</b> · you've missed this ${it.count}×. Fill the blank from memory:</div>
+    <div class="passage">${ctxBlank(it.sid,it.wi)}</div>
+    <div class="actions"><button class="btn" id="weakHint">💡 First letter</button><button class="btn primary" id="weakCheck">✓ Check</button><button class="btn ghost" id="weakSkip">Skip →</button></div>
+    <div class="note" id="weakNote"></div>`;
+  const inp=$("weakblank"); setTimeout(()=>inp&&inp.focus(),50);
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); weakCheck(); } });
+  $("weakHint").onclick=()=>{ inp.placeholder=W.cur.x[0]+"…"; };
+  $("weakCheck").onclick=()=>weakCheck();
+  $("weakSkip").onclick=()=>{ W.i++; renderWeak(); };
+}
+function weakCheck(){ const inp=$("weakblank"), it=W.list[W.i];
+  if(loose(inp.value)===W.cur.c && inp.value.trim()!==""){ inp.classList.add("ok"); sfx.great(); W.correct++; weakClear(it.sid,it.wi); addXP(8);
+    $("weakNote").innerHTML='<b style="color:var(--good)">Yes! ✓</b>'; setTimeout(()=>{W.i++;renderWeak();},550); }
+  else { inp.classList.add("bad"); sfx.no(); weakAdd(it.sid,it.wi);
+    $("weakNote").innerHTML=`<b style="color:var(--bad)">It's:</b> <span style="color:var(--warn);font-weight:700">${esc(W.cur.x)}</span> — try to lock it in, then Check or Skip.`; inp.value=""; inp.classList.remove("bad"); inp.placeholder=W.cur.x[0]+"…"; }
+}
+function finishWeak(){ const pct=Math.round(W.correct/W.total*100),xp=10+W.correct*4; addXP(xp); bumpStreak(); if(pct>=80){sfx.win();burst();}
+  $("view").querySelector("#weakbody")?.remove();
+  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div><div style="color:var(--muted)">${W.correct}/${W.total} weak words nailed · ${weakCount()} left overall</div>
+    <div class="row"><div class="kv"><b>+${xp}</b><small>XP</small></div></div>
+    <div class="actions" style="justify-content:center">${weakCount()?`<button class="btn primary" onclick="startMode(null,'weak')">↻ Keep drilling</button>`:""}<button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
+  $("statline").innerHTML="";
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+function openSettings(){ const m=document.createElement("div"); m.className="modal"; m.id="setModal";
+  m.innerHTML=`<div class="box"><h3>⚙️ Settings</h3>
+    <div class="setrow"><span>🔊 Sound effects</span><button class="btn sm" id="sSound">${state.settings.sound?"On":"Off"}</button></div>
+    <div class="setrow"><span>💡 Default typing hint</span><div class="seg"><button data-h="full">Full</button><button data-h="first">1st</button><button data-h="none">None</button></div></div>
+    <div class="setrow"><span>📲 Add to home screen</span><span style="color:var(--muted);font-size:12px;max-width:160px;text-align:right">Use your browser's “Add to Home Screen” to install it as an app.</span></div>
+    <div class="setrow"><span>♻️ Reset all progress</span><button class="btn sm" id="sReset" style="border-color:var(--bad);color:var(--bad)">Reset</button></div>
+    <div class="actions" style="justify-content:flex-end"><button class="btn primary" id="sClose">Done</button></div></div>`;
+  $("modalHost").appendChild(m);
+  m.addEventListener("click",e=>{ if(e.target===m) m.remove(); });
+  const mark=()=>m.querySelectorAll("[data-h]").forEach(b=>b.style.background=b.dataset.h===state.settings.hint?"var(--accent)":"transparent"); mark();
+  $("sSound").onclick=()=>{ state.settings.sound=!state.settings.sound; save(); $("sSound").textContent=state.settings.sound?"On":"Off"; if(state.settings.sound) sfx.ok(); };
+  m.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{ state.settings.hint=b.dataset.h; save(); mark(); });
+  $("sReset").onclick=()=>{ if(confirm("Reset all progress — XP, levels, streak, best scores and weak words?")){ state=defaults(); save(); refreshHeader(); m.remove(); goHome(); toast("Progress reset"); } };
+  $("sClose").onclick=()=>m.remove();
+}
+
+/* ============================================================
+   PWA + BOOT
+   ============================================================ */
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; $("installBtn").classList.remove("hidden"); });
+$("installBtn").onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; $("installBtn").classList.add("hidden"); };
+window.addEventListener("appinstalled",()=>$("installBtn").classList.add("hidden"));
+$("setBtn").onclick=openSettings;
+$("streakPill").addEventListener("dblclick",()=>{ if(confirm("Reset all progress?")){ state=defaults(); save(); refreshHeader(); goHome(); toast("Progress reset"); } });
+
+refreshHeader(); renderHome();
 window.startMode=startMode; window.goHome=goHome;
+
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
 </script>
 </body>
 </html>
