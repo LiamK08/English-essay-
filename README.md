@@ -1,7 +1,16 @@
 # 📖 Essay Memoriser — *The Curious Incident of the Dog in the Night-Time* (Module B)
 
 A browser **game** for memorising your Module B essay word-for-word, because flashcards are boring.
-Pick a paragraph, climb a ladder of modes that hide more each time, then sit a timed **exam** that marks you word-by-word — until you can write the whole thing from memory.
+It's built around a **science-backed 3-Day Coach** that tells you exactly what to practise and when — plus a ladder of practice modes and a timed **exam** that marks you word-by-word.
+
+## 🧭 The 3-Day Coach (start here)
+The Coach splits the essay into ~65 bite-size lines and drills each one with **recall + feedback**, spaced out and revisited until it sticks — the method researchers call **successive relearning**. It implements retrieval practice, spacing, Read–Recite–Review (with reciting **aloud**), errorful generation, chunking + chaining, interleaving and overlearning. Tap **“Why this works”** in-app for the citations, or read [`RESEARCH.md`](RESEARCH.md).
+
+- **Day 1** — encode every line (read → say aloud → recall with feedback).
+- **Day 2** — spaced retrieval, rehearse sentence joins, interleave paragraphs.
+- **Day 3** — overlearn & simulate: first-letter recitation, then timed exam write-outs.
+
+It schedules reviews at expanding intervals and nudges you to **space sessions and sleep between them** (that's what makes 3 days work). Just open it and press **▶ Start session**.
 
 > The **Quote Bank** is intentionally left out (as requested). Only the five prose paragraphs are loaded:
 > **Introduction · Body 1 (Perception) · Body 2 (Truth) · Body 3 (Agency) · Conclusion.**
