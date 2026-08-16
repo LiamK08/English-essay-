@@ -1,957 +1,1103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#0f1020" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Essay Memoriser" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Billy Elliot Recall</title>
+<meta name="theme-color" content="#0E1013" />
+<!--PWA-START-->
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 <link rel="icon" href="./icon-192.png" />
-<title>Essay Memoriser — Curious Incident (Module B)</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Billy Elliot" />
+<!--PWA-END-->
 <style>
-  :root{
-    --bg:#0f1020; --bg2:#171830; --card:#1c1d3a; --card2:#23254a;
-    --ink:#eef0ff; --muted:#9aa0c7; --line:#2c2e58;
-    --accent:#7c5cff; --accent2:#22d3ee; --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
-    --ring-bg:#2a2c55; --shadow:0 10px 30px rgba(0,0,0,.35);
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
-    background:radial-gradient(1200px 700px at 80% -10%, #232450 0%, var(--bg) 55%) fixed;
-    color:var(--ink); min-height:100vh; min-height:100dvh; -webkit-font-smoothing:antialiased; line-height:1.6;
-  }
-  .wrap{max-width:980px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
-  button{font-family:inherit;touch-action:manipulation}
-  .btn{appearance:none;border:1px solid var(--line);background:var(--card2);color:var(--ink);
-    padding:11px 16px;border-radius:12px;font-size:15px;cursor:pointer;font-weight:600;
-    transition:transform .08s, background .15s, border-color .15s;user-select:none}
-  .btn:hover{background:#2c2e63;border-color:#3a3d7a}
-  .btn:active{transform:translateY(1px)}
-  .btn.primary{background:linear-gradient(135deg,var(--accent),#9a7bff);border-color:transparent;color:#fff}
-  .btn.primary:hover{filter:brightness(1.07)}
-  .btn.ghost{background:transparent}
-  .btn.sm{padding:7px 12px;font-size:13px;border-radius:10px}
-  .btn.good{background:linear-gradient(135deg,#10b981,#34d399);border-color:transparent;color:#04231a}
-  .pill{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600}
+/* ── Pit & Stage ─────────────────────────────────────────────────────────
+   Palette follows the essay's own annotation key: seam green = fixed theme,
+   signal red = adapt to the question, lamp amber = Turn, stage blue = Close.
+   Ground is coal / chalk; neutrals carry a cool slate bias.               */
+:root{
+  --bg:#EFEEE9; --bg2:#E7E5DE; --surf:#FCFBF8; --surf2:#F3F1EB;
+  --ink:#15181D; --ink2:#39404A; --mut:#6A7280; --line:#D9D6CC; --line2:#C6C2B6;
+  --lamp:#9C6608; --lampSoft:rgba(156,102,8,.11);
+  --stage:#215B93; --stageSoft:rgba(33,91,147,.11);
+  --seam:#456D1D; --seamSoft:rgba(69,109,29,.12);
+  --sig:#A82C23; --sigSoft:rgba(168,44,35,.10);
+  --good:#2C7442; --bad:#A82C23;
+  --sh:0 1px 2px rgba(20,24,30,.05), 0 10px 26px rgba(20,24,30,.07);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1013; --bg2:#090B0E; --surf:#171A20; --surf2:#1F232B;
+  --ink:#ECEDEF; --ink2:#C5C9D0; --mut:#8C939F; --line:#292E37; --line2:#39404C;
+  --lamp:#E3A63E; --lampSoft:rgba(227,166,62,.13);
+  --stage:#7CB4ED; --stageSoft:rgba(124,180,237,.13);
+  --seam:#96C763; --seamSoft:rgba(150,199,99,.13);
+  --sig:#F08074; --sigSoft:rgba(240,128,116,.12);
+  --good:#5FC98A; --bad:#F08074;
+  --sh:0 1px 2px rgba(0,0,0,.5), 0 12px 32px rgba(0,0,0,.38);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1013; --bg2:#090B0E; --surf:#171A20; --surf2:#1F232B;
+  --ink:#ECEDEF; --ink2:#C5C9D0; --mut:#8C939F; --line:#292E37; --line2:#39404C;
+  --lamp:#E3A63E; --lampSoft:rgba(227,166,62,.13);
+  --stage:#7CB4ED; --stageSoft:rgba(124,180,237,.13);
+  --seam:#96C763; --seamSoft:rgba(150,199,99,.13);
+  --sig:#F08074; --sigSoft:rgba(240,128,116,.12);
+  --good:#5FC98A; --bad:#F08074;
+  --sh:0 1px 2px rgba(0,0,0,.5), 0 12px 32px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
+  -webkit-font-smoothing:antialiased;min-height:100dvh;font-size:16px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--stage)}
+:focus-visible{outline:2px solid var(--lamp);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-  header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 18px}
-  .brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0;cursor:pointer}
-  .logo{width:42px;height:42px;border-radius:12px;flex:0 0 auto;overflow:hidden;box-shadow:var(--shadow)}
-  .logo img{width:100%;height:100%;display:block}
-  .brand h1{font-size:16px;margin:0;line-height:1.15}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
-  .hstats{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .lvl{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 7px 5px 12px}
-  .lvl .num{font-weight:800}
-  .xpbar{width:104px;height:9px;border-radius:999px;background:var(--ring-bg);overflow:hidden}
-  .xpbar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
-  .icbtn{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:17px;padding:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px calc(64px + env(safe-area-inset-bottom))}
 
-  .hero{background:linear-gradient(135deg,#20224a,#181a36);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-  .bigring{--p:0;width:96px;height:96px;border-radius:50%;flex:0 0 auto;
-    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--ring-bg) 0);display:grid;place-items:center}
-  .bigring::after{content:attr(data-l);width:78px;height:78px;border-radius:50%;background:#191b38;display:grid;place-items:center;font-size:20px;font-weight:900}
-  .heroinfo{flex:1;min-width:200px}
-  .heroinfo h2{margin:0 0 3px;font-size:19px}
-  .heroinfo p{margin:0 0 11px;color:var(--muted);font-size:13.5px}
-  .herobtns{display:flex;gap:9px;flex-wrap:wrap}
+/* header: faint wire mesh — the gym cage / pit cage motif */
+header.top{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg2);
+  padding:max(14px,env(safe-area-inset-top)) 0 14px;margin-bottom:22px}
+header.top::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:repeating-linear-gradient(45deg,var(--line2) 0 1px,transparent 1px 15px),
+                   repeating-linear-gradient(-45deg,var(--line2) 0 1px,transparent 1px 15px);
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 78%);
+          mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 78%)}
+.topin{position:relative;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.mark{font-family:var(--serif);font-size:19px;line-height:1.1;margin-right:auto;cursor:pointer;min-width:0}
+.mark b{display:block;font-weight:600;letter-spacing:.01em}
+.mark span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:3px}
+.lamp{display:flex;align-items:center;gap:9px;background:var(--surf);border:1px solid var(--line);border-radius:999px;padding:6px 13px 6px 10px}
+.lamp .dot{width:11px;height:11px;border-radius:50%;background:var(--lamp);flex:0 0 auto;
+  box-shadow:0 0 0 0 var(--lampSoft);transition:box-shadow .5s,opacity .5s}
+.lamp b{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.lamp small{color:var(--mut);font-size:11px}
 
-  /* 3-Day Coach */
-  .coachwrap{background:linear-gradient(135deg,#241a4e,#15182f);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
-  .daybadge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:12px;padding:5px 11px;border-radius:999px}
-  .coachwrap h2{margin:9px 0 2px;font-size:20px}
-  .goal{color:var(--muted);font-size:13.5px;margin:0 0 13px;max-width:62ch}
-  .pgrid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:13px}
-  .pcell{flex:1;min-width:104px;background:#0e0f22;border:1px solid var(--line);border-radius:12px;padding:9px 12px}
-  .pcell b{font-size:18px}.pcell small{color:var(--muted);display:block;font-size:11px;margin-top:1px}
-  .pbar{height:8px;border-radius:999px;background:var(--ring-bg);overflow:hidden;margin-top:8px}
-  .pbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
-  .coachbtns{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-  .subhead{font-weight:700;color:var(--muted);font-size:12px;margin:8px 2px 11px;text-transform:uppercase;letter-spacing:.05em}
-  .stepdots{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-  .stepdots i{width:9px;height:9px;border-radius:50%;background:var(--ring-bg);display:inline-block}
-  .stepdots i.done{background:var(--good)}.stepdots i.cur{background:var(--accent);box-shadow:0 0 0 3px rgba(124,92,255,.25)}
-  .cue{background:#0e0f22;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:9px 12px;color:var(--muted);font-size:15px;margin-bottom:10px}
-  .lede{font-size:13px;color:var(--accent2);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:7px}
-  .gradechip{display:inline-block;font-weight:800;border-radius:999px;padding:4px 12px;font-size:13px}
-  .scilist{margin:0;padding-left:18px;font-size:13.5px;line-height:1.7}
-  .scilist b{color:var(--accent2)}
-  .step{font-size:12.5px;background:#262853;border:1px solid var(--line);border-radius:999px;padding:6px 11px}
-  .step b{color:var(--accent2)}
+.btn{font:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:var(--surf);
+  border:1px solid var(--line2);border-radius:11px;padding:10px 15px;cursor:pointer;
+  transition:transform .07s,background .15s,border-color .15s}
+.btn:hover{background:var(--surf2);border-color:var(--mut)}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--lamp);border-color:transparent;color:var(--bg2)}
+.btn.pri:hover{filter:brightness(1.08);background:var(--lamp)}
+.btn.gh{background:transparent;border-color:var(--line)}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:9px}
+.btn.ic{padding:0;width:38px;height:38px;display:grid;place-items:center;font-size:15px}
+.btn[disabled]{opacity:.45;cursor:default}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-  .scard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;position:relative;transition:transform .1s,border-color .15s,background .15s;display:flex;flex-direction:column;gap:9px}
-  .scard:hover{transform:translateY(-2px);border-color:#41459a;background:var(--card2)}
-  .scard.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,92,255,.35)}
-  .scard .ico{font-size:25px}
-  .scard h3{margin:0;font-size:14.5px}
-  .scard .meta{font-size:11.5px;color:var(--muted)}
-  .ring{--p:0;width:44px;height:44px;border-radius:50%;flex:0 0 auto;
-    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--ring-bg) 0);display:grid;place-items:center;position:absolute;top:12px;right:12px}
-  .ring::after{content:attr(data-label);width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:10px;font-weight:800}
-  .scard.active .ring::after{background:var(--card2)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--mut);
+  border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:var(--surf)}
+.chip.seam{color:var(--seam);border-color:var(--seam);background:var(--seamSoft)}
+.chip.sig{color:var(--sig);border-color:var(--sig);background:var(--sigSoft)}
+.chip.lampc{color:var(--lamp);border-color:var(--lamp);background:var(--lampSoft)}
+.chip.stagec{color:var(--stage);border-color:var(--stage);background:var(--stageSoft)}
 
-  #panel{margin-top:16px}
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-  .panel h2{margin:0 0 2px;font-size:18px;display:flex;align-items:center;gap:9px}
-  .panel .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-  .modes{display:flex;flex-direction:column;gap:11px}
-  .moderow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:11px 12px}
-  .moderow .label{font-weight:700;min-width:130px;display:flex;align-items:center;gap:8px}
-  .moderow .desc{font-size:12px;color:var(--muted);flex-basis:100%;margin-top:-2px}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .seg button{background:transparent;border:0;color:var(--ink);padding:8px 12px;cursor:pointer;font-weight:600;font-size:13px;border-right:1px solid var(--line)}
-  .seg button:last-child{border-right:0}
-  .seg button:hover{background:#2c2e63}
+.panel{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:18px}
+.panel > h2{font-size:20px;margin-bottom:4px}
+.lead{color:var(--mut);font-size:14px;max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:9px}
 
-  .play{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-  .playhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-  .playhead .title{font-weight:800;font-size:16px;margin-right:auto;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .playhead .title .tag{font-size:11px;color:var(--muted);font-weight:600;background:var(--bg2);border:1px solid var(--line);padding:3px 9px;border-radius:999px}
-  .statline{display:flex;gap:8px;flex-wrap:wrap}
-  .stat{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-size:13px;font-weight:700;display:flex;gap:6px;align-items:center}
-  .stat small{color:var(--muted);font-weight:600}
+/* dashboard */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+@media(max-width:620px){.hero{grid-template-columns:1fr}}
+.ring{--p:0;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--lamp) calc(var(--p)*3.6deg), var(--line) 0)}
+.ring i{width:84px;height:84px;border-radius:50%;background:var(--surf);display:grid;place-items:center;
+  font-family:var(--mono);font-size:23px;font-weight:600;font-variant-numeric:tabular-nums;font-style:normal}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:10px;margin-top:14px}
+.tile{background:var(--surf2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+.tile b{font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;display:block}
+.tile small{color:var(--mut);font-size:11.5px}
 
-  .passage{font-size:18px;line-height:2.05;letter-spacing:.1px}
-  .passage.read{font-size:19px;line-height:1.95}
-  .adapt{color:var(--accent2);border-bottom:2px dotted var(--accent2);padding:0 2px;font-style:italic}
-  .qte{color:#ffd9a8}
+.secbars{display:grid;gap:9px;margin-top:6px}
+.secbar{display:grid;grid-template-columns:112px 1fr 46px;gap:11px;align-items:center;font-size:13.5px}
+@media(max-width:520px){.secbar{grid-template-columns:88px 1fr 42px;font-size:12.5px}}
+.secbar span{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{height:9px;border-radius:999px;background:var(--line);overflow:hidden}
+.track i{display:block;height:100%;background:var(--lamp);border-radius:999px;transition:width .45s}
+.secbar em{font-family:var(--mono);font-size:12px;font-style:normal;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
 
-  input.blank{background:#0e0f22;border:0;border-bottom:2px solid var(--accent);color:var(--ink);
-    font:inherit;font-weight:700;text-align:center;padding:2px 4px;margin:0 1px;border-radius:6px 6px 0 0;outline:none;min-width:34px;transition:background .15s,border-color .15s}
-  input.blank:focus{background:#181a3a}
-  input.blank.ok{color:var(--good);border-color:var(--good);background:rgba(52,211,153,.08)}
-  input.blank.bad{color:var(--bad);border-color:var(--bad);background:rgba(251,113,133,.08)}
-  input.blank.reveal{color:var(--warn);border-color:var(--warn)}
+.modes{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:11px}
+.mode{text-align:left;display:grid;gap:3px;padding:14px;background:var(--surf);border:1px solid var(--line);
+  border-radius:12px;cursor:pointer;font:inherit;color:var(--ink);transition:border-color .15s,transform .07s}
+.mode:hover{border-color:var(--lamp)}
+.mode:active{transform:translateY(1px)}
+.mode b{font-size:15px}
+.mode small{color:var(--mut);font-size:12.5px;line-height:1.45}
+.mode .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lamp)}
 
-  .w{padding:0 1px;border-radius:5px}
-  .w.correct{color:var(--good)}
-  .w.wrong{color:var(--bad);text-decoration:underline wavy var(--bad)}
-  .w.hint{color:var(--muted);opacity:.55}
-  .w.up{color:var(--muted);opacity:.4;letter-spacing:1px}
-  .w.cur{background:rgba(124,92,255,.28);box-shadow:0 0 0 2px rgba(124,92,255,.5);border-radius:6px;color:#fff;font-weight:700}
-  .w.flash{background:rgba(251,113,133,.3);box-shadow:0 0 0 2px var(--bad);color:#fff;border-radius:6px}
-  .caret{display:inline-block;width:2px;height:1.05em;background:var(--accent2);margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
+/* essay rendering */
+.prose{font-family:var(--serif);font-size:17.5px;line-height:1.72;color:var(--ink);max-width:66ch}
+.prose + .prose{margin-top:14px}
+.fixed{color:var(--seam);font-style:italic}
+.adapt{color:var(--sig);background:var(--sigSoft);border-radius:4px;padding:0 3px;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.band{border-left:3px solid var(--line);padding:11px 0 11px 15px;margin-top:15px;font-family:var(--serif);font-size:17px;line-height:1.65}
+.band.turn{border-color:var(--lamp)}
+.band.close{border-color:var(--stage)}
+.band b{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+.band.turn b{color:var(--lamp)} .band.close b{color:var(--stage)}
 
-  .fl .w{cursor:pointer;color:var(--muted);transition:color .12s}
-  .fl .w:hover{color:var(--ink)}
-  .fl .w.shown{color:var(--good);font-weight:600;cursor:default}
+.ev{display:grid;grid-template-columns:1.15fr 1fr 1.35fr;gap:0;border:1px solid var(--line);
+  border-radius:12px;overflow:hidden;margin-top:12px;background:var(--surf)}
+@media(max-width:760px){.ev{grid-template-columns:1fr}}
+.ev > div{padding:13px 15px;border-right:1px solid var(--line)}
+.ev > div:last-child{border-right:0}
+@media(max-width:760px){.ev > div{border-right:0;border-bottom:1px solid var(--line)}
+  .ev > div:last-child{border-bottom:0}}
+.ev .q{font-family:var(--serif);font-size:16px;border-left:3px solid var(--lamp)}
+.ev .q small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mut);margin-top:7px}
+.ev .t{font-size:14px;color:var(--ink2)}
+.ev ul{margin:0;padding-left:17px;font-size:14.3px;color:var(--ink2)}
+.ev li + li{margin-top:7px}
 
-  .typebar{position:sticky;bottom:0;margin-top:16px;display:flex;gap:10px;align-items:center;background:var(--card);padding:10px 0 max(2px,env(safe-area-inset-bottom))}
-  #typein,#examarea{background:#0e0f22;border:2px solid var(--accent);border-radius:13px;color:var(--ink);font-size:18px;font-weight:600;padding:13px 15px;outline:none;width:100%}
-  #typein{flex:1}
-  #typein::placeholder{color:#6b71a3;font-weight:500}
-  #examarea{min-height:200px;line-height:1.8;resize:vertical;font-weight:500}
+/* drill runner */
+.cue{background:var(--surf2);border:1px solid var(--line);border-left:3px solid var(--lamp);
+  border-radius:10px;padding:13px 15px;margin-bottom:14px}
+.cue .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+.cue .txt{font-family:var(--serif);font-size:17px;line-height:1.6}
+.cue .sub{font-size:13.5px;color:var(--mut);margin-top:7px}
+.field{width:100%;font:inherit;font-family:var(--serif);font-size:17px;line-height:1.6;color:var(--ink);
+  background:var(--surf2);border:1px solid var(--line2);border-radius:11px;padding:13px 14px;resize:vertical}
+.field:focus{border-color:var(--lamp);outline:none;background:var(--surf)}
+.progress{height:5px;border-radius:999px;background:var(--line);overflow:hidden;margin-bottom:16px}
+.progress i{display:block;height:100%;background:var(--lamp);transition:width .3s}
+.marked{font-family:var(--serif);font-size:17px;line-height:1.75}
+.marked .ok{color:var(--good)}
+.marked .no{color:var(--bad);text-decoration:line-through;text-decoration-thickness:1px}
+.marked .ex{color:var(--mut);opacity:.7}
+.score{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:12px 0 8px;font-variant-numeric:tabular-nums}
+.model{font-family:var(--serif);font-size:16.5px;line-height:1.65;color:var(--ink2);
+  border-left:3px solid var(--line2);padding-left:13px;margin-top:11px}
+.checks{display:grid;gap:7px;margin-top:10px}
+.check{display:grid;grid-template-columns:20px 1fr;gap:9px;align-items:start;font-size:14.5px}
+.check b{font-family:var(--mono);font-size:14px}
+.check.y b{color:var(--good)} .check.n b{color:var(--bad)}
+.check.n span{color:var(--mut)}
+.gradebtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.gradebtns .btn.suggest{border-color:var(--lamp);box-shadow:0 0 0 3px var(--lampSoft)}
 
-  .tiles{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-  .answerbox{min-height:54px;background:#0e0f22;border:1px dashed var(--line);border-radius:13px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-  .tile{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .07s}
-  .tile:hover{background:#2c2e63}
-  .tile:active{transform:scale(.96)}
-  .tile.ok{background:rgba(52,211,153,.18);border-color:var(--good);color:var(--good)}
-  .tile.bad{background:rgba(251,113,133,.16);border-color:var(--bad);color:var(--bad)}
-  .tile.ph{visibility:hidden}
+/* first letters */
+.fl{font-family:var(--mono);font-size:15.5px;line-height:2.05;letter-spacing:.02em}
+.fl .w{cursor:pointer;padding:1px 2px;border-radius:4px}
+.fl .w:hover{background:var(--lampSoft)}
+.fl .w.shown{color:var(--lamp);background:var(--lampSoft)}
 
-  .diff .w.correct{color:var(--good)}
-  .diff .w.miss{color:var(--bad);background:rgba(251,113,133,.13);border-radius:4px;text-decoration:underline wavy var(--bad)}
+/* match game */
+.opts{display:grid;gap:9px;margin-top:14px}
+.opt{text-align:left;font:inherit;font-size:15px;color:var(--ink);background:var(--surf2);
+  border:1px solid var(--line2);border-radius:11px;padding:12px 14px;cursor:pointer}
+.opt:hover{border-color:var(--lamp)}
+.opt.y{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.opt.n{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.opt small{display:block;color:var(--mut);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.1em;text-transform:uppercase;margin-top:5px}
 
-  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-  .note{font-size:13px;color:var(--muted);margin-top:10px}
-  .hidden{display:none!important}
-
-  .result{text-align:center;padding:16px 6px}
-  .result .big{font-size:54px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
-  .result .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
-  .result .kv{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:88px}
-  .result .kv b{display:block;font-size:22px}
-  .result .kv small{color:var(--muted)}
-
-  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--line);padding:11px 18px;border-radius:13px;font-weight:700;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;z-index:50;max-width:90vw;text-align:center}
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  #confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
-  .combo{position:fixed;right:18px;bottom:84px;font-weight:900;font-size:15px;color:var(--warn);opacity:0;transition:.2s;z-index:40}
-  .combo.show{opacity:1}
-
-  .modal{position:fixed;inset:0;background:rgba(6,6,18,.7);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:70;padding:18px}
-  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;max-width:420px;width:100%;box-shadow:var(--shadow)}
-  .modal h3{margin:0 0 12px}
-  .setrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-  .setrow:last-of-type{border-bottom:0}
-
-  footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px;line-height:1.7}
-  @media(max-width:560px){
-    .passage{font-size:17px;line-height:1.95}
-    .moderow .label{min-width:0}
-    .bigring{width:84px;height:84px}.bigring::after{width:68px;height:68px;font-size:18px}
-  }
+.timer{font-family:var(--mono);font-size:26px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.timer.low{color:var(--bad)}
+table.plan{width:100%;border-collapse:collapse;font-size:14.5px}
+table.plan th,table.plan td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+table.plan th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.scroll{overflow-x:auto}
+.note{font-size:14.3px;color:var(--ink2);max-width:70ch}
+.note + .note{margin-top:10px}
+ul.tight{margin:8px 0 0;padding-left:19px;font-size:14.3px;color:var(--ink2)}
+ul.tight li + li{margin-top:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:var(--ink);color:var(--bg);
+  padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9}
+.toast.on{opacity:1}
+.foot{color:var(--mut);font-size:12.5px;text-align:center;margin-top:26px;font-family:var(--mono);letter-spacing:.06em}
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
-<div class="wrap">
-  <header class="top">
-    <div class="brand" onclick="goHome()">
-      <div class="logo" style="background:linear-gradient(135deg,#7c5cff,#22d3ee);display:grid;place-items:center;font-size:22px"><img src="./icon-192.png" alt="" style="width:100%;height:100%" onerror="this.style.display='none';this.parentNode.textContent='📖'"></div>
-      <div>
-        <h1>Essay Memoriser</h1>
-        <p>Curious Incident · Module B</p>
-      </div>
-    </div>
-    <div class="hstats">
-      <button class="btn sm primary hidden" id="installBtn">⤓ Install</button>
-      <div class="lvl" title="Level &amp; XP"><span>Lv <span class="num" id="lvlNum">1</span></span><div class="xpbar"><i id="xpFill"></i></div></div>
-      <span class="pill" id="streakPill" title="Daily streak (double-tap to reset all)">🔥 <span id="streakNum">0</span></span>
-      <button class="btn icbtn ghost" id="setBtn" title="Settings">⚙️</button>
-    </div>
-  </header>
+<header class="top"><div class="wrap"><div class="topin">
+  <button class="mark" data-act="home" style="font:inherit;background:none;border:0;padding:0;color:inherit;text-align:left">
+    <b>Billy Elliot</b><span>Common Module · Shell</span>
+  </button>
+  <div class="lamp" title="Lines mastered — recalled correctly three times, spaced">
+    <span class="dot" id="lampDot"></span><b id="lampPct">0%</b><small id="lampSub">learnt</small>
+  </div>
+  <button class="btn ic gh" data-act="theme" title="Switch theme" aria-label="Switch theme">◐</button>
+</div></div></header>
 
-  <div id="home"></div>
-  <div id="panel"></div>
-  <div id="view"></div>
-
-  <footer class="foot">
-    Built to make memorising less boring · works offline · your progress is saved on this device.
-  </footer>
-</div>
-
-<div id="toast"></div>
-<div class="combo" id="comboTag"></div>
-<div id="modalHost"></div>
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast"></div>
 
 <script>
-/* ============================================================
-   ESSAY DATA  (Quote Bank intentionally excluded)
-   [square brackets] = adaptable hook / concept phrase
-   ============================================================ */
+/* ═══════════════════════════════════════════════════════════════════════
+   THE ESSAY.  [] = adapt to the question.  {} = fixed theme wording.
+   ═══════════════════════════════════════════════════════════════════════ */
 const SECTIONS = [
-  { id:"intro", name:"Introduction", short:"Intro", icon:"🎯",
-    text:`Situated within a post-9/11 society marked by eroded public trust and a growing cultural awareness of neurodiversity, Mark Haddon’s novel The Curious Incident of the Dog in the Night-Time (2003) constructs a distinctive first-person narrative voice, defined by Christopher Boone’s literal cognition, to destabilise conventional notions of normality, truth and human connection. Through a hybrid form and distinctive narrative elements, Haddon filters the entire world through Christopher’s logical mind, revealing that his perception, his pursuit of truth and his hard-won agency are capabilities realised not despite his difference but through it, and challenging how we define [normality and ability].` },
-  { id:"bp1", name:"Body 1 · Perception", short:"Perception", icon:"🧠",
-    text:`A mind that orders the world through logic and pattern rather than emotion perceives not in a lesser way but in a different one, exposing how narrowly society defines normality. Haddon embeds this difference in the novel’s structure, numbering its chapters with prime numbers so that the form itself enacts Christopher’s logical cognition. The recurring mathematical motif becomes a worldview through the simile ‘prime numbers are like life,’ which captures Christopher finding meaning in structure rather than sentiment. His intelligence is conveyed through accumulation, his self-introduction listing the world’s capitals and ‘every prime number up to 7,057,’ so that information becomes the substance of his identity. Yet the same mind that masters facts finds people opaque, and the simple declarative ‘I find people confusing’ enacts the literalism it describes, reducing the ambiguity of social life to a flat statement that signals not stupidity but a different ordering of priorities. Through this convergence of structure, motif and language, Haddon positions such perception as valid and capable, unsettling the assumption that to think differently is to think less.` },
-  { id:"bp2", name:"Body 2 · Truth", short:"Truth", icon:"⚖️",
-    text:`Even well-intentioned deception corrodes the trust on which relationships depend, exposing honesty as the fragile but indispensable foundation of human connection. Haddon establishes truth as the bedrock of his protagonist through the declarative ‘I do not tell lies,’ a flat statement of character that leaves Christopher acutely vulnerable to a world that lies with ease. This vulnerability is sharpened by dramatic irony when Christopher reasons that his father ‘always tells me the truth, which means that he loves me’; the reader, who knows that Ed has invented the death of Christopher’s mother, recognises the trust as tragically misplaced, so that the equation of truth with love becomes the fault line along which the relationship breaks. That break is delivered through the epistolary form, as the discovery of his mother’s hidden letters exposes the deception and the plain declarative ‘Father had lied about this’ registers the totality of the betrayal. Crucially, Haddon refuses easy reconciliation, rebuilding trust only through honesty, as the emphatic repetition of Ed’s promise that he ‘would never, ever do anything to hurt’ him restores their bond on truthful terms. In doing so, the novel affirms that a genuine relationship can rest on nothing less than truth.` },
-  { id:"bp3", name:"Body 3 · Agency", short:"Agency", icon:"🚀",
-    text:`Genuine agency is measured not by conformity to a norm but by the courage to act through fear and the capability to author one’s own future. Christopher’s solo journey to London dramatises this, the visceral imagery of a station that leaves him ‘giddy and sick’ conveying the sensory ordeal he must overcome. Yet Haddon portrays him problem-solving rather than retreating, as the recurring motif of order returns and he narrows the chaos to ‘one sign at a time,’ turning his need for system into a tool for survival so that his agency lies in the very cognition the world has misread as a limitation. That capability hardens into ambition through the future tense of ‘I will become a scientist,’ which projects a self that has outgrown its earlier confinement. Haddon consolidates the transformation in the novel’s triumphant final cadence, where the high modality of ‘I can do anything,’ reinforced by the repetition of the first-person pronoun, converts a list of obstacles overcome into a declaration of selfhood. In closing on this assertion, Haddon redefines growth itself, inviting the reader to measure ability not against a narrow norm but against the courage and competence Christopher has proven to be entirely his own.` },
-  { id:"concl", name:"Conclusion", short:"Conclusion", icon:"🏁",
-    text:`Across the novel, Haddon moves Christopher from a precise but isolating perception, through the rupture and repair of trust, to the agency of his journey and the future he claims beyond it. Because this growth is rendered through the form and language of Christopher’s own mind, the novel insists that his perception, his integrity and his capability are not achievements made despite his difference but expressions of it. In doing so, The Curious Incident of the Dog in the Night-Time asks its reader to abandon a narrow measure of [normality and ability], and to recognise that understanding, courage and selfhood can be reached by more paths than one.` },
+{
+  id:"intro", short:"Intro", name:"Introduction",
+  lines:[
+    {id:"intro.1", label:"Opening claim", text:"Texts can illuminate the complexities of the human experience by revealing [how individuals navigate and resist the forces that seek to define them]."},
+    {id:"intro.2", label:"Text and context", text:"Stephen Daldry’s film Billy Elliot (2000), set in the politically turbulent landscape of Thatcher-era England, explores the intersections of class, gender and self-expression to demonstrate how identity is shaped and challenged."},
+    {id:"intro.3", label:"Three-part roadmap", text:"Through cinematic techniques and nuanced characterisation, Daldry critiques {the inherited codes that confine a community to a single way of living}, interrogates {the defiance demanded of those who pursue a self their world has no language for}, and ultimately celebrates {the acceptance through which one life can transform the collective that once denied it}."},
+    {id:"intro.4", label:"What the audience leaves with", text:"By charting Billy’s paradoxical pursuit of ballet within a mining town defined by tradition, Daldry invites audiences to reconsider [their preconceived assumptions about who is permitted to belong] and recognise that [a life so transformed is never won without cost]."}
+  ]
+},
+{
+  id:"b1", short:"Body 1", name:"Body 1 — The restrictive environment",
+  shell:{id:"b1.shell", text:"When a community’s survival appears to depend on conformity, [the codes that once secured belonging harden into constraint], leaving individuals little room to discover who they might otherwise become."},
+  context:{id:"b1.ctx", text:"Daldry reflects the hypermasculine culture of a County Durham pit village during the 1984-85 miners’ strike, where work and identity passed down the male line, exposing how a community under economic siege comes to read difference as betrayal."},
+  cards:[
+    {id:"b1.c1", cue:"Jackie lists what lads are allowed to do", who:"Jackie",
+     quote:"“Lads do football… or boxing… or wrestling. Not friggin’ ballet.”",
+     tech:["Shot/reverse shot","tight close-ups","reductive listing"],
+     evals:["The cutting denies father and son a shared frame, presenting the code as inherited rather than reasoned",
+            "The exhaustiveness of the list exposes a community with no vocabulary for a boy who wants otherwise"]},
+    {id:"b1.c2", cue:"George rounds on Billy in the boxing hall", who:"George, boxing hall",
+     quote:"“You’re a disgrace to them gloves, your father, and the traditions of this boxing hall.”",
+     tech:["Long shot of Jackie behind the gym cage, symbol of entrapment","invective dialogue","tricolon"],
+     evals:["Tricolon fuses sport, family and heritage into one inherited duty, so failure in the ring becomes failure of belonging",
+            "The wire framing Jackie marks him as prisoner of the very code he is enforcing"]},
+    {id:"b1.c3", cue:"Jackie, asked about London — the furthest he has ever been", who:"Jackie, on London",
+     quote:"“I never made it past Durham.”",
+     tech:["Understatement","colloquial dialogue"],
+     evals:["Understatement compresses a lifetime of foreclosed horizons into a single flat clause",
+            "The environment restricts not from malice but because it was itself defeated"], turnAt:1}
+  ],
+  turn:{id:"b1.turn", text:"Yet such constraint is born of defeat rather than malice: Jackie polices horizons he was never permitted to cross."},
+  close:{id:"b1.close", text:"Daldry positions audiences to recognise such environments as the reflex of communities under siege, where restriction becomes the last form of belonging still affordable."}
+},
+{
+  id:"b2", short:"Body 2", name:"Body 2 — Resistance to social pressure",
+  shell:{id:"b2.shell", text:"Resistance to social pressure reveals that [private passion can articulate a self for which a community has no language], so that determination becomes less an act of rebellion than an insistence upon being fully known."},
+  context:{id:"b2.ctx", text:"Daldry criticises the absolute solidarity the strike demanded of its own, challenging the sacrifice of individual identity and promoting a reassessment of the male stoicism that made such sacrifice seem natural."},
+  cards:[
+    {id:"b2.c1", cue:"The line Billy returns to whenever he doubts himself", who:"mother’s letter",
+     quote:"“Always be yourself.”",
+     tech:["Recurring motif","imperative mood"],
+     evals:["Recurring at every point of doubt, the imperative licenses his difference through maternal love",
+            "Defiance is reframed as fidelity to the self rather than betrayal of the family"]},
+    {id:"b2.c2", cue:"What Billy does instead of arguing, once Jackie forbids ballet", who:"", scene:true,
+     quote:"Dance of defiance scene, after Jackie forbids ballet",
+     tech:["Montage of axial jump cuts","triumphal non-diegetic crescendo","shot from behind the gym cage"],
+     evals:["The montage holds Billy centred as argument gives way to movement, locating articulacy in the body",
+            "The wire framing his freest moment insists the town’s constraint has not gone anywhere"]},
+    {id:"b2.c3", cue:"Billy defends himself to Michael", who:"Billy to Michael",
+     quote:"“Just because I like ballet doesn’t mean I’m a poof, you know.”",
+     tech:["Shot/reverse shot","close-up on facial reactions","honest dialogue"],
+     evals:["Cutting to Michael’s face makes the cost of Billy’s defence visible on screen",
+            "He claims his own difference in the idiom that condemns his friend’s, so resistance stays entangled with prejudice"], turnAt:1}
+  ],
+  turn:{id:"b2.turn", text:"Yet such resistance is rarely pure: he defends dance in the idiom used to condemn it, and at the expense of the friend that idiom targets."},
+  close:{id:"b2.close", text:"Daldry positions audiences to value resistance precisely because it is imperfect: courage is managed in fragments, never simply possessed."}
+},
+{
+  id:"b3", short:"Body 3", name:"Body 3 — Acceptance and transformation",
+  shell:{id:"b3.shell", text:"When acceptance is finally granted, [transformation extends beyond the individual to the collective that once withheld it], though the freedom one person gains is seldom won without another’s sacrifice."},
+  context:{id:"b3.ctx", text:"Daldry reflects the shifting sociocultural values of the late twentieth century, looking back in 2000 with fifteen years’ hindsight on the strike’s defeat, championing a more inclusive society while refusing to forget what its progress cost."},
+  cards:[
+    {id:"b3.c1", cue:"Jackie breaks the strike at the pit gates, Tony chasing him", who:"Jackie, pit gates, pursued by Tony",
+     quote:"“Give the boy a chance.”",
+     tech:["High-angle long shot","diegetic cacophony of the crowd","picket line as symbol"],
+     evals:["The high angle diminishes Jackie inside the collective he is breaking faith with",
+            "Acceptance is measured as the surrender of everything that made him legible to his own community"]},
+    {id:"b3.c2", cue:"Billy answers the Royal Ballet panel — what it feels like to dance", who:"Billy, Royal Ballet audition",
+     quote:"“Flyin’ like a bird. Like electricity.”",
+     tech:["Framing that isolates Billy across the examiners’ table","simile"],
+     evals:["The table between Billy and the panel frames the class line he is crossing",
+            "He reaches for simile because Everington gave him no other language for what he feels"]},
+    {id:"b3.c3", cue:"The final cross-cut: two cages, one leap", who:"", scene:true,
+     quote:"Pit cage descends as Billy departs; adult leap in Bourne’s Swan Lake",
+     tech:["Cross-cutting","low-angle slow motion of the leap","diegetic Swan Lake score","cut to Jackie’s face"],
+     evals:["Cross-cutting binds ascent to descent so that neither can be read alone",
+            "The low angle grants Billy the elevation the pit denied his father"], turnAt:1}
+  ],
+  turn:{id:"b3.turn", text:"Yet transformation is purchased: Jackie’s acceptance costs him his solidarity, and Billy’s ascent is cross-cut with the pit cage carrying his family into the dark."},
+  close:{id:"b3.close", text:"Transcendence and defeat occupy the same frame, and Daldry positions audiences to hold both at once: one realised life honours, without redeeming, the community that paid for it."}
+},
+{
+  id:"conc", short:"Conclusion", name:"Conclusion",
+  lines:[
+    {id:"conc.1", label:"Why the film endures", text:"Billy Elliot endures because it refuses to simplify the collision between the individual and the collective."},
+    {id:"conc.2", label:"The three strands, held in tension", text:"{The world that forecloses Billy’s identity}, {the resistance through which he insists upon it} and {the acceptance that finally transforms his family} are held in tension rather than resolved, since Daldry never lets one be won without cost to another."},
+    {id:"conc.3", label:"Final judgement", text:"Audiences leave challenged to see that [human experiences are rarely singular: one boy’s liberation carries the grief of a defeated town], a paradox that makes its vision of identity endure."}
+  ]
+}
 ];
-const WHOLE = { id:"whole", name:"Whole Essay", short:"Whole", icon:"👑", text: SECTIONS.map(s=>s.text).join("\n\n") };
-const ALL = SECTIONS.concat([WHOLE]);
-const getSection = id => ALL.find(s=>s.id===id);
 
-/* ============================================================
-   STATE + PERSISTENCE
-   ============================================================ */
-const SAVE_KEY="essayMemoriser.v2";
-let state=load();
-function defaults(){ return { xp:0, best:{}, weak:{}, streak:{count:0,last:null}, last:null,
-  srs:{}, plan:{start:null},
-  settings:{sound:true, hint:"first", fuzzy:true} }; }
-function load(){ try{ const s=JSON.parse(localStorage.getItem(SAVE_KEY)); if(s&&typeof s==="object"){ const d=defaults(); return Object.assign(d,s,{settings:Object.assign(d.settings,s.settings||{})}); } }catch(e){} return defaults(); }
-function save(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(state)); }catch(e){} }
-function bestOf(id){ return state.best[id]||(state.best[id]={cloze:0,type:0,first:0,order:0,exam:0}); }
-function recordBest(id,mode,pct){ const b=bestOf(id); if(pct>(b[mode]||0)){ b[mode]=Math.round(pct); save(); return true;} return false; }
-function mastery(id){ const b=state.best[id]; if(!b) return 0;
-  return Math.round(Math.max(b.exam||0, b.type||0, b.coach||0, (b.cloze||0)*0.9, (b.first||0)*0.7, (b.order||0)*0.8)); }
-function overallMastery(){ const m=SECTIONS.map(s=>mastery(s.id)); return Math.round(m.reduce((a,b)=>a+b,0)/m.length); }
+const STEMS = [
+ "Texts can challenge us to reconsider our assumptions about human experiences. To what extent does this reflect your understanding of your prescribed text?",
+ "Explore how your prescribed text represents the tension between individual and collective human experiences.",
+ "How does your prescribed text represent the paradoxes and inconsistencies in human behaviour and motivations?",
+ "Analyse how storytelling invites audiences to see human experiences in new ways.",
+ "“The most powerful texts show us that human experiences are never simple.” Evaluate this statement with close reference to your prescribed text.",
+ "How does your prescribed text explore the ways individuals respond to the collective experiences that shape them?",
+ "To what extent does your prescribed text reveal that human experiences emerge from, and are limited by, the world that produces them?"
+];
 
-/* weak words */
-function weakAdd(secId,wi){ if(secId==="whole") return; state.weak[secId]=state.weak[secId]||{}; state.weak[secId][wi]=Math.min(9,(state.weak[secId][wi]||0)+1); save(); }
-function weakClear(secId,wi){ if(state.weak[secId]&&state.weak[secId][wi]){ state.weak[secId][wi]--; if(state.weak[secId][wi]<=0) delete state.weak[secId][wi]; save(); } }
-function weakList(){ const out=[]; for(const sid in state.weak){ const sec=getSection(sid); if(!sec) continue; const ws=words(sec.text);
-  for(const wi in state.weak[sid]){ const c=state.weak[sid][wi]; if(c>0&&ws[+wi]) out.push({sid,wi:+wi,count:c,word:ws[+wi].x}); } }
-  out.sort((a,b)=>b.count-a.count); return out; }
-function weakCount(){ return weakList().length; }
-
-/* levels */
-const levelFor=xp=>Math.floor(Math.sqrt(xp/25));
-const xpForLevel=L=>25*L*L;
-function refreshHeader(){
-  const L=levelFor(state.xp), cur=xpForLevel(L), next=xpForLevel(L+1);
-  $("lvlNum").textContent=L+1;
-  $("xpFill").style.width=(next>cur?((state.xp-cur)/(next-cur))*100:100)+"%";
-  $("streakNum").textContent=state.streak.count||0;
-}
-function addXP(n){ const b=levelFor(state.xp); state.xp+=n; save(); const a=levelFor(state.xp); refreshHeader();
-  if(a>b){ toast("⭐ Level up! You reached Level "+(a+1)); burst(); } }
-function bumpStreak(){ const t=todayStr(); const s=state.streak; if(s.last===t) return;
-  const ys=dstr(new Date(Date.now()-864e5)); s.count=(s.last===ys)?(s.count||0)+1:1; s.last=t; save(); refreshHeader(); }
-const todayStr=()=>dstr(new Date());
-const dstr=d=>d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-
-/* ============================================================
-   TEXT TOOLS  (core — unit tested)
-   ============================================================ */
-const stripBrackets=t=>t.replace(/[\[\]]/g,"");
-const loose=w=>(w||"").toLowerCase().replace(/[’‘`']/g,"").replace(/[^a-z0-9]/g,"");
-const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const WORD_RE=/[A-Za-z0-9]+(?:['’\-\/,][A-Za-z0-9]+)*/g;
-function tokenize(text){ text=stripBrackets(text); const toks=[]; let last=0,m; WORD_RE.lastIndex=0;
-  while((m=WORD_RE.exec(text))){ if(m.index>last) toks.push({t:"sep",x:text.slice(last,m.index)});
-    toks.push({t:"w",x:m[0],c:loose(m[0])}); last=m.index+m[0].length; }
-  if(last<text.length) toks.push({t:"sep",x:text.slice(last)}); return toks; }
-const words=text=>tokenize(text).filter(t=>t.t==="w");
-const wordCount=text=>words(text).length;
-function studyHTML(text){ let out="",last=0,m; const re=/\[([^\]]*)\]/g;
-  while((m=re.exec(text))){ out+=quoteHL(text.slice(last,m.index)); out+='<span class="adapt">'+quoteHL(m[1])+'</span>'; last=m.index+m[0].length; }
-  out+=quoteHL(text.slice(last)); return out; }
-const quoteHL=t=>esc(t).replace(/(‘[^’]*’)/g,'<span class="qte">$1</span>');
-function sentences(text){ text=stripBrackets(text).replace(/\s+/g," ").trim();
-  return text.split(/(?<=[.;!?]['’”"]?)\s+/).map(s=>s.trim()).filter(Boolean); }
-
-/* fuzzy spelling tolerance — Damerau–Levenshtein (handles missing/wrong/swapped letters).
-   same(typed,target) decides if a typed word counts as the target. Tolerance scales with
-   the TARGET word length so short function words still need to be exact. */
-function editDistance(a,b){ const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
-  const d=Array.from({length:m+1},(_,i)=>{const r=new Int32Array(n+1); r[0]=i; return r;});
-  for(let j=0;j<=n;j++) d[0][j]=j;
-  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++){
-    const cost=a[i-1]===b[j-1]?0:1;
-    d[i][j]=Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+cost);
-    if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1]) d[i][j]=Math.min(d[i][j], d[i-2][j-2]+1);
-  }
-  return d[m][n]; }
-function tolFor(L){ return L<=2?0 : L<=6?1 : 2; }
-function same(typed,target){ if(typed===target) return true;
-  if(!state.settings.fuzzy || !typed || !target) return false;
-  const tol=tolFor(target.length);
-  if(tol===0 || Math.abs(typed.length-target.length)>tol) return false;
-  return editDistance(typed,target)<=tol; }
-
-/* word-level LCS diff for Exam mode */
-function wordDiff(orig,typed){
-  const n=orig.length,m=typed.length;
-  const dp=Array.from({length:n+1},()=>new Int32Array(m+1));
-  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
-    dp[i][j]= same(typed[j],orig[i]) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
-  const matched=new Uint8Array(n); let i=0,j=0;
-  while(i<n&&j<m){ if(same(typed[j],orig[i])){ matched[i]=1; i++; j++; }
-    else if(dp[i+1][j]>=dp[i][j+1]) i++; else j++; }
-  return matched;
-}
-
-/* ============================================================
-   SOUND
-   ============================================================ */
-let actx=null;
-function beep(freq,dur,type,vol){ if(!state.settings.sound) return;
-  try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)();
-    const o=actx.createOscillator(),g=actx.createGain(); o.type=type||"sine"; o.frequency.value=freq; g.gain.value=vol||0.05;
-    o.connect(g); g.connect(actx.destination); o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+(dur||0.12)); o.stop(actx.currentTime+(dur||0.12)); }catch(e){} }
-const sfx={ ok(){beep(660,.09,"triangle",.05);}, great(){beep(880,.08,"triangle",.05);setTimeout(()=>beep(1320,.1,"triangle",.05),70);},
-  no(){beep(150,.16,"sawtooth",.04);}, win(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.13,"triangle",.06),i*110));} };
-
-/* ============================================================
-   UI HELPERS
-   ============================================================ */
-const $=id=>document.getElementById(id);
-function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2000); }
-function showCombo(n){ const c=$("comboTag"); if(n>=3){ c.textContent="🔥 "+n+" combo"; c.classList.add("show"); clearTimeout(c._t); c._t=setTimeout(()=>c.classList.remove("show"),900);} else c.classList.remove("show"); }
-function burst(){ const cv=$("confetti"),ctx=cv.getContext("2d"); cv.width=innerWidth; cv.height=innerHeight;
-  const cols=["#7c5cff","#22d3ee","#34d399","#fbbf24","#fb7185","#fff"],P=[];
-  for(let i=0;i<150;i++)P.push({x:innerWidth/2+(Math.random()-.5)*140,y:innerHeight*.35,vx:(Math.random()-.5)*9,vy:Math.random()*-11-4,g:.32+Math.random()*.15,s:6+Math.random()*7,c:cols[i%cols.length],r:Math.random()*6,vr:(Math.random()-.5)*.4});
-  let f=0;(function run(){ ctx.clearRect(0,0,cv.width,cv.height); f++;
-    P.forEach(p=>{ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.55); ctx.restore(); });
-    if(f<130) requestAnimationFrame(run); else ctx.clearRect(0,0,cv.width,cv.height); })(); }
-
-/* ============================================================
-   HOME / DASHBOARD
-   ============================================================ */
-let currentSectionId=null;
-function recommend(){
-  // lowest-mastery section + the next rung on its ladder
-  let lo=SECTIONS[0], lm=mastery(SECTIONS[0].id);
-  SECTIONS.forEach(s=>{ const m=mastery(s.id); if(m<lm){ lm=m; lo=s; } });
-  let mode = lm===0?"study": lm<40?"cloze": lm<70?"first": lm<90?"type":"exam";
-  return {sec:lo, mode, m:lm};
-}
-function renderHome(){
-  const h=$("home"), wk=weakCount();
-  h.innerHTML = coachHeroHTML() + `
-    <div class="subhead">Free practice — pick any paragraph &amp; mode</div>
-    ${wk?`<div style="margin:0 2px 12px"><button class="btn sm" id="weakBtn">🎯 Drill ${wk} weak word${wk>1?"s":""}</button></div>`:""}
-    <div class="grid" id="grid"></div>`;
-  wireCoachHero();
-  if($("weakBtn")) $("weakBtn").onclick=()=>startMode(null,"weak");
-  const g=$("grid");
-  ALL.forEach(s=>{ const m=mastery(s.id); const card=document.createElement("div");
-    card.className="scard"+(s.id===currentSectionId?" active":"");
-    card.innerHTML=`<div class="ring" style="--p:${m}" data-label="${m}%"></div><div class="ico">${s.icon}</div>
-      <h3>${s.name}</h3><div class="meta">${s.id==="whole"?"All 5 · the boss":wordCount(s.text)+" words"}</div>`;
-    card.onclick=()=>{ currentSectionId=s.id; renderHome(); renderPanel(s.id); $("panel").scrollIntoView({behavior:"smooth",block:"start"}); };
-    g.appendChild(card); });
-}
-const modeName=m=>({study:"Study",cloze:"Fill the Gaps",first:"First Letters",type:"Type It Out",order:"Unscramble",exam:"Exam",weak:"Weak Words"})[m]||m;
-
-function renderPanel(id){
-  const s=getSection(id),b=bestOf(id),p=$("panel");
-  p.innerHTML=`<div class="panel"><h2>${s.icon} ${s.name}</h2>
-    <div class="sub">${s.id==="whole"?"The full essay — best for First Letters, Type-It-Out &amp; the Exam.":wordCount(s.text)+" words · best exam "+(b.exam||0)+"% · best type "+(b.type||0)+"%"}</div>
-    <div class="modes">
-      <div class="moderow"><span class="label">📖 Study</span><button class="btn sm primary" data-go="study">Open</button><span class="desc">Read it, hear it, see the adaptable parts. Start here.</span></div>
-      <div class="moderow"><span class="label">🕳️ Fill the Gaps</span>
-        <div class="seg"><button data-go="cloze" data-d="0.2">Easy</button><button data-go="cloze" data-d="0.4">Medium</button><button data-go="cloze" data-d="0.6">Hard</button><button data-go="cloze" data-d="1">Expert</button></div>
-        <span class="desc">Type the missing words; more blanks each level · best ${b.cloze||0}%.</span></div>
-      <div class="moderow"><span class="label">🔤 First Letters</span><button class="btn sm primary" data-go="first">Open</button><span class="desc">Every word shrinks to its first letter · best ${b.first||0}%.</span></div>
-      <div class="moderow"><span class="label">⌨️ Type It Out</span><button class="btn sm primary" data-go="type">Start</button><span class="desc">Whole thing from memory with shrinking hints · best ${b.type||0}%.</span></div>
-      <div class="moderow"><span class="label">🧩 Unscramble</span><button class="btn sm primary" data-go="order">Start</button><span class="desc">Rebuild each sentence from shuffled tiles · best ${b.order||0}%.</span></div>
-      <div class="moderow"><span class="label">📝 Exam</span><button class="btn sm good" data-go="exam">Sit exam</button><span class="desc">Write it under a timer, no hints. Get a word-accurate report · best ${b.exam||0}%.</span></div>
-    </div></div>`;
-  p.querySelectorAll("[data-go]").forEach(btn=>btn.onclick=()=>startMode(id,btn.getAttribute("data-go"),parseFloat(btn.getAttribute("data-d")||"0")));
-}
-
-/* ============================================================
-   ROUTER
-   ============================================================ */
-function startMode(id,mode,d){
-  if("speechSynthesis" in window) window.speechSynthesis.cancel();
-  if(mode!=="weak"){ state.last={section:id,mode,diff:d||0}; save(); }
-  $("home").classList.add("hidden"); $("panel").classList.add("hidden");
-  ({study:modeStudy,cloze:modeCloze,first:modeFirst,type:modeType,order:modeOrder,exam:modeExam,weak:modeWeak})[mode](id,d);
-  $("view").scrollIntoView({behavior:"smooth",block:"start"});
-}
-function goHome(){ if("speechSynthesis" in window) window.speechSynthesis.cancel();
-  $("view").innerHTML=""; $("home").classList.remove("hidden"); $("panel").classList.remove("hidden");
-  renderHome(); if(currentSectionId) renderPanel(currentSectionId); window.scrollTo({top:0,behavior:"smooth"}); }
-function playShell(s,modeName,tag,body){ return `<div class="play"><div class="playhead">
-    <button class="btn sm ghost" onclick="goHome()">← Back</button>
-    <div class="title">${s.icon} ${s.name} <span class="tag">${tag}</span></div>
-    <div class="statline" id="statline"></div></div><div id="modebody">${body}</div></div>`; }
-
-/* ============================================================
-   MODE: STUDY
-   ============================================================ */
-let speaking=false;
-function modeStudy(id){ const s=getSection(id);
-  $("view").innerHTML=playShell(s,"Study","read",`
-    <div class="passage read">${studyHTML(s.text)}</div>
-    <div class="actions"><button class="btn" id="speakBtn">🔊 Read aloud</button>
-      <button class="btn primary" onclick="startMode('${id}','cloze',0.2)">I've read it → Fill the Gaps →</button></div>
-    <div class="note">✏️ The <span class="adapt">dotted italic</span> parts are the hook &amp; concept phrase you swap per question. <span class="qte">Orange</span> = quotes.</div>`);
-  $("statline").innerHTML=`<span class="stat">${wordCount(s.text)} <small>words</small></span><span class="stat">~${Math.max(1,Math.round(wordCount(s.text)/130))} <small>min</small></span>`;
-  const sb=$("speakBtn"); sb.onclick=()=>{ if(!("speechSynthesis" in window)){ toast("Speech not supported here"); return; }
-    if(speaking){ window.speechSynthesis.cancel(); speaking=false; sb.textContent="🔊 Read aloud"; return; }
-    const u=new SpeechSynthesisUtterance(stripBrackets(s.text)); u.rate=.95; u.onend=()=>{speaking=false;sb.textContent="🔊 Read aloud";};
-    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); speaking=true; sb.textContent="⏹ Stop"; };
-}
-
-/* ============================================================
-   MODE: FILL THE GAPS
-   ============================================================ */
-let C=null;
-function pickBlanks(ws,diff){ const N=ws.length; if(diff>=1) return new Set(ws.map((_,i)=>i));
-  const stop=new Set("the a an of to and in on that as is are was his her its it he we by but not this for with at from which who".split(" "));
-  const scored=ws.map((w,i)=>({i,s:(stop.has(w.c)?0:1.2)+Math.random()})); scored.sort((a,b)=>b.s-a.s);
-  return new Set(scored.slice(0,Math.max(1,Math.round(diff*N))).map(o=>o.i)); }
-function modeCloze(id,diff){ const s=getSection(id),toks=tokenize(s.text),ws=toks.filter(t=>t.t==="w");
-  const blanks=pickBlanks(ws,diff); C={id,toks,ws,blanks,diff,total:blanks.size,inputs:[]};
-  let wi=-1,html=""; toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
-    if(blanks.has(wi)) html+=`<input class="blank" data-i="${wi}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(34,t.x.length*11+12)}px">`;
-    else html+=`<span class="w">${esc(t.x)}</span>`; });
-  const dn=({0.2:"Easy",0.4:"Medium",0.6:"Hard",1:"Expert"})[diff]||"";
-  $("view").innerHTML=playShell(s,"Fill the Gaps · "+dn,dn,`<div class="passage">${html}</div>
-    <div class="actions"><button class="btn" id="hintBtn">💡 First letters</button>
-      <button class="btn primary" id="checkBtn">✓ Check</button><button class="btn" id="revealBtn">👁 Reveal</button></div>
-    <div class="note" id="clozeNote">Correct words turn green and jump you to the next blank.</div>`);
-  const inputs=[...$("modebody").querySelectorAll("input.blank")]; C.inputs=inputs; updateClozeStat();
-  inputs.forEach((inp,idx)=>{ inp.addEventListener("input",()=>{ const wi=+inp.dataset.i,target=ws[wi];
-      inp.classList.remove("bad","reveal");
-      if(same(loose(inp.value),target.c) && inp.value.trim()!==""){ if(!inp.classList.contains("ok")){inp.classList.add("ok");sfx.ok();}
-        const nxt=inputs[idx+1]; if(nxt&&!nxt.classList.contains("ok")) nxt.focus(); } else inp.classList.remove("ok"); updateClozeStat(); });
-    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();(inputs[idx+1]||$("checkBtn")).focus();} }); });
-  if(inputs[0]) inputs[0].focus();
-  $("hintBtn").onclick=()=>{ inputs.forEach(inp=>{ if(!inp.classList.contains("ok")) inp.placeholder=ws[+inp.dataset.i].x[0]+"…"; }); toast("First-letter hints added"); };
-  $("revealBtn").onclick=()=>{ inputs.forEach(inp=>{ if(!inp.classList.contains("ok")){ inp.value=ws[+inp.dataset.i].x; inp.classList.add("reveal"); inp.classList.remove("bad"); } }); toast("Revealed — now redo from memory"); };
-  $("checkBtn").onclick=()=>clozeCheck();
-}
-function updateClozeStat(){ const ok=C.inputs.filter(i=>i.classList.contains("ok")).length;
-  $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${ok}<small>/${C.total} correct</small></span>`; }
-function clozeCheck(){ let ok=0; C.inputs.forEach(inp=>{ const wi=+inp.dataset.i;
-    if(same(loose(inp.value),C.ws[wi].c) && inp.value.trim()!==""){ inp.classList.add("ok"); inp.classList.remove("bad"); ok++; }
-    else { inp.classList.add("bad"); inp.classList.remove("ok"); weakAdd(C.id,wi); } });
-  const pct=C.total?Math.round(ok/C.total*100):100, xp=Math.round(pct*0.5*(0.6+C.diff));
-  addXP(xp); bumpStreak(); const best=recordBest(C.id,"cloze",pct);
-  if(pct>=90){sfx.win();burst();} else if(pct>=60)sfx.ok(); else sfx.no();
-  $("clozeNote").innerHTML=`<b style="color:${pct>=80?'var(--good)':pct>=50?'var(--warn)':'var(--bad)'}">${ok}/${C.total} · ${pct}%</b> · +${xp} XP${best?" · 🏅 best!":""} — red = wrong (now in your weak-words drill).`;
-  updateClozeStat();
-}
-
-/* ============================================================
-   MODE: FIRST LETTERS
-   ============================================================ */
-let F=null;
-const maskWord=x=>x.length<=1?esc(x):esc(x[0])+'<span style="opacity:.32">'+'·'.repeat(x.length-1)+'</span>';
-function modeFirst(id){ const s=getSection(id),toks=tokenize(s.text); F={id,toks,total:toks.filter(t=>t.t==="w").length};
-  let wi=-1,html=""; toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
-    html+=`<span class="w" data-full="${esc(t.x)}">${maskWord(t.x)}</span>`; });
-  $("view").innerHTML=playShell(s,"First Letters","recall",`<div class="passage fl" id="flpass">${html}</div>
-    <div class="actions"><button class="btn" id="toggleAll">👁 Reveal all</button><button class="btn" id="resetFl">🙈 Hide all</button>
-      <button class="btn primary" id="doneFl">I recited it ✓</button></div>
-    <div class="note">Recite aloud from the first letters. Tap any word you blank on to check. Aim to need fewer taps each run.</div>`);
-  updateFlStat();
-  $("flpass").addEventListener("click",e=>{ const w=e.target.closest(".w"); if(!w) return;
-    if(w.classList.contains("shown")){ w.classList.remove("shown"); w.innerHTML=maskWord(w.dataset.full); }
-    else { w.classList.add("shown"); w.textContent=w.dataset.full; } updateFlStat(); });
-  $("toggleAll").onclick=()=>{ $("flpass").querySelectorAll(".w").forEach(w=>{w.classList.add("shown");w.textContent=w.dataset.full;}); updateFlStat(); };
-  $("resetFl").onclick=()=>{ $("flpass").querySelectorAll(".w").forEach(w=>{w.classList.remove("shown");w.innerHTML=maskWord(w.dataset.full);}); updateFlStat(); };
-  $("doneFl").onclick=()=>{ const peeked=$("flpass").querySelectorAll(".w.shown").length, pct=Math.max(0,Math.round((1-peeked/F.total)*100));
-    const xp=20+Math.round(pct*0.3); addXP(xp); bumpStreak(); const best=recordBest(F.id,"first",pct);
-    if(pct>=90){sfx.win();burst();} else sfx.ok(); toast(`Recalled ~${pct}% without peeking · +${xp} XP${best?" · 🏅 best!":""}`); };
-}
-function updateFlStat(){ const p=$("flpass").querySelectorAll(".w.shown").length;
-  $("statline").innerHTML=`<span class="stat">${p}<small> peeked</small></span><span class="stat">${F.total-p}<small>/${F.total} memory</small></span>`; }
-
-/* ============================================================
-   MODE: TYPE IT OUT
-   ============================================================ */
-let T=null;
-function modeType(id){ const s=getSection(id),toks=tokenize(s.text),ws=toks.filter(t=>t.t==="w");
-  T={id,toks,ws,cur:0,status:[],buffer:"",correct:0,combo:0,maxCombo:0,start:0,hint:state.settings.hint};
-  $("view").innerHTML=playShell(s,"Type It Out","boss",`<div class="passage" id="typepass"></div>
-    <div class="typebar"><input id="typein" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type the highlighted word, then space…">
-      <button class="btn sm" id="hintCycle"></button><button class="btn sm" id="skipWord" title="Reveal this word">💡</button></div>
-    <div class="note">Type each word then press <b>space</b>. Wrong words flash the answer. Cycle the hint down to <b>none</b> when confident.</div>`);
-  renderType(); updateTypeStat(); setHintLabel();
-  const inp=$("typein");
-  inp.addEventListener("keydown",e=>{
-    if(e.key===" "||e.key==="Enter"){ e.preventDefault(); typeCommit(inp.value); inp.value=""; T.buffer=""; }
-    else if(e.key==="Backspace" && inp.value==="" && T.cur>0){ e.preventDefault(); T.cur--; T.status.pop(); T.correct=T.status.filter(x=>x==="correct").length; renderType(); updateTypeStat(); }
-  });
-  inp.addEventListener("input",()=>{ T.buffer=inp.value; const c=$("curword"); if(c) c.innerHTML=esc(T.buffer)+'<span class="caret"></span>'; });
-  $("hintCycle").onclick=()=>{ T.hint=T.hint==="full"?"first":T.hint==="first"?"none":"full"; setHintLabel(); renderType(); };
-  $("skipWord").onclick=()=>{ typeCommit(T.ws[T.cur]?T.ws[T.cur].x:"",true); $("typein").value=""; T.buffer=""; };
-  setTimeout(()=>inp.focus(),60);
-}
-const setHintLabel=()=>$("hintCycle").textContent="Hint: "+(T.hint==="full"?"full words":T.hint==="first"?"first letters":"none");
-function hintFor(tok){ if(T.hint==="full") return '<span class="w hint">'+esc(tok.x)+'</span>';
-  if(T.hint==="first") return '<span class="w up">'+esc(tok.x[0])+'·'.repeat(Math.max(0,tok.x.length-1))+'</span>';
-  return '<span class="w up">'+'·'.repeat(tok.x.length)+'</span>'; }
-function renderType(){ let wi=-1,html=""; T.toks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
-    if(wi<T.cur) html+='<span class="w '+(T.status[wi]||"correct")+'">'+esc(t.x)+'</span>';
-    else if(wi===T.cur) html+='<span class="w cur" id="curword">'+(T.buffer?esc(T.buffer):'')+'<span class="caret"></span></span>';
-    else html+=hintFor(t); });
-  $("typepass").innerHTML=html; const c=$("curword"); if(c) c.scrollIntoView({block:"nearest"}); }
-function typeCommit(raw,forced){ raw=(raw||"").trim(); if(!forced&&raw==="") return; if(T.start===0)T.start=Date.now();
-  const tok=T.ws[T.cur]; if(!tok) return; const ok=!forced&&same(loose(raw),tok.c);
-  T.status[T.cur]=ok?"correct":"wrong";
-  if(ok){ T.correct++; T.combo++; T.maxCombo=Math.max(T.maxCombo,T.combo); sfx.ok(); showCombo(T.combo); }
-  else { T.combo=0; sfx.no(); showCombo(0); weakAdd(T.id,T.cur); flashWord(T.cur); }
-  T.cur++; updateTypeStat(); if(T.cur>=T.ws.length){ finishType(); return; } renderType();
-}
-function flashWord(){ /* reveal the just-missed word briefly in the rendered stream */
-  setTimeout(()=>{ const done=$("typepass").querySelectorAll(".w.wrong"); const last=done[done.length-1];
-    if(last){ last.classList.add("flash"); setTimeout(()=>last.classList.remove("flash"),650); } },10); }
-function updateTypeStat(){ const done=T.cur,total=T.ws.length,acc=done?Math.round(T.correct/done*100):100;
-  $("statline").innerHTML=`<span class="stat">${done}<small>/${total}</small></span><span class="stat" style="color:var(--good)">${acc}%<small>acc</small></span><span class="stat" style="color:var(--warn)">🔥${T.combo}<small>combo</small></span>`; }
-function finishType(){ renderType(); const total=T.ws.length,acc=Math.round(T.correct/total*100);
-  const secs=Math.max(1,(Date.now()-T.start)/1000),wpm=Math.round(total/secs*60);
-  const xp=Math.round(acc*0.9)+Math.round(total/4)+T.maxCombo; addXP(xp); bumpStreak(); const best=recordBest(T.id,"type",acc);
-  if(acc>=90){sfx.win();burst();} else if(acc>=60)sfx.ok(); else sfx.no();
-  resultScreen(acc,best,T.id,"type");
-  $("modebody").querySelector(".result .row").innerHTML=`<div class="kv"><b>${T.correct}/${total}</b><small>words</small></div><div class="kv"><b>🔥${T.maxCombo}</b><small>combo</small></div><div class="kv"><b>${wpm}</b><small>wpm</small></div><div class="kv"><b>+${xp}</b><small>XP</small></div>`;
-}
-function resultScreen(acc,best,id,mode){
-  const verdict=acc>=95?"Flawless. You know this. 🏆":acc>=80?"So close — clean up the red bits. 💪":acc>=50?"Good progress. Run it again. 📈":"Early days — back to Study &amp; Gaps. 🌱";
-  const nextBtn = mode==="exam" ? `<button class="btn primary" onclick="startMode('${id}','exam')">↻ Resit</button>` :
-    `<button class="btn primary" onclick="startMode('${id}','${mode}')">↻ Again</button><button class="btn good" onclick="startMode('${id}','exam')">📝 Try the exam</button>`;
-  $("modebody").innerHTML=`<div class="result"><div class="big">${acc}%</div>
-    <div style="color:var(--muted);margin-top:4px">${verdict}</div>
-    <div class="row"></div>
-    ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New personal best!</div>':''}
-    <div class="actions" style="justify-content:center">${nextBtn}<button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
-  $("statline").innerHTML="";
-}
-
-/* ============================================================
-   MODE: UNSCRAMBLE
-   ============================================================ */
-let O=null;
-const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-function modeOrder(id){ const s=getSection(id); O={id,sents:sentences(s.text),idx:0,correct:0};
-  $("view").innerHTML=playShell(s,"Unscramble","tiles",`<div id="orderbody"></div>`); renderOrder(); }
-function renderOrder(){ if(O.idx>=O.sents.length) return finishOrder();
-  const ws=words(O.sents[O.idx]).map(w=>w.x); let scr=shuffle(ws),guard=0;
-  while(ws.length>1&&scr.join("|")===ws.join("|")&&guard++<6) scr=shuffle(ws);
-  O.target=ws; O.placed=[]; O.pool=scr.map((w,i)=>({w,id:i,used:false}));
-  $("orderbody").innerHTML=`<div class="statline" style="margin-bottom:10px"><span class="stat">Sentence ${O.idx+1}<small>/${O.sents.length}</small></span><span class="stat">${ws.length}<small> words</small></span></div>
-    <div class="answerbox" id="answer"></div><div class="tiles" id="pool"></div>
-    <div class="actions"><button class="btn" id="undoBtn">↩ Undo</button><button class="btn" id="hintOrder">💡 Next word</button><button class="btn primary" id="checkOrder">✓ Check</button></div>
-    <div class="note" id="orderNote">Tap the words in the right order to rebuild the sentence.</div>`;
-  $("statline").innerHTML=`<span class="stat" style="color:var(--good)">${O.correct}<small> solved</small></span>`;
-  drawPool(); drawAnswer();
-  $("pool").onclick=e=>{ const t=e.target.closest(".tile"); if(t&&!t.classList.contains("ph")) placeTile(+t.dataset.id); };
-  $("answer").onclick=e=>{ const t=e.target.closest(".tile"); if(t) removeTile(+t.dataset.pos); };
-  $("undoBtn").onclick=()=>{ if(O.placed.length) removeTile(O.placed.length-1); };
-  $("hintOrder").onclick=()=>{ const i=O.placed.length; if(i>=O.target.length) return; const need=loose(O.target[i]); const p=O.pool.find(x=>!x.used&&loose(x.w)===need); if(p) placeTile(p.id); };
-  $("checkOrder").onclick=()=>orderCheck();
-}
-const drawPool=()=>$("pool").innerHTML=O.pool.map(p=>`<div class="tile ${p.used?'ph':''}" data-id="${p.id}">${esc(p.w)}</div>`).join("");
-function drawAnswer(){ const a=$("answer"); a.innerHTML=O.placed.length?O.placed.map((p,i)=>`<div class="tile" data-pos="${i}">${esc(p.w)}</div>`).join(""):'<span style="color:var(--muted);align-self:center">tap words below…</span>'; }
-function placeTile(pid){ const p=O.pool.find(x=>x.id===pid); if(!p||p.used) return; p.used=true; O.placed.push(p); sfx.ok(); drawPool(); drawAnswer(); }
-function removeTile(pos){ const p=O.placed.splice(pos,1)[0]; if(p) p.used=false; drawPool(); drawAnswer(); }
-function orderCheck(){ const got=O.placed.map(p=>loose(p.w)).join("|"),want=O.target.map(loose).join("|");
-  const tiles=[...$("answer").querySelectorAll(".tile")];
-  if(got===want){ tiles.forEach(t=>t.classList.add("ok")); O.correct++; sfx.great(); addXP(12);
-    $("orderNote").innerHTML='<b style="color:var(--good)">Correct! ✓</b>';
-    $("checkOrder").textContent=(O.idx+1>=O.sents.length)?"See results →":"Next sentence →"; $("checkOrder").onclick=()=>{O.idx++;renderOrder();}; }
-  else { let fw=-1; O.placed.forEach((p,i)=>{ if(loose(p.w)!==loose(O.target[i]||"")&&fw<0) fw=i; });
-    tiles.forEach((t,i)=>t.classList.toggle("bad",fw>=0&&i>=fw)); sfx.no();
-    $("orderNote").innerHTML='<b style="color:var(--bad)">Not quite</b> — red tiles are out of place. Tap them to send them back.'; }
-}
-function finishOrder(){ const pct=Math.round(O.correct/O.sents.length*100),xp=Math.round(pct*0.5)+10;
-  addXP(xp); bumpStreak(); const best=recordBest(O.id,"order",pct); if(pct>=90){sfx.win();burst();}
-  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div><div style="color:var(--muted)">${O.correct}/${O.sents.length} sentences rebuilt</div>
-    <div class="row"><div class="kv"><b>+${xp}</b><small>XP</small></div></div>${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New best!</div>':''}
-    <div class="actions" style="justify-content:center"><button class="btn primary" onclick="startMode('${O.id}','order')">↻ Again</button><button class="btn" onclick="startMode('${O.id}','type')">⌨️ Type It Out</button><button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
-  $("statline").innerHTML="";
-}
-
-/* ============================================================
-   MODE: EXAM  (free write under timer → word-accurate diff)
-   ============================================================ */
-let E=null;
-function modeExam(id){ const s=getSection(id); E={id,start:Date.now(),timer:null};
-  $("view").innerHTML=playShell(s,"Exam","no hints",`
-    <div class="note" style="margin:0 0 10px">📝 Write ${s.id==="whole"?"the whole essay":"this paragraph"} from memory — no hints. Punctuation doesn't matter; the words do. Hit submit when done.</div>
-    <textarea id="examarea" placeholder="Start writing from memory…" autocapitalize="sentences" spellcheck="false"></textarea>
-    <div class="actions"><button class="btn primary" id="submitExam">✓ Submit for marking</button><button class="btn ghost" onclick="goHome()">Give up</button></div>`);
-  const ta=$("examarea"); E.target=words(s.text);
-  function tick(){ const sec=Math.floor((Date.now()-E.start)/1000); const got=words(ta.value).length;
-    $("statline").innerHTML=`<span class="stat">⏱ ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}</span><span class="stat">${got}<small>/${E.target.length} words</small></span>`; }
-  tick(); E.timer=setInterval(tick,1000); setTimeout(()=>ta.focus(),60);
-  $("submitExam").onclick=()=>examMark();
-}
-function examMark(){ clearInterval(E.timer); const s=getSection(E.id);
-  const origToks=tokenize(s.text), orig=origToks.filter(t=>t.t==="w");
-  const typed=words($("examarea").value);
-  const matched=wordDiff(orig.map(w=>w.c), typed.map(w=>w.c));
-  let ok=0; const total=orig.length; let wi=-1; let html="";
-  origToks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
-    if(matched[wi]){ ok++; html+='<span class="w correct">'+esc(t.x)+'</span>'; }
-    else { html+='<span class="w miss">'+esc(t.x)+'</span>'; weakAdd(E.id,wi); } });
-  const pct=Math.round(ok/total*100), secs=Math.max(1,(Date.now()-E.start)/1000);
-  const xp=Math.round(pct*1.1)+Math.round(total/4); addXP(xp); bumpStreak(); const best=recordBest(E.id,"exam",pct);
-  if(pct>=90){sfx.win();burst();} else if(pct>=60)sfx.ok(); else sfx.no();
-  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div>
-    <div style="color:var(--muted);margin-top:2px">${pct>=95?"Exam-ready. 🏆":pct>=80?"Nearly there — the red words are your gaps.":pct>=50?"Solid base. Drill the misses and resit.":"Keep building — Study &amp; Gaps first."}</div>
-    <div class="row"><div class="kv"><b>${ok}/${total}</b><small>words</small></div><div class="kv"><b>${Math.floor(secs/60)}:${String(Math.floor(secs%60)).padStart(2,"0")}</b><small>time</small></div><div class="kv"><b>+${xp}</b><small>XP</small></div></div>
-    ${best?'<div class="pill" style="border-color:var(--warn);color:var(--warn)">🏅 New best!</div>':''}
-    <div class="actions" style="justify-content:center;margin-bottom:6px">
-      <button class="btn primary" onclick="startMode('${E.id}','exam')">↻ Resit</button>
-      ${weakCount()?`<button class="btn good" onclick="startMode(null,'weak')">🎯 Drill misses</button>`:""}
-      <button class="btn ghost" onclick="goHome()">← Menu</button></div></div>
-    <div style="margin-top:8px"><div class="note" style="margin-bottom:6px"><b>Your essay, marked</b> — <span style="color:var(--good)">green = correct</span>, <span style="color:var(--bad)">red = missed/out of place</span>:</div>
-      <div class="passage diff">${html}</div></div>`;
-  $("statline").innerHTML="";
-}
-
-/* ============================================================
-   MODE: WEAK WORDS  (mistake-driven spaced drill)
-   ============================================================ */
-let W=null;
-function modeWeak(){ const list=weakList().slice(0,18);
-  const shell={id:"weak",name:"Weak Words",short:"Weak",icon:"🎯"};
-  if(!list.length){ $("view").innerHTML=playShell(shell,"Weak Words","drill",`<div class="result"><div style="font-size:40px">✨</div><div style="margin:8px 0;color:var(--muted)">No weak words right now — they appear here whenever you slip up in Gaps, Type or Exam. Go make some mistakes!</div><div class="actions" style="justify-content:center"><button class="btn primary" onclick="goHome()">← Menu</button></div></div>`); $("statline").innerHTML=""; return; }
-  W={list,i:0,correct:0,total:list.length};
-  $("view").innerHTML=playShell(shell,"Weak Words","drill",`<div id="weakbody"></div>`); renderWeak();
-}
-function ctxBlank(secId,wi){ const toks=tokenize(getSection(secId).text); const pos=[]; toks.forEach((t,i)=>{ if(t.t==="w") pos.push(i); });
-  const a=Math.max(0,wi-7), b=Math.min(pos.length-1,wi+7), st=pos[a], en=pos[b]; let html="";
-  for(let i=st;i<=en;i++){ const t=toks[i]; if(t.t==="sep"){html+=esc(t.x);continue;}
-    if(i===pos[wi]) html+=`<input class="blank" id="weakblank" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:${Math.max(40,(t.x.length*11+14))}px">`;
-    else html+=`<span class="w">${esc(t.x)}</span>`; }
-  return (a>0?"… ":"")+html+(b<pos.length-1?" …":""); }
-function renderWeak(){ if(W.i>=W.list.length) return finishWeak();
-  const it=W.list[W.i], sec=getSection(it.sid); W.cur=words(sec.text)[it.wi];
-  $("statline").innerHTML=`<span class="stat">${W.i+1}<small>/${W.total}</small></span><span class="stat" style="color:var(--good)">${W.correct}<small> got</small></span>`;
-  $("weakbody").innerHTML=`<div class="note" style="margin:0 0 10px">From <b>${sec.short}</b> · you've missed this ${it.count}×. Fill the blank from memory:</div>
-    <div class="passage">${ctxBlank(it.sid,it.wi)}</div>
-    <div class="actions"><button class="btn" id="weakHint">💡 First letter</button><button class="btn primary" id="weakCheck">✓ Check</button><button class="btn ghost" id="weakSkip">Skip →</button></div>
-    <div class="note" id="weakNote"></div>`;
-  const inp=$("weakblank"); setTimeout(()=>inp&&inp.focus(),50);
-  inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); weakCheck(); } });
-  $("weakHint").onclick=()=>{ inp.placeholder=W.cur.x[0]+"…"; };
-  $("weakCheck").onclick=()=>weakCheck();
-  $("weakSkip").onclick=()=>{ W.i++; renderWeak(); };
-}
-function weakCheck(){ const inp=$("weakblank"), it=W.list[W.i];
-  if(same(loose(inp.value),W.cur.c) && inp.value.trim()!==""){ inp.classList.add("ok"); sfx.great(); W.correct++; weakClear(it.sid,it.wi); addXP(8);
-    $("weakNote").innerHTML='<b style="color:var(--good)">Yes! ✓</b>'; setTimeout(()=>{W.i++;renderWeak();},550); }
-  else { inp.classList.add("bad"); sfx.no(); weakAdd(it.sid,it.wi);
-    $("weakNote").innerHTML=`<b style="color:var(--bad)">It's:</b> <span style="color:var(--warn);font-weight:700">${esc(W.cur.x)}</span> — try to lock it in, then Check or Skip.`; inp.value=""; inp.classList.remove("bad"); inp.placeholder=W.cur.x[0]+"…"; }
-}
-function finishWeak(){ const pct=Math.round(W.correct/W.total*100),xp=10+W.correct*4; addXP(xp); bumpStreak(); if(pct>=80){sfx.win();burst();}
-  $("view").querySelector("#weakbody")?.remove();
-  $("modebody").innerHTML=`<div class="result"><div class="big">${pct}%</div><div style="color:var(--muted)">${W.correct}/${W.total} weak words nailed · ${weakCount()} left overall</div>
-    <div class="row"><div class="kv"><b>+${xp}</b><small>XP</small></div></div>
-    <div class="actions" style="justify-content:center">${weakCount()?`<button class="btn primary" onclick="startMode(null,'weak')">↻ Keep drilling</button>`:""}<button class="btn ghost" onclick="goHome()">← Menu</button></div></div>`;
-  $("statline").innerHTML="";
-}
-
-/* ============================================================
-   3-DAY COACH  — chunked successive-relearning scheduler
-   Implements: retrieval practice + spacing to a criterion (successive
-   relearning), read-recite-review, production effect (recite aloud),
-   errorful generation + feedback, chunking + chaining, expanding
-   intervals tuned to a 3-day window, interleaving, overlearning.
-   ============================================================ */
-const DAY_MS=86400000, MIN_MS=60000;
-const LADDER=[10,30,120,480,1440,2880];   // minutes between reviews (expanding)
-const CRITERION=3;                          // correct recalls to "master" a chunk
-const DAY_GOALS={
-  1:"Encode every line and earn a first correct recall — read it, say it aloud, then recall it with feedback.",
-  2:"Spaced retrieval + chaining — re-test yesterday's lines (sleep helped!), rehearse the joins between sentences, and interleave paragraphs.",
-  3:"Overlearn & simulate — full first-letter recitation, then timed exam write-outs of the whole essay, drilling any misses."
+/* ═══ items ═════════════════════════════════════════════════════════════ */
+const KIND = {
+  quote:{name:"Quote", tier:"Word for word"},
+  tech :{name:"Techniques", tier:"Name them exactly"},
+  eval :{name:"Evaluation", tier:"Clause, near-verbatim"},
+  line :{name:"Sentence", tier:"Word for word"}
 };
-
-/* --- chunking: sentence-sized lines, long sentences split at clause breaks --- */
-function chunkText(text){ const MAXW=16, HARD=20, out=[];
-  const hardSplit=p=>{ let seg="",n=0; tokenize(p).forEach(t=>{ seg+=t.x;
-    if(t.t==="w" && ++n>=MAXW){ out.push(seg.trim()); seg=""; n=0; } }); if(seg.trim()) out.push(seg.trim()); };
-  sentences(text).forEach(s=>{
-    if(words(s).length<=MAXW){ out.push(s); return; }
-    let buf="";
-    s.split(/(?<=[,;:])\s+/).forEach(p=>{
-      if(words(p).length>HARD){ if(buf){out.push(buf);buf="";} hardSplit(p); return; }
-      const cand=buf?buf+" "+p:p;
-      if(buf && words(cand).length>MAXW){ out.push(buf); buf=p; } else buf=cand;
+function secOf(id){ return SECTIONS.find(s=>s.id===id); }
+const ITEMS=[];
+(function build(){
+  SECTIONS.forEach(sec=>{
+    (sec.lines||[]).forEach(l=>ITEMS.push({id:l.id,sec:sec.id,kind:"line",sub:"prose",label:l.label,text:l.text}));
+    if(sec.shell)   ITEMS.push({id:sec.shell.id,sec:sec.id,kind:"line",sub:"shell",label:"Shell sentence — the claim",text:sec.shell.text});
+    if(sec.context) ITEMS.push({id:sec.context.id,sec:sec.id,kind:"line",sub:"context",label:"Context sentence — Daldry and the 1980s",text:sec.context.text});
+    (sec.cards||[]).forEach((c,ci)=>{
+      ITEMS.push({id:c.id+".q",sec:sec.id,kind:"quote",card:c,ci,text:c.quote,label:(c.scene?"Scene ":"Quote ")+(ci+1)});
+      ITEMS.push({id:c.id+".t",sec:sec.id,kind:"tech",card:c,ci,text:c.tech.join("; "),label:"Techniques "+(ci+1)});
+      c.evals.forEach((e,ei)=>ITEMS.push({id:c.id+".e"+ei,sec:sec.id,kind:"eval",card:c,ci,ei,text:e,label:"Evaluation "+(ci+1)+"."+(ei+1)}));
     });
-    if(buf) out.push(buf);
+    if(sec.turn)  ITEMS.push({id:sec.turn.id,sec:sec.id,kind:"line",sub:"turn",label:"Turn",text:sec.turn.text});
+    if(sec.close) ITEMS.push({id:sec.close.id,sec:sec.id,kind:"line",sub:"close",label:"Close",text:sec.close.text});
   });
-  const merged=[]; out.map(x=>x.trim()).filter(Boolean).forEach(c=>{
-    if(merged.length && words(c).length<4) merged[merged.length-1]+=" "+c; else merged.push(c); });
-  return merged; }
-let CHUNKS=null, CHUNK_BY_ID=null;
-function buildChunks(){ if(CHUNKS) return CHUNKS; CHUNKS=[];
-  SECTIONS.forEach(sec=>{ let off=0; chunkText(sec.text).forEach((t,i,arr)=>{
-    CHUNKS.push({id:sec.id+"#"+i, secId:sec.id, idx:i, text:t, prevText:i>0?arr[i-1]:null, wordStart:off});
-    off+=wordCount(t); }); });
-  CHUNK_BY_ID={}; CHUNKS.forEach(c=>CHUNK_BY_ID[c.id]=c); return CHUNKS; }
+})();
+const BY_ID={}; ITEMS.forEach((it,i)=>{it.n=i; BY_ID[it.id]=it;});
 
-/* --- spaced-repetition state per chunk --- */
-function srsOf(id){ return state.srs[id] || (state.srs[id]={reps:0,lapses:0,intervalMin:0,due:0,introduced:false,lastGrade:null}); }
-const planStarted=()=>!!(state.plan && state.plan.start);
-function startPlan(){ state.plan={start:Date.now()}; save(); }
-function restartPlan(){ state.srs={}; state.plan={start:Date.now()}; save(); }
-function planDay(){ if(!planStarted()) return 1; return Math.min(3, Math.floor((Date.now()-state.plan.start)/DAY_MS)+1); }
-function dueList(now){ buildChunks(); now=now||Date.now();
-  return CHUNKS.filter(c=>{ const s=srsOf(c.id); return s.introduced && s.reps<CRITERION && s.due<=now; })
-    .sort((a,b)=>srsOf(a.id).due-srsOf(b.id).due); }
-function newList(){ buildChunks(); return CHUNKS.filter(c=>!srsOf(c.id).introduced); }
-function introducedCount(){ buildChunks(); return CHUNKS.filter(c=>srsOf(c.id).introduced).length; }
-function masteredCount(){ buildChunks(); return CHUNKS.filter(c=>srsOf(c.id).reps>=CRITERION).length; }
-function nextDueAt(){ buildChunks(); const t=CHUNKS.map(c=>srsOf(c.id)).filter(s=>s.introduced&&s.reps<CRITERION).map(s=>s.due);
-  return t.length?Math.min.apply(null,t):null; }
+/* ═══ storage ═══════════════════════════════════════════════════════════ */
+const SAVE="be_recall_v1", CRIT=3, MIN=60000;
+const IVL=[9, 55, 300, 1440, 4320];          /* expanding gaps, in minutes */
+function blank(){ return {srs:{}, streak:{n:0,last:null}, sessions:0, adapt:{}, exams:[], theme:null, seenPlan:false}; }
+let S=(function(){ try{ const r=JSON.parse(localStorage.getItem(SAVE)); if(r&&typeof r==="object") return Object.assign(blank(),r);}catch(e){} return blank(); })();
+function save(){ try{ localStorage.setItem(SAVE,JSON.stringify(S)); }catch(e){} }
+function srs(id){ return S.srs[id] || (S.srs[id]={reps:0,lapses:0,due:0,seen:0,started:false}); }
+function mastered(it){ const r=S.srs[it.id]; return !!r && r.reps>=CRIT; }
+function pctOf(list){ if(!list.length) return 0;
+  let t=0; list.forEach(it=>{ const r=S.srs[it.id]; t+=Math.min(CRIT, r?r.reps:0)/CRIT; });
+  return Math.round(t/list.length*100); }
+function itemsOf(sid){ return ITEMS.filter(i=>i.sec===sid); }
+function overall(){ return pctOf(ITEMS); }
+function dueNow(){ const t=Date.now(); return ITEMS.filter(i=>{ const r=S.srs[i.id]; return r&&r.started&&r.reps<CRIT&&r.due<=t; }); }
+function fresh(){ return ITEMS.filter(i=>{ const r=S.srs[i.id]; return !r||!r.started; }); }
+function weak(){ return ITEMS.filter(i=>{ const r=S.srs[i.id]; return r&&r.lapses>0&&r.reps<CRIT; })
+  .sort((a,b)=>S.srs[b.id].lapses-S.srs[a.id].lapses); }
+function grade(id,g){
+  const r=srs(id); r.started=true; r.seen++;
+  if(g===2){ r.reps++; r.due=Date.now()+IVL[Math.min(r.reps-1,IVL.length-1)]*MIN; }
+  else if(g===1){ r.due=Date.now()+6*MIN; }
+  else { r.reps=0; r.lapses++; r.due=Date.now()+90000; }
+  save();
+}
+function bumpStreak(){ const d=new Date().toDateString(); const s=S.streak;
+  if(s.last===d) return; const y=new Date(Date.now()-864e5).toDateString();
+  s.n = (s.last===y)? s.n+1 : 1; s.last=d; S.sessions++; save(); }
 
-/* --- grading (errorful generation: attempt, then feedback updates schedule) --- */
-const gradeFromAccuracy=acc=>acc>=0.95?"easy":acc>=0.8?"good":acc>=0.5?"hard":"again";
-function applyGrade(id,grade){ const s=srsOf(id); s.introduced=true;
-  if(grade==="again"){ s.lapses++; s.reps=Math.max(0,s.reps-1); s.intervalMin=10; }
-  else if(grade==="hard"){ s.reps=Math.max(1,s.reps); s.intervalMin=Math.max(10,Math.round((s.intervalMin||LADDER[1])*0.6)); }
-  else { s.reps=Math.min(LADDER.length-1, s.reps+(grade==="easy"?2:1)); s.intervalMin=LADDER[Math.min(s.reps,LADDER.length-1)]; }
-  s.due=Date.now()+s.intervalMin*MIN_MS; s.lastGrade=grade; save(); return s; }
+/* ═══ text tools ════════════════════════════════════════════════════════ */
+const STOP=new Set("a an the and or but so of to in on at for with as is are was were be been being it its his her their this that these those not no into from than then there here which who whom what when where how by".split(" "));
+function clean(t){ return String(t).replace(/[\[\]{}]/g,""); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function toks(t){ /* keep separators so marked output reads naturally */
+  const out=[],re=/[A-Za-z0-9’'’]+/g; let last=0,m;
+  while((m=re.exec(t))){ if(m.index>last) out.push({t:"s",x:t.slice(last,m.index)});
+    out.push({t:"w",x:m[0]}); last=m.index+m[0].length; }
+  if(last<t.length) out.push({t:"s",x:t.slice(last)});
+  return out; }
+function norm(w){ return w.toLowerCase().replace(/[’]/g,"'").replace(/^'+|'+$/g,"").replace(/'s$/,""); }
+function words(t){ return (clean(t).match(/[A-Za-z0-9’'’]+/g)||[]).map(norm).filter(Boolean); }
+function ed(a,b){ const n=a.length,m=b.length; if(!n)return m; if(!m)return n;
+  let prev=new Array(m+1); for(let j=0;j<=m;j++)prev[j]=j;
+  for(let i=1;i<=n;i++){ const cur=[i];
+    for(let j=1;j<=m;j++) cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    prev=cur; }
+  return prev[m]; }
+function eqw(a,b){ if(a===b) return true; const L=Math.max(a.length,b.length);
+  return ed(a,b) <= (L<=3?0:L<=6?1:2); }                    /* forgive typos */
+function lcsOps(A,B){                       /* A = target words, B = typed  */
+  const n=A.length,m=B.length, dp=[];
+  for(let i=0;i<=n;i++) dp.push(new Int32Array(m+1));
+  for(let i=n-1;i>=0;i--) for(let j=m-1;j>=0;j--)
+    dp[i][j]= eqw(A[i],B[j]) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+  const ops=[]; let i=0,j=0;
+  while(i<n&&j<m){ if(eqw(A[i],B[j])){ops.push({o:"ok",i:i});i++;j++;}
+    else if(dp[i+1][j]>=dp[i][j+1]){ops.push({o:"miss",i:i});i++;}
+    else {ops.push({o:"ex",x:B[j]});j++;} }
+  while(i<n){ops.push({o:"miss",i:i});i++;}
+  while(j<m){ops.push({o:"ex",x:B[j]});j++;}
+  return {ops, hit:dp[0][0]}; }
+function markVerbatim(target,typed){
+  const tk=toks(clean(target)), A=[], map=[];
+  tk.forEach((t,k)=>{ if(t.t==="w"){ A.push(norm(t.x)); map.push(k); } });
+  const B=words(typed), {ops,hit}=lcsOps(A,B);
+  const state={}; ops.forEach(o=>{ if(o.o!=="ex") state[o.i]=o.o; });
+  let wi=-1, html="";
+  tk.forEach(t=>{ if(t.t==="s"){ html+=esc(t.x); return; }
+    wi++; html+='<span class="'+(state[wi]==="ok"?"ok":"no")+'">'+esc(t.x)+"</span>"; });
+  const extra=ops.filter(o=>o.o==="ex").length;
+  return {html, pct:A.length?Math.round(hit/A.length*100):100, extra, total:A.length};
+}
+function markContent(target,typed){        /* evaluation clauses: key ideas */
+  const A=words(target).filter(w=>!STOP.has(w)), B=words(typed);
+  if(!A.length) return {pct:100, missing:[]};
+  const {hit}=lcsOps(A,B);
+  const got=new Set(); const ops=lcsOps(A,B).ops;
+  ops.forEach(o=>{ if(o.o==="ok") got.add(o.i); });
+  return {pct:Math.round(hit/A.length*100), missing:A.filter((w,k)=>!got.has(k))};
+}
+function hasPhrase(hay,phrase){            /* fuzzy "did they write this?"  */
+  const A=words(phrase), B=words(hay); if(!A.length) return false;
+  return lcsOps(A,B).hit/A.length >= 0.7; }
+function renderProse(t){ return esc(t)
+  .replace(/\[([^\]]+)\]/g,'<span class="adapt">$1</span>')
+  .replace(/\{([^}]+)\}/g,'<span class="fixed">$1</span>')
+  .replace(/Billy Elliot/g,"<em>Billy Elliot</em>"); }
+function shorten(t,n){ t=clean(t); return t.length>n? t.slice(0,n-1)+"…" : t; }
 
-/* --- session builder: clear due reviews (interleaved), then introduce a few new --- */
-const newPerSession=()=>planDay()>=3?2:5;
-function buildSession(){ const due=dueList().slice(0,8);
-  const room=Math.max(0,6-due.length);
-  const news=room>0?newList().slice(0,Math.min(room,newPerSession())):[];
-  return due.map(c=>({type:"retrieve",c})).concat(news.map(c=>({type:"learn",c}))); }
+/* ═══ chrome ════════════════════════════════════════════════════════════ */
+const $=id=>document.getElementById(id), app=$("app");
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),1900); }
+function chrome(){ const p=overall(); $("lampPct").textContent=p+"%";
+  $("lampDot").style.opacity=(0.3+p/143).toFixed(2);
+  $("lampDot").style.boxShadow="0 0 "+(p/6)+"px "+(p/22)+"px var(--lampSoft)";
+  $("lampSub").textContent = p>=100?"exam ready":"learnt"; }
+if(S.theme) document.documentElement.setAttribute("data-theme",S.theme);
+function flipTheme(){ const dark=matchMedia("(prefers-color-scheme:dark)").matches;
+  const cur=document.documentElement.getAttribute("data-theme")||(dark?"dark":"light");
+  S.theme=cur==="dark"?"light":"dark"; document.documentElement.setAttribute("data-theme",S.theme); save(); }
 
-/* --- helpers --- */
-function flCue(text){ return tokenize(text).map(t=>t.t==="sep"?esc(t.x):maskWord(t.x)).join(""); }
-function tailWords(text,n){ return words(text).slice(-n).map(x=>x.x).join(" "); }
-function speak(t){ if(!("speechSynthesis" in window)) return; const u=new SpeechSynthesisUtterance(stripBrackets(t)); u.rate=.95; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }
-function relTime(ts){ const d=ts-Date.now(); if(d<=0) return "now"; const m=Math.round(d/MIN_MS);
-  if(m<60) return "in ~"+m+" min"; const h=Math.round(m/60); if(h<24) return "in ~"+h+" h"; return "in ~"+Math.round(h/24)+" day(s)"; }
-function chunkDiff(chunk,typed){ const otoks=tokenize(chunk.text), orig=otoks.filter(t=>t.t==="w");
-  const matched=wordDiff(orig.map(w=>w.c), words(typed).map(w=>w.c));
-  let ok=0,wi=-1,html=""; otoks.forEach(t=>{ if(t.t==="sep"){html+=esc(t.x);return;} wi++;
-    if(matched[wi]){ ok++; html+='<span class="w correct">'+esc(t.x)+'</span>'; }
-    else { html+='<span class="w miss">'+esc(t.x)+'</span>'; weakAdd(chunk.secId, chunk.wordStart+wi); } });
-  return {html, acc:orig.length?ok/orig.length:1, ok, total:orig.length}; }
+/* ═══ home ══════════════════════════════════════════════════════════════ */
+const MODES=[
+ {k:"coach", n:"Coach", d:"One spaced session. It picks what is due, mixes the paragraphs, and drills each line until you have it three times.", key:"start here"},
+ {k:"drill", n:"Drill", d:"Choose a paragraph and a layer — quotes, techniques, evaluations, Turns and Closes — and hammer just that.", key:"targeted"},
+ {k:"study", n:"Read", d:"The whole shell, annotated. Read a paragraph, then say it aloud before you close it.", key:"encode"},
+ {k:"match", n:"Sort", d:"Which quote does this technique belong to? Kills the four confusions that cost marks.", key:"discriminate"},
+ {k:"letters", n:"First letters", d:"Turns, Closes and shell sentences shrink to initials. Recite them aloud, tap to check.", key:"verbatim"},
+ {k:"blurt", n:"Blurt", d:"Write a whole paragraph from the cues alone, then check every component off against the model.", key:"assemble"},
+ {k:"adapt", n:"Adapt", d:"A question stem plus your six red clauses. Rewrite each one to answer it. Your versions are saved.", key:"question"},
+ {k:"exam", n:"Exam", d:"Forty minutes, a real stem, no cues. Marked against every quote, technique and evaluation.", key:"simulate"},
+ {k:"weak", n:"Weak lines", d:"Everything you have slipped on, hardest first. Short, targeted, worth more than a full pass.", key:"mop up"},
+ {k:"plan", n:"The method", d:"What to memorise word for word, what to leave flexible, the traps, and the order to learn it in.", key:"read once"}
+];
+function home(){
+  const p=overall(), d=dueNow().length, f=fresh().length, w=weak().length;
+  let next="coach", why="Start your first session — it introduces the Introduction, then works down.";
+  if(d>0) why=d+" line"+(d>1?"s are":" is")+" due for review right now.";
+  else if(f>0) why=f+" line"+(f>1?"s":"")+" still to meet. A session introduces up to eight.";
+  else if(w>0){ next="weak"; why="Nothing due. Clean up the "+w+" line"+(w>1?"s":"")+" you keep slipping on."; }
+  else if(p>=100){ next="exam"; why="Everything is at criterion. Now write it under time."; }
+  app.innerHTML=`
+  <section class="panel">
+    <div class="hero">
+      <div class="ring" style="--p:${p}"><i>${p}%</i></div>
+      <div>
+        <div class="eyebrow">Texts and Human Experiences · Paper 1, Section II</div>
+        <h2>${p===0?"Nothing learnt yet":p>=100?"The shell is yours":"Keep going"}</h2>
+        <p class="lead">${esc(why)}</p>
+        <div class="row" style="margin-top:13px">
+          <button class="btn pri" data-act="${next}">${next==="coach"?"▸ Start a session":next==="weak"?"▸ Drill weak lines":"▸ Sit the exam"}</button>
+          <button class="btn gh" data-act="study">Read the shell</button>
+          ${S.seenPlan?"":'<button class="btn gh" data-act="plan">How to memorise this</button>'}
+        </div>
+        <div class="tiles">
+          <div class="tile"><b>${d}</b><small>due now</small></div>
+          <div class="tile"><b>${ITEMS.length-f}<span style="color:var(--mut);font-size:13px">/${ITEMS.length}</span></b><small>lines met</small></div>
+          <div class="tile"><b>${ITEMS.filter(mastered).length}</b><small>at criterion</small></div>
+          <div class="tile"><b>${S.streak.n}</b><small>day streak</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-/* --- dashboard hero --- */
-function coachHeroHTML(){ buildChunks();
-  const tot=CHUNKS.length;
-  if(!planStarted()){
-    return `<div class="coachwrap"><span class="daybadge">🧭 3-Day Plan</span>
-      <h2>Memorise the whole essay in 3 days</h2>
-      <p class="goal">A science-backed coach. It splits the essay into ${tot} bite-size lines and drills each with <b>recall + feedback</b>, spaced out and revisited until it sticks — the method researchers call <i>successive relearning</i>. It tells you exactly what to do and when.</p>
-      <div class="coachbtns"><button class="btn primary" id="cStart">▶ Start my 3-day plan</button>
-        <button class="btn ghost" id="cWhy">ℹ️ Why this works</button></div></div>`;
+  <section class="panel">
+    <div class="eyebrow">Paragraph by paragraph</div>
+    <div class="secbars">
+      ${SECTIONS.map(s=>{ const its=itemsOf(s.id), v=pctOf(its);
+        return `<div class="secbar"><span>${esc(s.short)}</span>
+          <div class="track"><i style="width:${v}%"></i></div><em>${v}%</em></div>`; }).join("")}
+    </div>
+    <p class="lead" style="margin-top:12px;font-size:13px">A line counts as learnt once you have recalled it correctly ${CRIT} times, with gaps in between — not ${CRIT} times in a row tonight.</p>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">Ways to practise</div>
+    <div class="modes">
+      ${MODES.map(m=>`<button class="mode" data-act="${m.k}">
+        <span class="k">${esc(m.key)}</span><b>${esc(m.n)}</b><small>${esc(m.d)}</small></button>`).join("")}
+    </div>
+  </section>
+  <p class="foot">${ITEMS.length} lines · ${ITEMS.filter(i=>i.kind==="quote").length} quotes · ${ITEMS.filter(i=>i.kind==="tech").length} technique sets · ${ITEMS.filter(i=>i.kind==="eval").length} evaluations</p>`;
+  chrome();
+}
+
+/* ═══ read ══════════════════════════════════════════════════════════════ */
+let speaking=false;
+function study(sid){
+  sid=sid||"intro"; const s=secOf(sid);
+  const nav=SECTIONS.map(x=>`<button class="btn sm ${x.id===sid?"pri":"gh"}" data-act="study" data-arg="${x.id}">${esc(x.short)}</button>`).join("");
+  let body="";
+  if(s.lines) body=s.lines.map(l=>`<p class="prose">${renderProse(l.text)}</p>`).join("");
+  else{
+    body=`<p class="prose">${renderProse(s.shell.text)}</p><p class="prose">${renderProse(s.context.text)}</p>`
+      + s.cards.map((c,i)=>`<div class="ev">
+          <div class="q">${renderProse(c.quote)}${c.who?`<small>${esc(c.who)}</small>`:'<small>scene, not dialogue</small>'}</div>
+          <div class="t">${c.tech.map(esc).join("; ")}</div>
+          <div><ul>${c.evals.map((e,j)=>`<li>${esc(e)}${c.turnAt===j?' <span class="chip lampc">turn</span>':""}</li>`).join("")}</ul></div>
+        </div>`).join("")
+      + `<div class="band turn"><b>Turn</b>${esc(s.turn.text)}</div>
+         <div class="band close"><b>Close</b>${esc(s.close.text)}</div>`;
   }
-  const day=planDay(), intro=introducedCount(), mc=masteredCount(), dueNow=dueList().length, newLeft=newList().length, nd=nextDueAt();
-  const ready=dueNow>0||newLeft>0;
-  return `<div class="coachwrap">
-    <div class="coachbtns" style="justify-content:space-between">
-      <span class="daybadge">🧭 Day ${day} of 3</span>
-      <span class="stepdots">${[1,2,3].map(d=>`<i class="${d<day?'done':d===day?'cur':''}" style="width:24px;border-radius:5px"></i>`).join("")}</span></div>
-    <h2>${ready?"Time to practise":"You're ahead — rest, then return"}</h2>
-    <p class="goal"><b>Today's goal:</b> ${DAY_GOALS[day]||DAY_GOALS[3]}</p>
-    <div class="pgrid">
-      <div class="pcell"><b>${mc}/${tot}</b><small>lines mastered</small><div class="pbar"><i style="width:${tot?mc/tot*100:0}%"></i></div></div>
-      <div class="pcell"><b>${intro}/${tot}</b><small>introduced</small><div class="pbar"><i style="width:${tot?intro/tot*100:0}%"></i></div></div>
-      <div class="pcell"><b>${dueNow}</b><small>due to review now</small></div></div>
-    <div class="coachbtns">
-      <button class="btn primary" id="cStart">${ready?"▶ Start session":"▶ Practise anyway"}</button>
-      ${!ready&&nd?`<span class="pill">next review ${relTime(nd)}</span>`:""}
-      <button class="btn good" id="cExam">📝 Mock exam</button>
-      <button class="btn ghost" id="cWhy">ℹ️ Why this works</button>
-      <button class="btn ghost sm" id="cRestart" title="Restart the 3-day plan">↻</button></div></div>`;
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:14px">
+    <button class="btn gh sm" data-act="home">← Home</button>${nav}
+    <button class="btn sm" data-act="speak" data-arg="${sid}" style="margin-left:auto">🔊 Read aloud</button>
+  </div>
+  <section class="panel">
+    <div class="eyebrow">${esc(s.name)}</div>
+    ${body}
+    <div class="row" style="margin-top:18px;padding-top:15px;border-top:1px solid var(--line)">
+      <span class="chip seam">fixed theme</span><span class="chip sig">adapt to the question</span>
+      <span class="chip lampc">turn</span><span class="chip stagec">close</span>
+    </div>
+    <p class="lead" style="margin-top:13px">Read it once. Then look away and say it out loud — saying it is worth more than reading it twice.</p>
+    <div class="row" style="margin-top:13px">
+      <button class="btn pri" data-act="drillsec" data-arg="${sid}">Drill this paragraph</button>
+      <button class="btn gh" data-act="blurt" data-arg="${sid}">Blurt it</button>
+    </div>
+  </section>`;
 }
-function wireCoachHero(){
-  if($("cStart")) $("cStart").onclick=()=>startCoachSession();
-  if($("cWhy")) $("cWhy").onclick=()=>openScience();
-  if($("cExam")) $("cExam").onclick=()=>{ currentSectionId="whole"; startMode("whole","exam"); };
-  if($("cRestart")) $("cRestart").onclick=()=>{ if(confirm("Restart the 3-day plan? This resets the coach's schedule (your XP & best scores stay).")){ restartPlan(); renderHome(); } };
+function speak(sid){
+  if(!("speechSynthesis" in window)) return toast("This browser can’t read aloud");
+  if(speaking){ speechSynthesis.cancel(); speaking=false; return toast("Stopped"); }
+  const s=secOf(sid); let t="";
+  if(s.lines) t=s.lines.map(l=>clean(l.text)).join(" ");
+  else t=[clean(s.shell.text),clean(s.context.text)].concat(
+    s.cards.map(c=>clean(c.quote)+". "+c.tech.join(", ")+". "+c.evals.join(". ")),
+    [clean(s.turn.text),clean(s.close.text)]).join(" ");
+  const u=new SpeechSynthesisUtterance(t); u.rate=.92; u.onend=()=>speaking=false;
+  speaking=true; speechSynthesis.speak(u); toast("Reading — tap again to stop");
 }
 
-/* --- session runner --- */
-let CO=null;
-function startCoachSession(){ if(!planStarted()) startPlan();
-  const q=buildSession();
-  $("home").classList.add("hidden"); $("panel").classList.add("hidden");
-  if(!q.length){ coachAhead(); $("view").scrollIntoView({behavior:"smooth",block:"start"}); return; }
-  CO={queue:q,i:0,introduced:0,reviewed:0,accSum:0};
-  renderCoachStep(); $("view").scrollIntoView({behavior:"smooth",block:"start"});
+/* ═══ the runner (Coach, Drill, Weak all use this) ══════════════════════ */
+let R=null;
+function cueFor(it){
+  const s=secOf(it.sec);
+  if(it.kind==="quote") return {lbl:s.short+" · "+it.label, txt:it.card.cue,
+    sub:it.card.scene?"Name the scene and what happens in it.":"Give the words exactly, punctuation and all."};
+  if(it.kind==="tech") return {lbl:s.short+" · "+it.label, txt:shorten(it.card.quote,150),
+    sub:"Name every technique — film technique first, then the structural one."};
+  if(it.kind==="eval") return {lbl:s.short+" · "+it.label, txt:shorten(it.card.quote,120),
+    sub:"("+it.card.tech.join("; ")+") → evaluation "+(it.ei+1)+" of 2"};
+  const prev=ITEMS[it.n-1];
+  const tail=(prev&&prev.sec===it.sec&&prev.kind==="line")? "…"+clean(prev.text).split(/\s+/).slice(-7).join(" ") : "";
+  return {lbl:s.short+" · "+it.label, txt: tail || s.name,
+    sub: tail? "Carry straight on from here." : "Open the paragraph."};
 }
-function coachShell(inner){ const day=planDay();
-  const dots=CO?CO.queue.map((_,k)=>`<i class="${k<CO.i?'done':k===CO.i?'cur':''}"></i>`).join(""):"";
-  return `<div class="play"><div class="playhead">
-    <button class="btn sm ghost" onclick="goHome()">← Exit</button>
-    <div class="title">🧭 Coach <span class="tag">Day ${day}${CO?` · ${CO.i+1}/${CO.queue.length}`:""}</span></div>
-    <span class="stepdots">${dots}</span></div><div id="cbody">${inner}</div></div>`; }
-function renderCoachStep(){ if(CO.i>=CO.queue.length) return coachSummary();
-  $("view").innerHTML=coachShell("");
-  const step=CO.queue[CO.i];
-  if(step.type==="learn") renderLearn(step.c); else renderRecall(step.c,false); }
-function renderLearn(c){ const sec=getSection(c.secId);
-  $("cbody").innerHTML=`<div class="lede">🆕 New line · ${sec.short}</div>
-    <div class="note" style="margin-top:0">Read it, then <b>say it out loud</b> — reciting aloud encodes it far better than reading silently.</div>
-    <div class="passage read" style="margin:10px 0">${quoteHL(c.text)}</div>
-    <div class="actions"><button class="btn" id="cSpeak">🔊 Hear it</button>
-      <button class="btn primary" id="cSaid">I said it aloud ✓ → recall it</button></div>`;
-  $("cSpeak").onclick=()=>speak(c.text);
-  $("cSaid").onclick=()=>renderRecall(c,true); }
-function renderRecall(c,isLearn){ const sec=getSection(c.secId);
-  const cue=c.prevText?`<div class="cue">…${esc(tailWords(c.prevText,6))} <b style="color:var(--accent2)">→ ?</b></div>`
-    :`<div class="cue">Start of <b>${sec.short}</b> <b style="color:var(--accent2)">→ ?</b></div>`;
-  $("cbody").innerHTML=`<div class="lede">✍️ ${isLearn?"Now write it from memory":"Recall · "+sec.short}</div>
-    ${cue}
-    ${isLearn?`<div class="passage" id="flhint" style="margin-bottom:8px">${flCue(c.text)}</div>`:""}
-    <textarea id="cInput" placeholder="type the line from memory…" autocapitalize="sentences" spellcheck="false"
-      style="width:100%;min-height:88px;background:#0e0f22;border:2px solid var(--accent);border-radius:13px;color:var(--ink);font-size:17px;padding:12px 14px;outline:none;line-height:1.7"></textarea>
-    <div class="actions">
-      ${isLearn?"":'<button class="btn" id="cHint">💡 First letters</button>'}
-      <button class="btn" id="cReveal">👁 Reveal</button>
-      <button class="btn primary" id="cCheck">✓ Check</button></div>
-    <div id="cResult"></div>`;
-  const ta=$("cInput"); setTimeout(()=>ta.focus(),50);
-  if($("cHint")) $("cHint").onclick=()=>{ if(!$("flhint")){ const d=document.createElement("div"); d.className="passage"; d.id="flhint"; d.style.cssText="margin:0 0 8px"; d.innerHTML=flCue(c.text); ta.parentNode.insertBefore(d,ta); } };
-  $("cReveal").onclick=()=>{ ta.value=stripBrackets(c.text); ta.focus(); };
-  $("cCheck").onclick=()=>gradeStep(c,ta.value); }
-function gradeStep(c,typed){ const r=chunkDiff(c,typed), grade=gradeFromAccuracy(r.acc);
-  const isLearn=CO.queue[CO.i].type==="learn"; const s=applyGrade(c.id,grade);
-  if(isLearn) CO.introduced++; else CO.reviewed++; CO.accSum+=r.acc;
-  addXP(grade==="again"?2:grade==="hard"?5:9); if(grade==="easy"||grade==="good") sfx.ok(); else sfx.no();
-  const mins=s.intervalMin, when=mins>=1440?`~${Math.round(mins/1440)} day`:mins>=60?`~${Math.round(mins/60)} h`:`~${mins} min`;
-  const col=grade==="again"?"var(--bad)":grade==="hard"?"var(--warn)":"var(--good)";
-  const label={again:"Try again",hard:"Hard",good:"Good",easy:"Easy!"}[grade];
-  $("cCheck").disabled=true;
-  $("cResult").innerHTML=`<div class="note" style="margin-top:12px"><b>Marked</b> — <span style="color:var(--good)">green = right</span>, <span style="color:var(--bad)">red = missed</span>:</div>
-    <div class="passage diff" style="margin:6px 0">${r.html}</div>
-    <div class="actions"><span class="gradechip" style="background:${col}1f;color:${col};border:1px solid ${col}">${label} · ${Math.round(r.acc*100)}% · next review ${when}</span>
-      <button class="btn primary" id="cNext">${CO.i+1>=CO.queue.length?"Finish session →":"Next →"}</button></div>`;
-  $("cNext").onclick=()=>{ CO.i++; renderCoachStep(); };
-  $("cNext").scrollIntoView({block:"center",behavior:"smooth"}); }
-function coachSummary(){ bumpStreak();
-  SECTIONS.forEach(sec=>{ const cs=CHUNKS.filter(c=>c.secId===sec.id);
-    const m=cs.length?Math.round(cs.filter(c=>srsOf(c.id).reps>=CRITERION).length/cs.length*100):0; recordBest(sec.id,"coach",m); });
-  const avg=CO.queue.length?Math.round(CO.accSum/CO.queue.length*100):0;
-  const dueLeft=dueList().length, newLeft=newList().length, mc=masteredCount(), tot=CHUNKS.length, nd=nextDueAt();
-  const more=dueLeft>0||newLeft>0;
-  const msg=more?"More is ready now — keep going while you're warm."
-    :nd?`You're ahead. Next review is due ${relTime(nd)} — take a break; sleeping between sessions is when memories consolidate.`
-    :"🎉 Everything's mastered for now. Try a full mock exam to overlearn it.";
-  if(avg>=80) burst();
-  $("view").innerHTML=`<div class="play"><div class="result">
-    <div class="big">${avg}%</div>
-    <div style="color:var(--muted)">Session complete · ${CO.introduced} new learned · ${CO.reviewed} reviewed</div>
-    <div class="row">
-      <div class="kv"><b>${mc}/${tot}</b><small>lines mastered</small></div>
-      <div class="kv"><b>${dueLeft}</b><small>due now</small></div>
-      <div class="kv"><b>${newLeft}</b><small>not seen yet</small></div></div>
-    <div class="note" style="max-width:50ch;margin:0 auto 12px">${msg}</div>
-    <div class="actions" style="justify-content:center">
-      ${more?'<button class="btn primary" id="cAgain">▶ Next session</button>':""}
-      <button class="btn good" onclick="startMode('whole','exam')">📝 Mock exam</button>
-      <button class="btn ghost" onclick="goHome()">← Coach</button></div></div></div>`;
-  if($("cAgain")) $("cAgain").onclick=()=>startCoachSession(); }
-function coachAhead(){ const nd=nextDueAt();
-  $("view").innerHTML=`<div class="play"><div class="result"><div style="font-size:42px">😌</div>
-    <div style="margin:10px auto;color:var(--muted);max-width:48ch">Nothing's due right now${nd?` — next review ${relTime(nd)}`:""}. Spacing sessions out (and sleeping between them) is exactly what makes it stick, so come back a little later.</div>
-    <div class="actions" style="justify-content:center"><button class="btn good" onclick="startMode('whole','exam')">📝 Mock exam anyway</button><button class="btn ghost" onclick="goHome()">← Coach</button></div></div></div>`; }
-function openScience(){ const m=document.createElement("div"); m.className="modal"; m.id="sciModal";
-  m.innerHTML=`<div class="box" style="max-width:540px"><h3>🧠 Why this 3-day plan works</h3>
-    <ul class="scilist">
-      <li><b>Retrieval practice</b> — recalling from memory beats re-reading; testing yourself is one of the most powerful learning effects.</li>
-      <li><b>Spacing</b> — short gaps now, longer later (with sleep between days) beat cramming it all at once.</li>
-      <li><b>Successive relearning</b> — recall each line correctly ~3× across spaced sessions for durable memory.</li>
-      <li><b>Read–Recite–Review + reciting aloud</b> — saying it from memory and out loud encodes more than re-reading.</li>
-      <li><b>Errorful generation</b> — attempting (even getting it wrong) then seeing the answer beats just studying.</li>
-      <li><b>Chunking & chaining</b> — small lines, rehearsing the joins where people usually slip.</li>
-      <li><b>Interleaving & overlearning</b> — mixing paragraphs and timed full write-outs on day 3 lock it in.</li>
+function startRunner(list,title,opts){
+  if(!list.length){ toast("Nothing to practise there"); return home(); }
+  R={list:list.slice(), i:0, title, done:0, correct:0, opts:opts||{}, phase:"ask", log:[]};
+  renderStep();
+}
+function renderStep(){
+  if(R.i>=R.list.length) return finishRun();
+  const it=R.list[R.i], c=cueFor(it), r=srs(it.id);
+  const nth=r.reps, prog=Math.round(R.i/R.list.length*100);
+  const isNew=!r.started;
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px">
+    <button class="btn gh sm" data-act="home">← Leave</button>
+    <span class="chip">${esc(R.title)}</span>
+    <span class="chip" style="margin-left:auto">${R.i+1} / ${R.list.length}</span>
+  </div>
+  <div class="progress"><i style="width:${prog}%"></i></div>
+  <section class="panel">
+    <div class="row" style="margin-bottom:11px">
+      <span class="chip ${it.kind==="quote"?"lampc":it.kind==="tech"?"stagec":it.kind==="eval"?"seam":""}">${esc(KIND[it.kind].name)}</span>
+      <span class="chip">${isNew?"first meeting":nth+" / "+CRIT+" correct"}</span>
+    </div>
+    <div class="cue">
+      <div class="lbl">${esc(c.lbl)}</div>
+      <div class="txt">${renderProse(c.txt)}</div>
+      <div class="sub">${esc(c.sub)}</div>
+    </div>
+    ${isNew?`<div class="model" id="peek">${renderProse(it.text)}</div>
+      <p class="lead" style="margin-top:11px">New line. Read it, say it aloud once, then hide it and type it.</p>
+      <div class="row" style="margin-top:12px"><button class="btn pri" data-act="hide">I’ve said it — hide and recall</button></div>`
+    :`<textarea class="field" id="ans" rows="${it.kind==="quote"?3:4}" placeholder="From memory…" autocapitalize="sentences" autocomplete="off" spellcheck="false"></textarea>
+      <div class="row" style="margin-top:12px">
+        <button class="btn pri" data-act="check">Check</button>
+        <button class="btn gh" data-act="reveal">Show me</button>
+      </div>`}
+  </section>`;
+  const a=$("ans"); if(a){ a.focus();
+    a.addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey||it.kind==="quote")){e.preventDefault();checkAns();} }); }
+}
+function hidePeek(){ const it=R.list[R.i]; srs(it.id).started=true; save();
+  const p=$("peek"); if(p) p.remove();
+  const box=app.querySelector(".panel");
+  box.querySelector(".lead").textContent="Now type it from memory.";
+  box.querySelector(".row:last-child").outerHTML=
+    `<textarea class="field" id="ans" rows="4" placeholder="From memory…" autocomplete="off" spellcheck="false"></textarea>
+     <div class="row" style="margin-top:12px"><button class="btn pri" data-act="check">Check</button>
+     <button class="btn gh" data-act="reveal">Show me</button></div>`;
+  $("ans").focus();
+}
+function checkAns(){
+  const it=R.list[R.i], typed=($("ans")||{value:""}).value.trim();
+  if(!typed) return toast("Have a go first — a wrong guess still helps");
+  let html="", pct=0, extra="";
+  if(it.kind==="tech"){
+    const hits=it.card.tech.map(t=>({t, y:hasPhrase(typed,t)}));
+    pct=Math.round(hits.filter(h=>h.y).length/hits.length*100);
+    html=`<div class="checks">${hits.map(h=>`<div class="check ${h.y?"y":"n"}"><b>${h.y?"✓":"✗"}</b><span>${esc(h.t)}</span></div>`).join("")}</div>`;
+  } else if(it.kind==="eval"){
+    const m=markContent(it.text,typed); pct=m.pct;
+    const v=markVerbatim(it.text,typed);
+    html=`<div class="marked">${v.html}</div>`;
+    if(m.missing.length) extra=`<p class="lead" style="margin-top:9px">Key words you left out: <b style="color:var(--sig)">${m.missing.map(esc).join(", ")}</b></p>`;
+  } else {
+    const v=markVerbatim(it.text,typed); pct=v.pct;
+    html=`<div class="marked">${v.html}</div>`;
+    if(v.extra) extra=`<p class="lead" style="margin-top:9px">${v.extra} word${v.extra>1?"s":""} you added that aren’t in the line.</p>`;
+  }
+  const sug = pct>=93?2 : pct>=68?1 : 0;
+  R.phase="mark"; R.pct=pct;
+  const bar=app.querySelector(".panel");
+  bar.insertAdjacentHTML("beforeend",`
+    <div style="margin-top:18px;padding-top:15px;border-top:1px solid var(--line)">
+      <div class="score">${pct}% ${it.kind==="tech"?"of the techniques":it.kind==="eval"?"of the key ideas":"word accurate"}</div>
+      ${html}${extra}
+      <div class="model">${renderProse(it.text)}</div>
+      <div class="gradebtns">
+        <button class="btn ${sug===0?"suggest":""}" data-act="g" data-arg="0">Missed it</button>
+        <button class="btn ${sug===1?"suggest":""}" data-act="g" data-arg="1">Almost</button>
+        <button class="btn pri ${sug===2?"suggest":""}" data-act="g" data-arg="2">Got it</button>
+      </div>
+      <p class="lead" style="margin-top:9px;font-size:12.5px">Be honest — “Almost” brings it back in a few minutes, which is exactly what makes it stick.</p>
+    </div>`);
+  app.querySelector('[data-act="check"]').setAttribute("disabled","");
+  const t=$("ans"); if(t) t.setAttribute("readonly","");
+  bar.querySelector(".gradebtns").scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function revealAns(){ const it=R.list[R.i]; srs(it.id).started=true;
+  const bar=app.querySelector(".panel");
+  if(R.phase==="mark") return;
+  R.phase="mark";
+  bar.insertAdjacentHTML("beforeend",`
+    <div style="margin-top:18px;padding-top:15px;border-top:1px solid var(--line)">
+      <div class="score">the line</div><div class="model">${renderProse(it.text)}</div>
+      <div class="gradebtns"><button class="btn suggest" data-act="g" data-arg="0">Missed it</button>
+      <button class="btn" data-act="g" data-arg="1">Almost</button></div>
+    </div>`);
+}
+function doGrade(g){
+  if(R.phase!=="mark") return;
+  const it=R.list[R.i]; grade(it.id,g); R.done++; if(g===2) R.correct++;
+  R.log.push({id:it.id,g});
+  if(g<2 && R.list.length<26) R.list.push(it);        /* bring it back later */
+  R.i++; R.phase="ask"; chrome(); renderStep();
+}
+function finishRun(){
+  bumpStreak();
+  const acc=R.done?Math.round(R.correct/R.done*100):0;
+  const nextDue=ITEMS.map(i=>S.srs[i.id]).filter(r=>r&&r.started&&r.reps<CRIT).map(r=>r.due).sort((a,b)=>a-b)[0];
+  const mins=nextDue?Math.max(0,Math.round((nextDue-Date.now())/MIN)):null;
+  app.innerHTML=`<section class="panel">
+    <div class="eyebrow">Session done</div>
+    <h2>${acc>=85?"That was a strong one":acc>=60?"Solid session":"Rough — which is where the learning is"}</h2>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile"><b>${R.done}</b><small>lines practised</small></div>
+      <div class="tile"><b>${acc}%</b><small>first-go correct</small></div>
+      <div class="tile"><b>${overall()}%</b><small>shell learnt</small></div>
+      <div class="tile"><b>${S.streak.n}</b><small>day streak</small></div>
+    </div>
+    <p class="lead" style="margin-top:16px">${mins===null?"Every line is at criterion. Go and write it under time."
+      :mins<=1?"Some lines are due again already — but a short break beats pushing on."
+      :"Next review lands in about "+(mins<60?mins+" minutes":Math.round(mins/60)+" hours")+". Walk away until then; the gap is doing the work, and sleeping between sessions is worth more than another hour tonight."}</p>
+    <div class="row" style="margin-top:15px">
+      <button class="btn pri" data-act="home">Home</button>
+      ${mins!==null&&mins<=1?'<button class="btn gh" data-act="coach">Another round</button>':""}
+      <button class="btn gh" data-act="exam">Try the exam</button>
+    </div></section>`;
+  chrome();
+}
+function coach(){
+  const due=dueNow(), nu=fresh(); const pick=[];
+  const byS={}; due.forEach(i=>{ (byS[i.sec]=byS[i.sec]||[]).push(i); });
+  const keys=Object.keys(byS); let n=0;                 /* interleave paragraphs */
+  while(pick.length<10 && n<40){ keys.forEach(k=>{ if(byS[k].length&&pick.length<10) pick.push(byS[k].shift()); }); n++; }
+  for(const i of nu){ if(pick.length>=12) break; pick.push(i); }
+  if(!pick.length) return (toast("Nothing due — try Drill or the exam"), home());
+  startRunner(pick,"Coach");
+}
+/* Drill picker */
+const LAYERS=[{k:"all",n:"Everything"},{k:"quote",n:"Quotes only"},{k:"tech",n:"Techniques only"},
+  {k:"eval",n:"Evaluations only"},{k:"tc",n:"Turns and Closes"},{k:"frame",n:"Shell and context sentences"}];
+function drill(sid,layer){
+  if(!sid){ app.innerHTML=`
+    <div class="row" style="margin-bottom:14px"><button class="btn gh sm" data-act="home">← Home</button></div>
+    <section class="panel"><div class="eyebrow">Drill</div><h2>Pick a paragraph</h2>
+      <div class="row" style="margin-top:12px">
+        ${SECTIONS.map(s=>`<button class="btn" data-act="drillsec" data-arg="${s.id}">${esc(s.short)} <span style="color:var(--mut);font-family:var(--mono);font-size:12px">${pctOf(itemsOf(s.id))}%</span></button>`).join("")}
+        <button class="btn" data-act="drillsec" data-arg="all">Whole essay</button>
+      </div></section>`; return; }
+  if(!layer){ app.innerHTML=`
+    <div class="row" style="margin-bottom:14px"><button class="btn gh sm" data-act="drill">← Paragraphs</button></div>
+    <section class="panel"><div class="eyebrow">${sid==="all"?"Whole essay":esc(secOf(sid).name)}</div><h2>Which layer?</h2>
+      <div class="row" style="margin-top:12px">
+        ${LAYERS.map(l=>`<button class="btn" data-act="drillgo" data-arg="${sid}|${l.k}">${esc(l.n)}</button>`).join("")}
+      </div></section>`; return; }
+  let list=ITEMS.filter(i=>sid==="all"||i.sec===sid);
+  if(layer==="tc") list=list.filter(i=>i.sub==="turn"||i.sub==="close");
+  else if(layer==="frame") list=list.filter(i=>i.sub==="shell"||i.sub==="context"||i.sub==="prose");
+  else if(layer!=="all") list=list.filter(i=>i.kind===layer);
+  list.sort((a,b)=>{ const ra=S.srs[a.id],rb=S.srs[b.id];
+    return ((ra?ra.reps:0)-(rb?rb.reps:0)) || (a.n-b.n); });
+  startRunner(list.slice(0,18), (sid==="all"?"Whole essay":secOf(sid).short)+" · "+LAYERS.find(l=>l.k===layer).n);
+}
+
+/* ═══ sort: technique → which quote ═════════════════════════════════════ */
+let M=null;
+const CARDS=[]; SECTIONS.forEach(s=>(s.cards||[]).forEach(c=>CARDS.push({c,sec:s})));
+function techWords(c){ return words(c.tech.join(" ")).filter(w=>!STOP.has(w)&&w.length>3); }
+function nearest(idx){
+  const mine=new Set(techWords(CARDS[idx].c));
+  return CARDS.map((x,i)=>({i, ov:i===idx?-1:techWords(x.c).filter(w=>mine.has(w)).length}))
+    .sort((a,b)=>b.ov-a.ov); }
+function match(){
+  const pool=[]; CARDS.forEach((x,i)=>{ x.c.tech.forEach(t=>pool.push({i,q:t,type:"technique"}));
+    x.c.evals.forEach(e=>pool.push({i,q:e,type:"evaluation"})); });
+  M={pool:shuffle(pool).slice(0,12), i:0, right:0}; renderMatch();
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function renderMatch(){
+  if(M.i>=M.pool.length){
+    const pct=Math.round(M.right/M.pool.length*100);
+    app.innerHTML=`<section class="panel"><div class="eyebrow">Sort</div>
+      <h2>${pct}% placed correctly</h2>
+      <p class="lead" style="margin-top:8px">${pct>=90?"You can tell the near-identical techniques apart. That is the difference between a quote you can use and a quote you can only recite."
+        :"Every miss here is a mark lost on the day: the right technique welded to the wrong shot. Run it again."}</p>
+      <div class="row" style="margin-top:14px"><button class="btn pri" data-act="match">Again</button>
+      <button class="btn gh" data-act="home">Home</button></div></section>`;
+    return; }
+  M.locked=false;
+  const q=M.pool[M.i], near=nearest(q.i);
+  const opts=shuffle([q.i, near[0].i, near[1].i, near[2].i].filter((v,k,a)=>a.indexOf(v)===k).slice(0,4));
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px"><button class="btn gh sm" data-act="home">← Leave</button>
+    <span class="chip">Sort</span><span class="chip" style="margin-left:auto">${M.i+1} / ${M.pool.length}</span></div>
+  <div class="progress"><i style="width:${Math.round(M.i/M.pool.length*100)}%"></i></div>
+  <section class="panel">
+    <div class="eyebrow">Which piece of evidence does this ${q.type} belong to?</div>
+    <div class="cue"><div class="txt">${esc(q.q)}</div></div>
+    <div class="opts" id="opts">
+      ${opts.map(i=>`<button class="opt" data-act="mopt" data-arg="${i}|${q.i}">
+        ${renderProse(shorten(CARDS[i].c.quote,90))}<small>${esc(CARDS[i].sec.short)}</small></button>`).join("")}
+    </div>
+  </section>`;
+}
+function matchPick(pick,right){
+  if(M.locked) return; M.locked=true;
+  const ok=pick===right; if(ok) M.right++;
+  [...$("opts").children].forEach(b=>{ const v=+b.dataset.arg.split("|")[0];
+    if(v===right) b.classList.add("y"); else if(v===pick) b.classList.add("n"); });
+  const c=CARDS[right];
+  $("opts").insertAdjacentHTML("afterend",
+    `<div class="model" style="margin-top:14px"><b>${esc(c.sec.short)}</b> — ${c.c.tech.map(esc).join("; ")}</div>
+     <div class="row" style="margin-top:13px"><button class="btn pri" data-act="mnext">${ok?"Next":"Got it — next"}</button></div>`);
+}
+
+/* ═══ first letters ═════════════════════════════════════════════════════ */
+let F=null;
+function letters(sid){
+  const list=ITEMS.filter(i=>i.kind==="line"&&(!sid||i.sec===sid));
+  F={list, i:0}; renderFL();
+}
+function renderFL(){
+  if(F.i>=F.list.length){ app.innerHTML=`<section class="panel"><h2>Recited every sentence</h2>
+    <p class="lead" style="margin-top:8px">Turns and Closes are where a shell essay is won — they are the only sentences that assess rather than describe.</p>
+    <div class="row" style="margin-top:14px"><button class="btn pri" data-act="letters">Again</button>
+    <button class="btn gh" data-act="home">Home</button></div></section>`; return; }
+  const it=F.list[F.i], s=secOf(it.sec);
+  const tk=toks(clean(it.text)); let wi=-1;
+  const html=tk.map(t=>{ if(t.t==="s") return esc(t.x); wi++;
+    return `<span class="w" data-act="flw" data-arg="${wi}" data-full="${esc(t.x)}">${esc(t.x[0]+"·".repeat(Math.max(0,t.x.length-1)))}</span>`; }).join("");
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px"><button class="btn gh sm" data-act="home">← Leave</button>
+    <span class="chip">First letters</span><span class="chip" style="margin-left:auto">${F.i+1} / ${F.list.length}</span></div>
+  <div class="progress"><i style="width:${Math.round(F.i/F.list.length*100)}%"></i></div>
+  <section class="panel">
+    <div class="eyebrow">${esc(s.short)} · ${esc(it.label)}</div>
+    <p class="lead" style="margin-bottom:13px">Say the whole sentence out loud, then tap any word you were unsure of.</p>
+    <div class="fl" id="flbox">${html}</div>
+    <div class="row" style="margin-top:17px">
+      <button class="btn pri" data-act="flnext" data-arg="2">Said it clean</button>
+      <button class="btn" data-act="flnext" data-arg="1">Stumbled</button>
+      <button class="btn gh" data-act="flall">Reveal all</button>
+    </div>
+  </section>`;
+}
+
+/* ═══ blurt: build a whole paragraph ════════════════════════════════════ */
+let B=null;
+function blurt(sid){
+  if(!sid){ app.innerHTML=`<div class="row" style="margin-bottom:14px"><button class="btn gh sm" data-act="home">← Home</button></div>
+    <section class="panel"><div class="eyebrow">Blurt</div><h2>Which paragraph?</h2>
+    <p class="lead" style="margin-top:6px">You get the cues only. Write the paragraph as you would on the day, then check every component off.</p>
+    <div class="row" style="margin-top:13px">${SECTIONS.map(s=>`<button class="btn" data-act="blurt" data-arg="${s.id}">${esc(s.short)}</button>`).join("")}</div></section>`;
+    return; }
+  const s=secOf(sid); B={sid};
+  const cues = s.cards? s.cards.map((c,i)=>`<li>${esc(c.cue)}${c.who?` <span style="color:var(--mut)">— ${esc(c.who)}</span>`:""}</li>`).join("")
+    : s.lines.map(l=>`<li>${esc(l.label)}</li>`).join("");
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px"><button class="btn gh sm" data-act="blurt">← Paragraphs</button>
+    <span class="chip">Blurt</span></div>
+  <section class="panel">
+    <div class="eyebrow">${esc(s.name)}</div>
+    <h2>Write it from these cues alone</h2>
+    <ul class="tight">${cues}${s.cards?"<li>Turn, then Close</li>":""}</ul>
+    <textarea class="field" id="bl" rows="12" style="margin-top:14px" placeholder="Shell sentence, context, then quote → technique → evaluation, three times, then the Turn and the Close…" spellcheck="false"></textarea>
+    <div class="row" style="margin-top:12px"><button class="btn pri" data-act="blcheck">Check every component</button></div>
+  </section>`;
+  $("bl").focus();
+}
+function componentsOf(sid){
+  const s=secOf(sid), out=[];
+  if(s.lines){ s.lines.forEach(l=>out.push({n:l.label, t:clean(l.text), w:.34})); return out; }
+  out.push({n:"Shell sentence", t:clean(s.shell.text), w:.5});
+  out.push({n:"Context sentence", t:clean(s.context.text), w:.5});
+  s.cards.forEach((c,i)=>{
+    out.push({n:(c.scene?"Scene ":"Quote ")+(i+1), t:clean(c.quote), w:1});
+    c.tech.forEach(t=>out.push({n:"Technique — "+t, t:t, w:.7}));
+    c.evals.forEach((e,j)=>out.push({n:"Evaluation "+(i+1)+"."+(j+1), t:e, w:.8}));
+  });
+  out.push({n:"Turn", t:clean(s.turn.text), w:1});
+  out.push({n:"Close", t:clean(s.close.text), w:1});
+  return out;
+}
+function blurtCheck(){
+  const typed=$("bl").value.trim();
+  if(!typed) return toast("Write something first");
+  const comps=componentsOf(B.sid).map(c=>Object.assign(c,{y:hasPhrase(typed,c.t)}));
+  const got=comps.filter(c=>c.y).reduce((a,c)=>a+c.w,0), tot=comps.reduce((a,c)=>a+c.w,0);
+  const pct=Math.round(got/tot*100), n=words(typed).length;
+  /* only demote on a real attempt — a two-line trial shouldn't wipe your progress */
+  if(n>=90) comps.filter(c=>!c.y).forEach(c=>{ const it=ITEMS.find(i=>clean(i.text)===c.t || i.text===c.t);
+    if(it){ const r=srs(it.id); if(r.started){ r.lapses++; r.reps=Math.max(0,r.reps-1); r.due=Date.now(); } } });
+  save(); bumpStreak(); chrome();
+  app.insertAdjacentHTML("beforeend",`<section class="panel">
+    <div class="eyebrow">Component check</div>
+    <h2>${pct}% of the paragraph landed</h2>
+    <p class="lead" style="margin-top:6px">${n} words. On the day you have about ${Math.round(n/22)} minutes of writing in a paragraph this long.</p>
+    <div class="checks" style="margin-top:14px">
+      ${comps.map(c=>`<div class="check ${c.y?"y":"n"}"><b>${c.y?"✓":"✗"}</b><span>${esc(c.n)}${c.y?"":" — <i>"+esc(shorten(c.t,80))+"</i>"}</span></div>`).join("")}
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn pri" data-act="drillsec" data-arg="${B.sid}">Drill what I missed</button>
+      <button class="btn gh" data-act="blurt" data-arg="${B.sid}">Again</button>
+      <button class="btn gh" data-act="study" data-arg="${B.sid}">Read it</button>
+    </div></section>`);
+  app.lastElementChild.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ═══ adapt: the red clauses vs a real question ═════════════════════════ */
+const REDS=[]; ITEMS.forEach(it=>{ const m=clean(it.text)===it.text?null:it.text.match(/\[[^\]]+\]/g);
+  if(m) m.forEach((x,k)=>REDS.push({id:it.id+".r"+k, sec:it.sec, host:it.text, red:x.slice(1,-1), label:it.label})); });
+function adapt(si){
+  si=(si===undefined||si===null)? Math.floor(Math.random()*STEMS.length) : +si;
+  const stem=STEMS[si];
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px"><button class="btn gh sm" data-act="home">← Home</button>
+    <span class="chip sig">adapt</span>
+    <button class="btn gh sm" data-act="adapt" data-arg="${(si+1)%STEMS.length}" style="margin-left:auto">Another question</button></div>
+  <section class="panel">
+    <div class="eyebrow">The question</div>
+    <p class="prose">${esc(stem)}</p>
+    <p class="lead" style="margin-top:12px">The green wording never changes. These six red clauses do — every one of them has to point back at the words of this question. Rewrite each, then read the sentence back whole to check it still runs.</p>
+  </section>
+  ${REDS.map(r=>`<section class="panel">
+    <div class="eyebrow">${esc(secOf(r.sec).short)} · ${esc(r.label)}</div>
+    <p class="prose" style="font-size:16px">${renderProse(r.host)}</p>
+    <textarea class="field" id="ad_${r.id}" rows="2" style="margin-top:12px" placeholder="Rewrite the red clause for this question…" spellcheck="false">${esc(S.adapt[r.id]||"")}</textarea>
+  </section>`).join("")}
+  <div class="row"><button class="btn pri" data-act="adsave" data-arg="${si}">Save my versions</button>
+  <button class="btn gh" data-act="home">Home</button></div>`;
+}
+function adaptSave(){
+  let n=0; REDS.forEach(r=>{ const t=$("ad_"+r.id); if(t&&t.value.trim()){ S.adapt[r.id]=t.value.trim(); n++; } });
+  save(); toast(n?"Saved "+n+(n===1?" rewrite":" rewrites"):"Nothing written yet");
+}
+
+/* ═══ exam ══════════════════════════════════════════════════════════════ */
+let X=null;
+function exam(si){
+  if(X&&X.timer) clearInterval(X.timer);
+  const stem=STEMS[si!==undefined&&si!==null?+si:Math.floor(Math.random()*STEMS.length)];
+  X={stem, start:Date.now(), len:40*60, timer:null};
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:12px"><button class="btn gh sm" data-act="home">← Leave</button>
+    <span class="chip lampc">20 marks · 40 minutes</span>
+    <span class="timer" id="clock" style="margin-left:auto">40:00</span></div>
+  <section class="panel">
+    <div class="eyebrow">Question</div><p class="prose">${esc(stem)}</p>
+  </section>
+  <section class="panel">
+    <textarea class="field" id="ex" rows="20" placeholder="Introduction, three bodies, conclusion. No cues from here." spellcheck="false"></textarea>
+    <div class="row" style="margin-top:12px"><button class="btn pri" data-act="exmark">Hand it in</button>
+      <span class="chip" id="wc" style="margin-left:auto">0 words</span></div>
+  </section>`;
+  const ta=$("ex"); ta.focus();
+  ta.addEventListener("input",()=>{ $("wc").textContent=words(ta.value).length+" words"; });
+  X.timer=setInterval(()=>{
+    const left=X.len-Math.floor((Date.now()-X.start)/1000);
+    const c=$("clock"); if(!c){ clearInterval(X.timer); return; }
+    c.textContent=(left<0?"-":"")+String(Math.floor(Math.abs(left)/60)).padStart(2,"0")+":"+String(Math.abs(left)%60).padStart(2,"0");
+    c.classList.toggle("low",left<300);
+  },1000);
+}
+function examMark(){
+  const typed=$("ex").value.trim(); if(!typed) return toast("Nothing to mark");
+  clearInterval(X.timer);
+  const mins=Math.round((Date.now()-X.start)/MIN), n=words(typed).length;
+  const rows=SECTIONS.map(s=>{
+    const comps=componentsOf(s.id).map(c=>Object.assign(c,{y:hasPhrase(typed,c.t)}));
+    const got=comps.filter(c=>c.y).reduce((a,c)=>a+c.w,0), tot=comps.reduce((a,c)=>a+c.w,0);
+    if(n>=350) comps.filter(c=>!c.y).forEach(c=>{ const it=ITEMS.find(i=>clean(i.text)===c.t);
+      if(it){ const r=srs(it.id); if(r.started){ r.lapses++; r.reps=Math.max(0,r.reps-1); r.due=Date.now(); } } });
+    return {s, pct:Math.round(got/tot*100), comps};
+  });
+  const overallPct=Math.round(rows.reduce((a,r)=>a+r.pct,0)/rows.length);
+  S.exams.push({t:Date.now(),pct:overallPct,mins,n}); if(S.exams.length>20) S.exams.shift();
+  save(); bumpStreak(); chrome();
+  app.innerHTML=`<section class="panel">
+    <div class="eyebrow">Marked against the shell</div>
+    <h2>${overallPct}% of your components made it onto the page</h2>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile"><b>${n}</b><small>words</small></div>
+      <div class="tile"><b>${mins}</b><small>minutes</small></div>
+      <div class="tile"><b>${n&&mins?Math.round(n/mins):0}</b><small>words / minute</small></div>
+      <div class="tile"><b>${S.exams.length}</b><small>exams sat</small></div>
+    </div>
+    <p class="lead" style="margin-top:14px">${n<700?"Under 700 words is thin for 20 marks — most of the gap is evidence you didn’t reach."
+      :mins>42?"Over time. The shell exists so you don’t have to compose under pressure; the fix is recall speed, not writing faster."
+      :"Length and timing are where they need to be."}</p>
+  </section>
+  ${rows.map(r=>`<section class="panel">
+    <div class="row" style="margin-bottom:10px"><span class="chip">${esc(r.s.short)}</span>
+      <span class="chip ${r.pct>=80?"seam":r.pct>=50?"lampc":"sig"}" style="margin-left:auto">${r.pct}%</span></div>
+    <div class="checks">${r.comps.map(c=>`<div class="check ${c.y?"y":"n"}"><b>${c.y?"✓":"✗"}</b><span>${esc(c.n)}</span></div>`).join("")}</div>
+  </section>`).join("")}
+  <div class="row"><button class="btn pri" data-act="coach">Drill the gaps</button>
+    <button class="btn gh" data-act="exam">Sit another</button>
+    <button class="btn gh" data-act="home">Home</button></div>`;
+  scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ═══ the method ════════════════════════════════════════════════════════ */
+function plan(){
+  S.seenPlan=true; save();
+  app.innerHTML=`
+  <div class="row" style="margin-bottom:14px"><button class="btn gh sm" data-act="home">← Home</button></div>
+  <section class="panel">
+    <div class="eyebrow">The analysis</div>
+    <h2>What to memorise, and how hard</h2>
+    <p class="lead" style="margin-top:7px">There are ${ITEMS.length} things to hold here, and they are not all the same kind of thing. Treating them the same is the usual reason a shell essay falls apart in the room.</p>
+    <div class="scroll"><table class="plan" style="margin-top:14px">
+      <tr><th>Layer</th><th>How much</th><th>Why</th></tr>
+      <tr><td><b>The ${ITEMS.filter(i=>i.kind==="quote").length} quotes and scenes</b></td><td>Word for word, no licence</td>
+        <td>A misquoted line stops being evidence. Two of the nine are scenes, not dialogue — you need the shot, not a sentence.</td></tr>
+      <tr><td><b>The ${ITEMS.filter(i=>i.kind==="tech").length} technique sets</b></td><td>Exact names, any order</td>
+        <td>Marks come from naming the technique, not describing it. “Axial jump cuts”, “non-diegetic”, “tricolon” — the precise term or nothing.</td></tr>
+      <tr><td><b>The ${ITEMS.filter(i=>i.kind==="eval").length} evaluation clauses</b></td><td>Near-verbatim; keep the idea and the verb</td>
+        <td>These are clauses, not sentences. You join two with <i>so</i>, <i>and</i> or a colon on the day, so the phrasing has to bend.</td></tr>
+      <tr><td><b>Turns and Closes</b></td><td>Word for word</td>
+        <td>The only six sentences that <i>assess</i> rather than describe. This is the band 6 line, and they are short — cheapest marks in the essay.</td></tr>
+      <tr><td><b>Shell and context sentences</b></td><td>Word for word around the red</td>
+        <td>The frame carries the argument; the bracket carries the question.</td></tr>
+      <tr><td><b>The ${REDS.length} red clauses</b></td><td><b>Do not memorise</b></td>
+        <td>Rehearse rewriting them instead. A red clause you have memorised is a question you have ignored.</td></tr>
+    </table></div>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">Four traps</div>
+    <h2>Where this essay will trip you</h2>
+    <p class="lead" style="margin-top:6px">These are not general study tips — they come from what actually repeats inside your nine pieces of evidence.</p>
+    <ul class="tight" style="margin-top:11px">
+      <li><b>Shot/reverse shot appears twice.</b> Body 1 with Jackie’s “Lads do football…”, Body 2 with “Just because I like ballet…”. Different jobs: in Body 1 the cutting <i>denies a shared frame</i>; in Body 2 it <i>puts the cost on Michael’s face</i>. Learn them as a contrast or you will attach the wrong effect.</li>
+      <li><b>The cage appears three times.</b> Gym cage in Body 1 (Jackie behind the wire, the enforcer imprisoned), gym cage again in Body 2 (the dance of defiance shot through it), pit cage in Body 3 (descending as Billy leaves). It is the spine of the essay — memorise the trio together and you get three quotes for the price of one image.</li>
+      <li><b>Diegetic or not.</b> Body 2’s crescendo is <i>non-diegetic</i>; Body 3’s crowd and Swan Lake score are <i>diegetic</i>. One wrong prefix and the marker knows you learnt a word rather than a shot.</li>
+      <li><b>High angle down, low angle up.</b> Body 3 runs both: the high angle diminishes Jackie at the pit gates, the low angle elevates Billy in the leap. Daldry paired them on purpose, so learn them paired.</li>
     </ul>
-    <div class="note" style="margin-top:10px">Evidence: Roediger &amp; Karpicke (2006); Cepeda et al. (2008); Rawson &amp; Dunlosky (2022); McDaniel, Howard &amp; Einstein (2009); Kornell, Hays &amp; Bjork (2009).</div>
-    <div class="actions" style="justify-content:flex-end"><button class="btn primary" id="sciClose">Got it</button></div></div>`;
-  $("modalHost").appendChild(m); m.addEventListener("click",e=>{ if(e.target===m) m.remove(); });
-  $("sciClose").onclick=()=>m.remove(); }
+  </section>
 
-/* ============================================================
-   SETTINGS MODAL
-   ============================================================ */
-function openSettings(){ const m=document.createElement("div"); m.className="modal"; m.id="setModal";
-  m.innerHTML=`<div class="box"><h3>⚙️ Settings</h3>
-    <div class="setrow"><span>🔊 Sound effects</span><button class="btn sm" id="sSound">${state.settings.sound?"On":"Off"}</button></div>
-    <div class="setrow"><span>✍️ Forgive spelling<br><small style="color:var(--muted)">accept small typos when you type</small></span><button class="btn sm" id="sFuzzy">${state.settings.fuzzy?"On":"Off"}</button></div>
-    <div class="setrow"><span>💡 Default typing hint</span><div class="seg"><button data-h="full">Full</button><button data-h="first">1st</button><button data-h="none">None</button></div></div>
-    <div class="setrow"><span>📲 Add to home screen</span><span style="color:var(--muted);font-size:12px;max-width:160px;text-align:right">Use your browser's “Add to Home Screen” to install it as an app.</span></div>
-    <div class="setrow"><span>♻️ Reset all progress</span><button class="btn sm" id="sReset" style="border-color:var(--bad);color:var(--bad)">Reset</button></div>
-    <div class="actions" style="justify-content:flex-end"><button class="btn primary" id="sClose">Done</button></div></div>`;
-  $("modalHost").appendChild(m);
-  m.addEventListener("click",e=>{ if(e.target===m) m.remove(); });
-  const mark=()=>m.querySelectorAll("[data-h]").forEach(b=>b.style.background=b.dataset.h===state.settings.hint?"var(--accent)":"transparent"); mark();
-  $("sSound").onclick=()=>{ state.settings.sound=!state.settings.sound; save(); $("sSound").textContent=state.settings.sound?"On":"Off"; if(state.settings.sound) sfx.ok(); };
-  $("sFuzzy").onclick=()=>{ state.settings.fuzzy=!state.settings.fuzzy; save(); $("sFuzzy").textContent=state.settings.fuzzy?"On":"Off"; toast(state.settings.fuzzy?"Spelling: forgiving":"Spelling: strict"); };
-  m.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{ state.settings.hint=b.dataset.h; save(); mark(); });
-  $("sReset").onclick=()=>{ if(confirm("Reset all progress — XP, levels, streak, best scores and weak words?")){ state=defaults(); save(); refreshHeader(); m.remove(); goHome(); toast("Progress reset"); } };
-  $("sClose").onclick=()=>m.remove();
+  <section class="panel">
+    <div class="eyebrow">The spine</div>
+    <h2>One shape, three times</h2>
+    <p class="note">Every body paragraph runs the same six beats: <b>shell claim → context (Daldry and the 1980s) → three times [quote → technique → two evaluations] → Turn → Close</b>. Learn the shape once and you only ever recall the fillings.</p>
+    <p class="note">All three Turns open with <b>“Yet”</b> and each names its own cost: Body 1 <b>defeat</b>, Body 2 <b>purity</b>, Body 3 <b>purchase</b>. Two of the three Closes open “Daldry positions audiences to…” — recognise, then value; Body 3 buries the phrase mid-sentence, which is the one that catches people.</p>
+    <p class="note">Jackie carries three of the nine pieces of evidence, in order: enforcer (“Not friggin’ ballet”) → defeated (“I never made it past Durham”) → faith-breaker (“Give the boy a chance”). If you lose your thread on the day, walk Jackie’s arc and the evidence comes back with it.</p>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">The order</div>
+    <h2>Learn it in this sequence</h2>
+    <ol class="tight">
+      <li><b>Introduction first</b> — its three green phrases <i>are</i> the three body paragraphs. Learning it first gives you a hook to hang everything else on.</li>
+      <li><b>Quote, then technique, then evaluation</b>, one card at a time. The quote is the retrieval cue for the other two, so it has to be solid first.</li>
+      <li><b>Turn and Close last in each paragraph</b>, once the evidence beneath them means something.</li>
+      <li><b>Then stop going paragraph by paragraph.</b> Mixing them up feels worse and works better — that mixing is exactly what stops Body 2’s techniques leaking into Body 1.</li>
+    </ol>
+    <p class="note" style="margin-top:12px">Sessions beat hours. Four twenty-minute sessions across two days will beat one long night, and sleeping between them is doing real work, not lost time. Say every new line out loud at least once — spoken lines are remembered better than read ones, and it costs nothing.</p>
+    <p class="note">A line only counts as learnt here after <b>three correct recalls spread over separate sittings</b>. That is the one number in this app worth trusting: relearning to a criterion, spaced, is what makes it survive to the exam rather than to tonight.</p>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">Where the research comes from</div>
+    <ul class="tight">
+      <li>Recall to a criterion across spaced sessions — Rawson &amp; Dunlosky, <i>Successive Relearning</i>, Current Directions in Psychological Science (2022).</li>
+      <li>Testing beats rereading on delayed tests — Roediger &amp; Karpicke, <i>Test-Enhanced Learning</i>, Psychological Science (2006).</li>
+      <li>Spaced gaps beat massed study — Cepeda, Vul, Rohrer, Wixted &amp; Pashler, Psychological Science (2008).</li>
+      <li>Read–recite–review beats rereading — McDaniel, Howard &amp; Einstein, Psychological Science (2009).</li>
+      <li>Failed retrieval still helps, if feedback follows — Kornell, Hays &amp; Bjork, JEP:LMC (2009).</li>
+      <li>Saying it aloud beats reading it silently — the production effect, MacLeod and colleagues.</li>
+    </ul>
+  </section>
+  <div class="row"><button class="btn pri" data-act="coach">Start a session</button>
+  <button class="btn gh" data-act="home">Home</button></div>`;
 }
 
-/* ============================================================
-   PWA + BOOT
-   ============================================================ */
-let deferredPrompt=null;
-window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; $("installBtn").classList.remove("hidden"); });
-$("installBtn").onclick=async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; $("installBtn").classList.add("hidden"); };
-window.addEventListener("appinstalled",()=>$("installBtn").classList.add("hidden"));
-$("setBtn").onclick=openSettings;
-$("streakPill").addEventListener("dblclick",()=>{ if(confirm("Reset all progress?")){ state=defaults(); save(); refreshHeader(); goHome(); toast("Progress reset"); } });
-
-refreshHeader(); renderHome();
-window.startMode=startMode; window.goHome=goHome;
-
-if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-}
+/* ═══ routing ═══════════════════════════════════════════════════════════ */
+const ACTS={
+  home, study:a=>study(a), speak:a=>speak(a), plan,
+  coach, drill:a=>drill(a), drillsec:a=>drill(a), drillgo:a=>{const[s,l]=a.split("|");drill(s,l);},
+  weak:()=>startRunner(weak().slice(0,16),"Weak lines"),
+  match, mopt:a=>{const[p,r]=a.split("|");matchPick(+p,+r);}, mnext:()=>{M.locked=false;M.i++;renderMatch();},
+  letters:a=>letters(a), flall:()=>{ [...document.querySelectorAll("#flbox .w")].forEach(w=>{w.textContent=w.dataset.full;w.classList.add("shown");}); },
+  flw:a=>{ const w=document.querySelector('#flbox .w[data-arg="'+a+'"]'); if(w){w.textContent=w.dataset.full;w.classList.add("shown");} },
+  flnext:g=>{ const it=F.list[F.i]; const shown=document.querySelectorAll("#flbox .w.shown").length;
+    grade(it.id, (+g===2&&shown===0)?2:(shown<3?1:0)); F.i++; chrome(); renderFL(); },
+  blurt:a=>blurt(a), blcheck:blurtCheck,
+  adapt:a=>adapt(a===undefined?null:a), adsave:adaptSave,
+  exam:a=>exam(a===""||a===undefined?null:a), exmark:examMark,
+  hide:hidePeek, check:checkAns, reveal:revealAns, g:a=>doGrade(+a),
+  theme:flipTheme
+};
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-act]"); if(!t) return;
+  const fn=ACTS[t.dataset.act]; if(!fn) return;
+  e.preventDefault(); fn(t.dataset.arg);
+});
+document.addEventListener("keydown",e=>{
+  if(!R||e.target.tagName==="TEXTAREA"||e.target.tagName==="INPUT") return;
+  if(e.key==="Enter"&&R.phase==="mark"){ const b=app.querySelector(".gradebtns .suggest"); if(b) b.click(); }
+});
+home();
+/*SW-START*/
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))
+  addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+/*SW-END*/
 </script>
 </body>
 </html>

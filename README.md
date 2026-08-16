@@ -1,56 +1,50 @@
-# 📖 Essay Memoriser — *The Curious Incident of the Dog in the Night-Time* (Module B)
+# Billy Elliot Recall
 
-A browser **game** for memorising your Module B essay word-for-word, because flashcards are boring.
-It's built around a **science-backed 3-Day Coach** that tells you exactly what to practise and when — plus a ladder of practice modes and a timed **exam** that marks you word-by-word.
+An active-recall trainer for the **Common Module shell essay** on Stephen Daldry's *Billy Elliot* — Texts and Human Experiences, Paper 1 Section II.
 
-## 🧭 The 3-Day Coach (start here)
-The Coach splits the essay into ~65 bite-size lines and drills each one with **recall + feedback**, spaced out and revisited until it sticks — the method researchers call **successive relearning**. It implements retrieval practice, spacing, Read–Recite–Review (with reciting **aloud**), errorful generation, chunking + chaining, interleaving and overlearning. Tap **“Why this works”** in-app for the citations, or read [`RESEARCH.md`](RESEARCH.md).
+It holds all 55 pieces of the essay: **9 quotes and scenes, 9 technique sets, 18 evaluation bullets, 6 Turns and Closes, and the shell sentences** — and drills each one until you can produce it from memory.
 
-- **Day 1** — encode every line (read → say aloud → recall with feedback).
-- **Day 2** — spaced retrieval, rehearse sentence joins, interleave paragraphs.
-- **Day 3** — overlearn & simulate: first-letter recitation, then timed exam write-outs.
+Open **`index.html`** in any browser. It works offline, saves your progress on the device, and installs to a phone home screen.
 
-It schedules reviews at expanding intervals and nudges you to **space sessions and sleep between them** (that's what makes 3 days work). Just open it and press **▶ Start session**.
+## How it decides you know something
 
-> The **Quote Bank** is intentionally left out (as requested). Only the five prose paragraphs are loaded:
-> **Introduction · Body 1 (Perception) · Body 2 (Truth) · Body 3 (Agency) · Conclusion.**
+A line counts as learnt after **three correct recalls spread across separate sittings** — not three in a row tonight. Between recalls it schedules the line at widening gaps (9 min → 55 min → 5 h → 1 day → 3 days), which is the part that makes it survive to the exam rather than to bedtime. Reviews are pulled across paragraphs rather than one paragraph at a time, so Body 2's techniques stop leaking into Body 1.
 
-## ▶️ How to play
+The reasoning behind the whole plan — what to learn word for word, what to leave flexible, the traps in this particular essay, and what to do on each of the three days before the exam — is in [`MEMORISE.md`](MEMORISE.md), and in the app under **The method**.
 
-**Right now (any device):** open **`index.html`** in a browser. It works **offline** and needs no install.
+## The modes
 
-**On your phone (recommended):** host it free with GitHub Pages, then add it to your home screen as an app:
-1. On GitHub: **Settings → Pages → Build and deployment → Source: “Deploy from a branch” → Branch: `main` / `/ (root)` → Save.**
-2. Wait ~1 min, then open the link GitHub shows (e.g. `https://liamk08.github.io/english-essay-/`).
-3. In the browser menu choose **“Add to Home Screen”** — it installs as a real, offline app with its own icon.
+| Mode | What it does |
+|---|---|
+| **Coach** | One spaced session. Picks what's due, mixes the paragraphs, drills each line to criterion. Start here. |
+| **Drill** | Pick a paragraph and a layer — quotes, techniques, evaluations, Turns and Closes — and hammer just that. |
+| **Read** | The whole shell, annotated in the doc's own colours, with read-aloud. |
+| **Sort** | Which piece of evidence does this technique belong to? Targets the four confusions in this essay. |
+| **First letters** | Turns, Closes and shell sentences shrink to initials. Recite aloud, tap any word to check. |
+| **Blurt** | Write a whole paragraph from the cues alone, then check every component off against the model. |
+| **Adapt** | A real question stem plus your six red clauses. Rewrite each to answer it; your versions are saved. |
+| **Exam** | 40 minutes, a real stem, no cues — marked against every quote, technique and evaluation. |
+| **Weak lines** | Everything you've slipped on, hardest first. |
+| **The method** | The analysis: tiers, traps, the spine, the order, the research. |
 
-Your XP, levels, streak, best scores and weak-words list all save automatically on the device (`localStorage`).
+Typing is marked word by word and **forgives small typos** — the point is whether you retrieved the line, not whether you can spell "cacophony" at speed. Technique answers are checked term by term; evaluation clauses are marked on the key ideas, since you're meant to join and bend those on the day.
 
-## 🎮 The modes (recommended order)
+## The colour key
 
-| # | Mode | What it does |
-|---|------|--------------|
-| 1 | 📖 **Study** | Reads the paragraph nicely, highlights quotes, can read it **aloud**, marks the `[adaptable]` hook/concept parts. |
-| 2 | 🕳️ **Fill the Gaps** | Type the missing words. **Easy → Medium → Hard → Expert** (Expert blanks *everything*). Correct words turn green and auto-advance. |
-| 3 | 🔤 **First Letters** | Every word shrinks to its first letter (`H····· e····· t···`). Recite it, tap any word to check. |
-| 4 | ⌨️ **Type It Out** | Write the whole paragraph from memory with **shrinking hints** (full words → first letters → nothing). Wrong words flash the answer. Live accuracy, WPM, combo. |
-| 5 | 🧩 **Unscramble** | Rebuild each sentence from shuffled word tiles. |
-| ★ | 📝 **Exam** | The real test: write it under a **timer with no hints**, then get a **word-accurate report** — green = correct, red = missed/out of place. |
-| 🎯 | **Weak Words** | Auto-collects every word you slip up on (in Gaps/Type/Exam) and re-drills it in context. Spaced, targeted practice. |
+Straight from the source document, and used throughout the app:
 
-There's also a 👑 **Whole Essay** option — chain all five paragraphs for the ultimate Type-It-Out or Exam.
+- <span style="color:#456D1D">**Green**</span> — fixed theme wording, never changes.
+- <span style="color:#A82C23">**Red**</span> — adapt to the question. Don't memorise these; rehearse rewriting them.
+- <span style="color:#9C6608">**Amber**</span> — the Turn.
+- <span style="color:#215B93">**Blue**</span> — the Close.
 
-## 🏆 Game layer
-- **Smart dashboard**: overall % memorised, a “Continue / Start” button that sends you to your weakest paragraph and the right next mode.
-- **XP & levels**, **🔥 daily streak**, **combo meter**, **per-paragraph mastery rings** (100% requires acing Type It Out / Exam).
-- Confetti on 90%+, optional sound effects, installable **PWA** that works fully offline.
+## Put it on your phone
 
-## 💡 Tips for memorising fast
-1. **Study → Easy gaps**, then climb to Expert on one paragraph.
-2. Switch to **First Letters** and recite **aloud** — saying it sticks far better than reading.
-3. **Type It Out**, cycling the hint down to *none*.
-4. Run the **Exam**, then hit **🎯 Drill misses** to mop up the red words.
-5. One paragraph a day; keep the streak alive so all five stay warm.
+1. On GitHub: **Settings → Pages → Source: "Deploy from a branch" → Branch: `main` / `/ (root)` → Save.**
+2. Open the link GitHub gives you (e.g. `https://liamk08.github.io/english-essay-/`).
+3. Browser menu → **Add to Home Screen**. It installs as an offline app.
+
+Progress lives in `localStorage` on that device.
 
 ---
-*Files: `index.html` (the whole game, self-contained), plus `manifest.webmanifest`, `sw.js` and icons for offline install. No dependencies, no tracking.*
+*`index.html` is the whole app, self-contained. No dependencies, no tracking, no network calls.*
