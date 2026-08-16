@@ -1,6 +1,6 @@
-/* Essay Memoriser service worker — offline app shell.
+/* Billy Elliot Recall service worker — offline app shell.
    Bump CACHE when files change to force an update. */
-const CACHE = "essay-memoriser-v2";
+const CACHE = "billy-elliot-recall-v1";
 const ASSETS = [
   "./",
   "./index.html",

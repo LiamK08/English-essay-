@@ -1,13 +1,13 @@
 {
-  "name": "Essay Memoriser — Module B",
-  "short_name": "Memoriser",
-  "description": "A game for memorising the Module B essay on The Curious Incident of the Dog in the Night-Time, word for word.",
+  "name": "Billy Elliot Recall — Common Module",
+  "short_name": "Billy Elliot",
+  "description": "Active-recall trainer for the Billy Elliot Common Module shell essay: every quote, technique and evaluation bullet, drilled to criterion.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0f1020",
-  "theme_color": "#0f1020",
+  "background_color": "#0E1013",
+  "theme_color": "#0E1013",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
